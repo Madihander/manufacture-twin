@@ -2,6 +2,7 @@ import { HammerIcon } from 'lucide-react'
 import { MaintenanceDialog } from '@/components/service/MaintenanceDialog'
 import { SettingsSheet } from '@/components/service/SettingsSheet'
 import { EmptyState } from '@/components/service/States'
+import { SummaryScreen } from '@/components/summary/SummaryScreen'
 import { AppHeader } from '@/components/twin/AppHeader'
 import { IncidentWatcher } from '@/components/twin/IncidentWatcher'
 import { SimBar } from '@/components/twin/SimBar'
@@ -32,9 +33,11 @@ export default function App() {
         <AppHeader />
         {screen === 'topology' ? (
           <TopologyScreen />
+        ) : screen === 'summary' ? (
+          <SummaryScreen />
         ) : (
           <div className="flex flex-1 items-center justify-center">
-            <EmptyState icon={HammerIcon} text={screen === 'summary' ? 'Экран «Сводка» — следующий этап' : 'Экран «Сценарии» — следующий этап'} />
+            <EmptyState icon={HammerIcon} text="Экран «Сценарии» — следующий этап" />
           </div>
         )}
         <SimBar />
