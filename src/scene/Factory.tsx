@@ -1,6 +1,7 @@
-import { useRef, type ReactNode } from 'react'
+import { useMemo, useRef, type ReactNode } from 'react'
 import { Edges } from '@react-three/drei'
 import { type ThreeEvent, useFrame } from '@react-three/fiber'
+import { EdgesGeometry, PlaneGeometry } from 'three'
 import type { Group, Mesh, MeshBasicMaterial, MeshStandardMaterial } from 'three'
 import { focusObject } from '@/components/twin/focus'
 import { EQUIPMENT_BY_ID, type SectionId } from '@/data/plant'
@@ -9,7 +10,8 @@ import type { Status } from '@/sim/metrics'
 import { isDown } from '@/sim/telemetry'
 import { useTwin } from '@/sim/useTwin'
 import { type HeatMode, useSim } from '@/store/sim'
-import { BELT_Y, BLOCK_D, BLOCK_W, blockX, EQUIPMENT_POS, LINE_X0, LINE_X1, SECTION_ORDER, SLAB_H, WALL_H } from './layout'
+import { BELT_Y, BLOCK_D, blockW, blockX, bufferZone, CAR_L, EQUIPMENT_POS, LINE_X0, LINE_X1, SECTION_ORDER, sectionW, SLAB_H, WALL_H } from './layout'
+import { STATIONS } from '@/sim/model'
 import { C } from './palette'
 
 const STATUS_SOFT: Record<Status, string> = { ok: C.okSoft, warn: C.warnSoft, alarm: C.alarmSoft }
@@ -49,6 +51,9 @@ export function Factory() {
             <meshStandardMaterial color={C.belt} roughness={0.9} />
           </mesh>
           <FlowArrows />
+          {STATIONS.map((_, i) => (
+            <BufferZone key={i} station={i} />
+          ))}
         </group>
       )}
 
@@ -60,6 +65,7 @@ export function Factory() {
             key={id}
             id={id}
             x={blockX(i)}
+            w={blockW(i)}
             status={k.status}
             heat={hs}
             hovered={hover === id}
@@ -78,6 +84,7 @@ export function Factory() {
 function Block({
   id,
   x,
+  w,
   status,
   heat,
   hovered,
@@ -86,6 +93,7 @@ function Block({
 }: {
   id: SectionId
   x: number
+  w: number
   status: Status
   heat: Status | null
   hovered: boolean
@@ -116,17 +124,17 @@ function Block({
     <group position={[x, 0, 0]}>
       <group onPointerOver={onOver} onPointerOut={onOut} onClick={onClick}>
         <mesh position-y={SLAB_H / 2} receiveShadow>
-          <boxGeometry args={[BLOCK_W, SLAB_H, BLOCK_D]} />
+          <boxGeometry args={[w, SLAB_H, BLOCK_D]} />
           <meshStandardMaterial color={slab} roughness={0.95} />
           <Edges color={edge} lineWidth={active || alarm ? 2 : 1} />
         </mesh>
         {/* Дальние стены плотнее, ближние почти прозрачные — внутренности видны. */}
-        <Wall position={[0, WALL_H / 2, -BLOCK_D / 2]} size={[BLOCK_W, WALL_H, 0.04]} opacity={0.42} edge={edge} />
-        <Wall position={[-BLOCK_W / 2, WALL_H / 2, 0]} size={[0.04, WALL_H, BLOCK_D]} opacity={0.42} edge={edge} />
-        <Wall position={[0, WALL_H / 2, BLOCK_D / 2]} size={[BLOCK_W, WALL_H, 0.04]} opacity={0.1} edge={edge} />
-        <Wall position={[BLOCK_W / 2, WALL_H / 2, 0]} size={[0.04, WALL_H, BLOCK_D]} opacity={0.1} edge={edge} />
+        <Wall position={[0, WALL_H / 2, -BLOCK_D / 2]} size={[w, WALL_H, 0.04]} opacity={0.42} edge={edge} />
+        <Wall position={[-w / 2, WALL_H / 2, 0]} size={[0.04, WALL_H, BLOCK_D]} opacity={0.42} edge={edge} />
+        <Wall position={[0, WALL_H / 2, BLOCK_D / 2]} size={[w, WALL_H, 0.04]} opacity={0.1} edge={edge} />
+        <Wall position={[w / 2, WALL_H / 2, 0]} size={[0.04, WALL_H, BLOCK_D]} opacity={0.1} edge={edge} />
       </group>
-      {alarm && <AlarmPulse />}
+      {alarm && <AlarmPulse w={w} />}
       {children}
     </group>
   )
@@ -143,12 +151,12 @@ function Wall({ position, size, opacity, edge }: { position: [number, number, nu
 }
 
 /** Пульсирующая красная рамка вокруг корпуса в аварии. */
-function AlarmPulse() {
+function AlarmPulse({ w: blockWidth }: { w: number }) {
   const mat = useRef<MeshBasicMaterial>(null)
   useFrame(({ clock }) => {
     if (mat.current) mat.current.opacity = 0.35 + 0.45 * (0.5 + 0.5 * Math.sin(clock.elapsedTime * 5))
   })
-  const w = BLOCK_W + 0.36
+  const w = blockWidth + 0.36
   const d = BLOCK_D + 0.36
   const t = 0.09
   const bars: [number, number, number, number][] = [
@@ -192,6 +200,25 @@ function SelectionRing({ pos }: { pos: [number, number, number] }) {
       <ringGeometry args={[0.55, 0.68, 40]} />
       <meshBasicMaterial color={C.brand} transparent opacity={0.9} depthWrite={false} />
     </mesh>
+  )
+}
+
+/** Размеченная площадка буфера перед участком: сюда встают кузова, если участок не успевает. */
+function BufferZone({ station }: { station: number }) {
+  const z = bufferZone(station)
+  const depth = (z.rows - 1) * z.rowStep + CAR_L + 0.2
+  const cz = z.z0 - CAR_L / 2 - 0.1 + depth / 2
+  const outline = useMemo(() => new EdgesGeometry(new PlaneGeometry(0.92, depth)), [depth])
+  return (
+    <group position={[z.x, 0.006, cz]} rotation-x={-Math.PI / 2}>
+      <mesh>
+        <planeGeometry args={[0.92, depth]} />
+        <meshBasicMaterial color={C.brandSoft} />
+      </mesh>
+      <lineSegments geometry={outline} onUpdate={(l) => l.computeLineDistances()}>
+        <lineDashedMaterial color={C.brand} dashSize={0.08} gapSize={0.06} />
+      </lineSegments>
+    </group>
   )
 }
 
@@ -262,10 +289,10 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
       return (
         <>
           <Equip id="Камера-02">
-            <Tunnel length={1.9} color="#dbeef8" />
+            <Tunnel length={2.1} color="#dbeef8" />
           </Equip>
           <Equip id="ПС-01">
-            <Tunnel length={1.5} color="#eef1f4" oven />
+            <Tunnel length={1.7} color="#eef1f4" oven />
           </Equip>
         </>
       )
@@ -274,10 +301,10 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
         <>
           <Equip id="Конвейер-03">
             <mesh position-y={BELT_Y + 0.01} receiveShadow>
-              <boxGeometry args={[BLOCK_W - 0.3, 0.04, 0.74]} />
+              <boxGeometry args={[sectionW('assembly') - 0.3, 0.04, 0.74]} />
               <meshStandardMaterial color={C.beltDark} roughness={0.8} />
             </mesh>
-            {[-1.4, -0.7, 0, 0.7, 1.4].map((x) => (
+            {[-2.8, -2.1, -1.4, -0.7, 0, 0.7, 1.4, 2.1, 2.8].map((x) => (
               <mesh key={x} position={[x, 0.65, -0.55]} castShadow>
                 <boxGeometry args={[0.06, 1.1, 0.06]} />
                 <meshStandardMaterial color={C.steel} />
@@ -303,7 +330,7 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
             <Arch />
           </Equip>
           <Equip id="КЛ-01">
-            <Tunnel length={1.1} color="#f7f2df" light />
+            <Tunnel length={1.0} color="#f7f2df" light />
           </Equip>
         </>
       )
@@ -319,13 +346,13 @@ function Racks({ kits }: { kits: number }) {
     for (let c = 0; c < 3; c++) {
       const idx = r * 3 + c
       const h = idx / 12 < fill ? 0.35 + ((idx * 7) % 5) * 0.08 : 0.06
-      cells.push({ x: -1.2 + c * 1.2, z: -2.4 + r * 1.2 + (r >= 2 ? 0.6 : 0), h })
+      cells.push({ x: -1.0 + c * 1.0, z: -2.4 + r * 1.2 + (r >= 2 ? 0.6 : 0), h })
     }
   return (
     <group>
       {cells.map((c, i) => (
         <mesh key={i} position={[c.x, SLAB_H + c.h / 2, c.z]} castShadow>
-          <boxGeometry args={[0.85, c.h, 0.85]} />
+          <boxGeometry args={[0.75, c.h, 0.85]} />
           <meshStandardMaterial color={C.crate} roughness={0.9} />
         </mesh>
       ))}

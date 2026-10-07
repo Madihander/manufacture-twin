@@ -3,7 +3,7 @@ import { type ThreeEvent, useFrame } from '@react-three/fiber'
 import { Color, type InstancedMesh, type Mesh, Object3D, Vector3 } from 'three'
 import { SNAPSHOT_STEP } from '@/sim/model'
 import { useSim } from '@/store/sim'
-import { CAR_Y, carPose, type Pose } from './layout'
+import { CAR_L, CAR_W, CAR_Y, carPose, type Pose } from './layout'
 import { BODY_COLOR, C, RAW_BODY } from './palette'
 
 const MAX = 160
@@ -63,7 +63,7 @@ export function Cars() {
       tmp.scale.set(1, 1, 1)
       tmp.updateMatrix()
       body.current.setMatrixAt(k, tmp.matrix)
-      tmp.position.y = CAR_Y + 0.17
+      tmp.position.y = CAR_Y + 0.12
       tmp.updateMatrix()
       roof.current.setMatrixAt(k, tmp.matrix)
 
@@ -114,15 +114,15 @@ export function Cars() {
         }}
         onPointerOut={() => (document.body.style.cursor = '')}
       >
-        <boxGeometry args={[0.82, 0.2, 0.4]} />
+        <boxGeometry args={[CAR_L, 0.13, CAR_W]} />
         <meshStandardMaterial roughness={0.45} metalness={0.1} />
       </instancedMesh>
       <instancedMesh ref={roof} args={[undefined, undefined, MAX]} castShadow frustumCulled={false}>
-        <boxGeometry args={[0.42, 0.15, 0.34]} />
+        <boxGeometry args={[CAR_L * 0.5, 0.11, CAR_W * 0.86]} />
         <meshStandardMaterial roughness={0.45} />
       </instancedMesh>
       <mesh ref={ring} rotation-x={-Math.PI / 2} visible={false}>
-        <ringGeometry args={[0.5, 0.62, 40]} />
+        <ringGeometry args={[0.42, 0.52, 40]} />
         <meshBasicMaterial color={C.brand} transparent opacity={0.95} depthWrite={false} />
       </mesh>
     </group>

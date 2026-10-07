@@ -25,13 +25,14 @@ export default function TwinScene() {
         intensity={1.5}
         castShadow
         shadow-mapSize={[2048, 2048]}
-        shadow-camera-left={-22}
-        shadow-camera-right={22}
+        shadow-camera-left={-24}
+        shadow-camera-right={24}
         shadow-camera-top={16}
         shadow-camera-bottom={-16}
         shadow-camera-near={1}
         shadow-camera-far={80}
         shadow-bias={-0.0004}
+        shadow-normalBias={0.03}
       />
       <Factory />
       <Cars />
