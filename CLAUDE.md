@@ -58,11 +58,10 @@ primary #0B3B60, бренд-голубой `brand` #0088CC / `brand-strong` #007
 
 ## Статус и что дальше
 Дедлайн сдачи — 08.10.2026 23:59 (Demo Day 16.10).
-Готово: каркас, тема, служебные окна; «Топология» (симуляция, KPI, ИИ-карточки, чат, 3D на моделях Kenney);
-«Сводка» (`src/components/summary`, данные `src/sim/summary.ts`); «Сценарии» (`src/components/scenarios`, расчёт `src/sim/scenario.ts`,
-пресеты в `src/store/scenarios.ts`, первым запускается «ИИ предупредил: обрыва цепи нет» → +15 авто, ≈ 6 млн ₸). README для жюри.
-Модели: `public/models/{factory,crates,cars}` готовит `python scripts/prepare-models.py` (перекраска палитр).
-Дальше (обсудить с пользователем):
-1. GitHub: пользователь создаст пустой репозиторий и пришлёт ссылку; пушить только по его команде. Возможно — деплой (Vercel/GitHub Pages).
-2. LLM (необязательно): Jev AI — только классификатор; для текста Claude или DeepSeek через серверный прокси + офлайн-фолбэк (уже есть `ai/localAnswer.ts`).
-3. Полировка по замечаниям пользователя, презентация.
+- GitHub: https://github.com/Madihander/manufacture-twin (ветка `main`); пушить только по команде пользователя.
+- Прод: https://manufacture-twin.vercel.app — Vercel автодеплоит каждый push в `main`. Переменная `DEEPSEEK_API_KEY` задана в Vercel.
+- ИИ: `api/ask.ts` (Vercel-функция + dev-middleware в `vite.config.ts`). Ключ пользователя — OpenRouter (`sk-or-…`) →
+  `deepseek/deepseek-v4.1-flash`; ключ DeepSeek шёл бы напрямую (`deepseek-flash`). Контекст собирает `src/components/twin/ai/remote.ts`;
+  вопросы «что если X встанет» считаются симуляцией (`whatIf`). Без ключа/сети — офлайн-шаблоны `ai/localAnswer.ts`.
+- Готово: все три экрана, модели Kenney, служебные окна, сценарии на карте, README для жюри.
+Дальше — по замечаниям пользователя; возможно, презентация для Demo Day.
