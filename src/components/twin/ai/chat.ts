@@ -10,12 +10,17 @@ export interface ChatMessage {
   parts?: AnswerPart[]
   /** Вопрос ждёт ответа — его подхватит панель ИИ, у которой есть данные модели. */
   pending?: boolean
+  /** Вопрос уже отправлен на ответ (чтобы не отправить дважды). */
+  inFlight?: boolean
+  /** Откуда ответ: языковая модель или офлайн-шаблон по данным двойника. */
+  source?: { kind: 'llm'; model: string } | { kind: 'offline'; reason?: string }
 }
 
 interface ChatState {
   messages: ChatMessage[]
   ask: (question: string) => void
-  answer: (questionId: number, parts: AnswerPart[]) => void
+  take: (questionId: number) => void
+  answer: (questionId: number, parts: AnswerPart[], source?: ChatMessage['source']) => void
   clear: () => void
 }
 
@@ -28,11 +33,12 @@ export const useAiChat = create<ChatState>()((set) => ({
     if (!q) return
     set((s) => ({ messages: [...s.messages, { id: ++seq, role: 'user', text: q, pending: true }] }))
   },
-  answer: (questionId, parts) =>
+  take: (questionId) => set((s) => ({ messages: s.messages.map((m) => (m.id === questionId ? { ...m, inFlight: true } : m)) })),
+  answer: (questionId, parts, source) =>
     set((s) => ({
       messages: [
-        ...s.messages.map((m) => (m.id === questionId ? { ...m, pending: false } : m)),
-        { id: ++seq, role: 'assistant', text: parts.map((p) => (typeof p === 'string' ? p : p.chip)).join(''), parts },
+        ...s.messages.map((m) => (m.id === questionId ? { ...m, pending: false, inFlight: false } : m)),
+        { id: ++seq, role: 'assistant', text: parts.map((p) => (typeof p === 'string' ? p : p.chip)).join(''), parts, source },
       ],
     })),
   clear: () => set({ messages: [] }),

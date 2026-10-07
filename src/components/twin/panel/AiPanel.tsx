@@ -12,6 +12,7 @@ import { useMaintenance } from '@/store/maintenance'
 import { useUi } from '@/store/ui'
 import { type AnswerPart, useAiChat } from '../ai/chat'
 import { answerLocal } from '../ai/localAnswer'
+import { askRemote } from '../ai/remote'
 import { focusObject } from '../focus'
 
 const LEVEL = {
@@ -172,17 +173,24 @@ function AskTwin() {
   const messages = useAiChat((s) => s.messages)
   const ask = useAiChat((s) => s.ask)
   const answer = useAiChat((s) => s.answer)
+  const take = useAiChat((s) => s.take)
   const [q, setQ] = useState('')
   const [open, setOpen] = useState(true)
   const list = useRef<HTMLDivElement>(null)
 
-  // Отвечаем на новые вопросы по данным текущего снимка.
+  // Новый вопрос: сначала языковая модель (DeepSeek через /api/ask), при ошибке — офлайн-ответ по тем же данным.
   useEffect(() => {
-    const pending = messages.find((m) => m.pending)
-    if (!pending) return
-    const id = setTimeout(() => answer(pending.id, answerLocal(pending.text, twin)), 450)
-    return () => clearTimeout(id)
-  }, [messages, twin, answer])
+    const q = messages.find((m) => m.pending && !m.inFlight)
+    if (!q) return
+    take(q.id)
+    const history = messages
+      .filter((m) => m.id < q.id && !m.pending)
+      .slice(-6)
+      .map((m) => ({ role: m.role, content: m.text }))
+    askRemote(q.text, twin, history)
+      .then(({ parts, model }) => answer(q.id, parts, { kind: 'llm', model }))
+      .catch((e: Error) => answer(q.id, answerLocal(q.text, twin), { kind: 'offline', reason: e.message }))
+  }, [messages, twin, answer, take])
 
   useEffect(() => {
     list.current?.scrollTo({ top: list.current.scrollHeight, behavior: 'smooth' })
@@ -217,8 +225,15 @@ function AskTwin() {
                 <span className="flex size-6 items-center justify-center rounded-full bg-primary">
                   <SparklesIcon className="size-3 text-white" strokeWidth={2.25} />
                 </span>
-                <div className="text-[13px] leading-[1.75]">
-                  <Parts parts={m.parts ?? [m.text]} />
+                <div className="flex flex-col gap-1">
+                  <div className="text-[13px] leading-[1.75] whitespace-pre-line">
+                    <Parts parts={m.parts ?? [m.text]} />
+                  </div>
+                  {m.source && (
+                    <span className="text-[11px] text-muted-foreground" title={m.source.kind === 'offline' ? m.source.reason : undefined}>
+                      {m.source.kind === 'llm' ? `DeepSeek · ${m.source.model} · по данным двойника` : 'Офлайн-ответ по данным двойника — ИИ-сервер недоступен'}
+                    </span>
+                  )}
                 </div>
               </div>
             ),
