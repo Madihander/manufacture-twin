@@ -133,3 +133,50 @@
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
+
+/* ── Печатный отчёт «Сводки» (PDF) ─────────────────────────────────────────── */
+.print-report {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm 10mm 9mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  /* Приложение не печатаем — только отчёт, вынесенный порталом в body. */
+  #root,
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+  .print-report {
+    display: block;
+    color: #0f1b2a;
+    font-family: "Inter Variable", system-ui, sans-serif;
+  }
+  .print-report * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* Страница = рабочая область A4 альбом (297 × 210 мм минус поля). */
+  .print-page {
+    display: flex;
+    flex-direction: column;
+    width: 277mm;
+    height: 190mm;
+    overflow: hidden;
+    break-after: page;
+  }
+  .print-appendix thead {
+    display: table-header-group;
+  }
+  .print-appendix tr {
+    break-inside: avoid;
+  }
+}

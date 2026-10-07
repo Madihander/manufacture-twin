@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { cloneElement, type ReactElement, type ReactNode } from 'react'
 import {
   Area,
   Bar,
@@ -20,7 +20,27 @@ import { cn } from '@/lib/utils'
 
 // Общий стиль графиков из дизайн-системы: подписи — JetBrains Mono 11, сетка только горизонтальная.
 const AXIS = { fontSize: 11, fontFamily: 'JetBrains Mono Variable, monospace', fill: '#5b6b7f' }
+/** В печатном отчёте подписи мельче, чтобы даты не слипались. */
+const AXIS_PRINT = { ...AXIS, fontSize: 9 }
 const GRID = { stroke: '#e3e8ef', vertical: false }
+/**
+ * Адаптивный график на экране; в печатном отчёте — фиксированного размера
+ * (ResponsiveContainer в скрытом блоке получает нулевую ширину, и график пропадает).
+ */
+function ChartBox({ size, height, children }: { size?: ChartSize; height: number; children: ReactElement<{ width?: number; height?: number }> }) {
+  if (size) return cloneElement(children, { width: size.width, height: size.height })
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      {children}
+    </ResponsiveContainer>
+  )
+}
+
+export interface ChartSize {
+  width: number
+  height: number
+}
+
 export const SERIES = { welding: '#0b3b60', painting: '#0088cc', assembly: '#7cc4e8' } as const
 export const SECTION_NAME = { welding: 'Сварка', painting: 'Окраска', assembly: 'Сборка' } as const
 
@@ -80,16 +100,16 @@ function TipBox({ title, rows, footer }: { title: string; rows: TipRow[]; footer
 type Sec = keyof typeof SERIES
 
 /** План/факт по линиям: сгруппированные столбцы + пунктир плана. */
-export function PlanFactChart({ data, sections, plan }: { data: Record<string, number | string>[]; sections: Sec[]; plan: number }) {
+export function PlanFactChart({ data, sections, plan, size }: { data: Record<string, number | string>[]; sections: Sec[]; plan: number; size?: ChartSize }) {
   // Верхнюю границу считаем сами: функция в domain в Recharts 3 получает другие аргументы.
   const maxFact = Math.max(0, ...data.flatMap((d) => sections.map((s) => Number(d[s]) || 0)))
   const top = Math.max(10, Math.ceil(Math.max(plan * 1.15, maxFact * 1.05) / 10) * 10)
   return (
-    <ResponsiveContainer width="100%" height={240}>
+    <ChartBox size={size} height={240}>
       <BarChart data={data} barGap={2} barCategoryGap="22%" margin={{ top: 8, right: 56, left: -8, bottom: 0 }}>
         <CartesianGrid {...GRID} />
-        <XAxis dataKey="label" tick={AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} interval={0} />
-        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[0, top]} allowDataOverflow />
+        <XAxis dataKey="label" tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} interval={size ? 'preserveStartEnd' : 0} minTickGap={4} />
+        <YAxis tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={false} domain={[0, top]} allowDataOverflow />
         <Tooltip
           cursor={{ fill: '#f5f7fa' }}
           content={({ active, payload, label }) =>
@@ -112,18 +132,18 @@ export function PlanFactChart({ data, sections, plan }: { data: Record<string, n
           <Bar key={s} dataKey={s} fill={SERIES[s]} radius={[2, 2, 0, 0]} maxBarSize={12} isAnimationActive={false} />
         ))}
       </BarChart>
-    </ResponsiveContainer>
+    </ChartBox>
   )
 }
 
 /** OEE по участкам: линии + цель; точки ниже цели — красные. */
-export function OeeChart({ data, sections, target }: { data: Record<string, number | string>[]; sections: Sec[]; target: number }) {
+export function OeeChart({ data, sections, target, size }: { data: Record<string, number | string>[]; sections: Sec[]; target: number; size?: ChartSize }) {
   return (
-    <ResponsiveContainer width="100%" height={240}>
+    <ChartBox size={size} height={240}>
       <LineChart data={data} margin={{ top: 8, right: 64, left: -8, bottom: 0 }}>
         <CartesianGrid {...GRID} />
-        <XAxis dataKey="label" tick={AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} interval={0} />
-        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[60, 100]} ticks={[60, 70, 80, 90, 100]} />
+        <XAxis dataKey="label" tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} interval={size ? 'preserveStartEnd' : 0} minTickGap={4} />
+        <YAxis tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={false} domain={[60, 100]} ticks={[60, 70, 80, 90, 100]} />
         <Tooltip
           cursor={{ stroke: '#cbd5e1' }}
           content={({ active, payload, label }) =>
@@ -156,19 +176,19 @@ export function OeeChart({ data, sections, target }: { data: Record<string, numb
           />
         ))}
       </LineChart>
-    </ResponsiveContainer>
+    </ChartBox>
   )
 }
 
 /** Брак по участкам за период: столбцы + порог. */
-export function DefectChart({ data, threshold }: { data: { name: string; rate: number; defects: number; produced: number }[]; threshold: number }) {
+export function DefectChart({ data, threshold, size }: { data: { name: string; rate: number; defects: number; produced: number }[]; threshold: number; size?: ChartSize }) {
   const max = Math.max(threshold * 2, ...data.map((d) => d.rate)) * 1.2
   return (
-    <ResponsiveContainer width="100%" height={240}>
+    <ChartBox size={size} height={240}>
       <BarChart data={data} margin={{ top: 22, right: 64, left: -8, bottom: 0 }}>
         <CartesianGrid {...GRID} />
         <XAxis dataKey="name" tick={{ ...AXIS, fontFamily: 'Inter Variable, sans-serif', fontSize: 12 }} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} />
-        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[0, Math.ceil(max)]} tickFormatter={(v) => `${v}`} />
+        <YAxis tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={false} domain={[0, Math.ceil(max)]} tickFormatter={(v) => `${v}`} />
         <Tooltip
           cursor={{ fill: '#f5f7fa' }}
           content={({ active, payload }) => {
@@ -192,19 +212,19 @@ export function DefectChart({ data, threshold }: { data: { name: string; rate: n
           <LabelList dataKey="rate" position="top" formatter={(v) => formatNumber(Number(v), 1)} style={{ ...AXIS, fontSize: 12, fill: '#0f1b2a' }} />
         </Bar>
       </BarChart>
-    </ResponsiveContainer>
+    </ChartBox>
   )
 }
 
 /** Парето простоев: минуты по причинам + накопленная доля. */
-export function ParetoChart({ data }: { data: { reason: string; minutes: number; cum: number }[] }) {
+export function ParetoChart({ data, size }: { data: { reason: string; minutes: number; cum: number }[]; size?: ChartSize }) {
   return (
-    <ResponsiveContainer width="100%" height={240}>
+    <ChartBox size={size} height={240}>
       <ComposedChart data={data} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
         <CartesianGrid {...GRID} />
-        <XAxis dataKey="reason" tick={{ ...AXIS, fontFamily: 'Inter Variable, sans-serif', fontSize: 11 }} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} interval={0} height={44} tickFormatter={(v: string) => (v.length > 16 ? `${v.slice(0, 15)}…` : v)} />
-        <YAxis yAxisId="m" tick={AXIS} tickLine={false} axisLine={false} />
-        <YAxis yAxisId="c" orientation="right" tick={AXIS} tickLine={false} axisLine={false} domain={[0, 100]} ticks={[0, 50, 100]} tickFormatter={(v) => `${v} %`} />
+        <XAxis dataKey="reason" tick={{ ...AXIS, fontFamily: 'Inter Variable, sans-serif', fontSize: size ? 8.5 : 11 }} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} interval={0} height={44} tickFormatter={(v: string) => { const max = size ? 13 : 16; return v.length > max ? `${v.slice(0, max - 1)}…` : v }} />
+        <YAxis yAxisId="m" tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={false} />
+        <YAxis yAxisId="c" orientation="right" tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={false} domain={[0, 100]} ticks={[0, 50, 100]} tickFormatter={(v) => `${v} %`} />
         <Tooltip
           cursor={{ fill: '#f5f7fa' }}
           content={({ active, payload }) => {
@@ -223,21 +243,21 @@ export function ParetoChart({ data }: { data: { reason: string; minutes: number;
         <Bar yAxisId="m" dataKey="minutes" fill="#0088cc" radius={[3, 3, 0, 0]} maxBarSize={44} isAnimationActive={false} />
         <Line yAxisId="c" dataKey="cum" stroke="#0b3b60" strokeWidth={2} dot={{ r: 3, fill: '#fff', strokeWidth: 1.5 }} isAnimationActive={false} />
       </ComposedChart>
-    </ResponsiveContainer>
+    </ChartBox>
   )
 }
 
 /** Прогноз накопленного выпуска до конца месяца. */
-export function ForecastChart({ data, target }: { data: { day: number; actual?: number; forecast?: number; band?: [number, number] }[]; target: number }) {
+export function ForecastChart({ data, target, size }: { data: { day: number; actual?: number; forecast?: number; band?: [number, number] }[]; target: number; size?: ChartSize }) {
   const peak = Math.max(target, ...data.map((d) => d.band?.[1] ?? d.forecast ?? d.actual ?? 0))
   const step = peak > 3000 ? 1500 : peak > 1200 ? 500 : 250
   const yTop = Math.ceil((peak * 1.05) / (step * 4)) * step * 4
   return (
-    <ResponsiveContainer width="100%" height={240}>
+    <ChartBox size={size} height={240}>
       <ComposedChart data={data} margin={{ top: 8, right: 70, left: -2, bottom: 0 }}>
         <CartesianGrid {...GRID} />
-        <XAxis dataKey="day" tick={AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} tickFormatter={(d) => `${String(d).padStart(2, '0')}.10`} interval={1} />
-        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[0, yTop]} ticks={[0, 1, 2, 3, 4].map((k) => (yTop / 4) * k)} tickFormatter={(v) => formatNumber(v)} width={52} />
+        <XAxis dataKey="day" tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} tickFormatter={(d) => `${String(d).padStart(2, '0')}.10`} interval={1} />
+        <YAxis tick={size ? AXIS_PRINT : AXIS} tickLine={false} axisLine={false} domain={[0, yTop]} ticks={[0, 1, 2, 3, 4].map((k) => (yTop / 4) * k)} tickFormatter={(v) => formatNumber(v)} width={52} />
         <Tooltip
           cursor={{ stroke: '#cbd5e1' }}
           content={({ active, payload, label }) => {
@@ -255,7 +275,7 @@ export function ForecastChart({ data, target }: { data: { day: number; actual?: 
         <Line dataKey="actual" stroke="#0b3b60" strokeWidth={2.25} dot={false} isAnimationActive={false} connectNulls />
         <Line dataKey="forecast" stroke="#0088cc" strokeWidth={2} strokeDasharray="6 4" dot={false} isAnimationActive={false} connectNulls />
       </ComposedChart>
-    </ResponsiveContainer>
+    </ChartBox>
   )
 }
 

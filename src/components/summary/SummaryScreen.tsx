@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { ru } from 'react-day-picker/locale'
 import { ArrowDownIcon, ArrowUpIcon, CalendarCheckIcon, CalendarIcon, ChevronDownIcon, DownloadIcon, FileSpreadsheetIcon, FileTextIcon, RotateCcwIcon, TriangleAlertIcon } from 'lucide-react'
 import { EmptyState } from '@/components/service/States'
@@ -12,6 +13,7 @@ import { workdaysOfMonth } from '@/data/history'
 import { CAR_MODELS, type ModelFilter } from '@/data/plant'
 import { formatDate, formatNumber, plural } from '@/lib/format'
 import { cn } from '@/lib/utils'
+import { clockText } from '@/sim/clock'
 import { SHIFT_LEN, TAKT } from '@/sim/model'
 import {
   allRows,
@@ -29,6 +31,7 @@ import {
 } from '@/sim/summary'
 import { useTwin } from '@/sim/useTwin'
 import { useSim } from '@/store/sim'
+import { PrintReport } from './PrintReport'
 import { ChartCard, DefectChart, ForecastChart, LegendItem, MiniSpark, OeeChart, ParetoChart, PlanFactChart, SECTION_NAME, SERIES } from './charts'
 
 const MONTH_START = new Date(2026, 9, 1)
@@ -123,6 +126,18 @@ export function SummaryScreen() {
       byDate.get(r.date)!.push(r)
     }
     return [...byDate.entries()].sort(([a], [b]) => a.localeCompare(b))
+  })()
+
+  // «Эффект для бизнеса»: состояние поднято сюда, чтобы печатный отчёт показывал те же цифры.
+  const [effectShare, setEffectShare] = useState(30)
+  const [margin, setMargin] = useState(400_000)
+  const effect = (() => {
+    const unplanned = allDowntimes.filter((d) => !d.planned && !d.live)
+    const days = new Set(allDowntimes.filter((d) => !d.live).map((d) => d.date)).size || 1
+    const perDay = unplanned.reduce((a, d) => a + d.minutes, 0) / days
+    const monthMinutes = perDay * 22
+    const cars = Math.round((monthMinutes * (effectShare / 100) * 60) / TAKT)
+    return { share: effectShare, margin, perDay, monthMinutes, cars, money: (cars * margin) / 1e6 }
   })()
 
   const isDefault = JSON.stringify({ ...filters, model: 'all' }) === JSON.stringify({ ...DEFAULT_FILTERS, model: 'all' }) && filters.model === headerModel
@@ -268,11 +283,64 @@ export function SummaryScreen() {
 
         <div className="grid grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] items-start gap-4">
           <DowntimeJournal records={downtimes} from={filters.from} to={filters.to} />
-          <BusinessEffect history={allDowntimes} />
+          <BusinessEffect effect={effect} setShare={setEffectShare} setMargin={setMargin} />
         </div>
       </main>
+      {/* Печатная версия для «PDF-отчёт»: на экране скрыта, вне #root — печатается только она. */}
+      {createPortal(
+        <PrintReport
+          filters={filters}
+          modelName={filters.model === 'all' ? 'все модели' : CAR_MODELS[filters.model].name}
+          generatedAt={`15.10.2026 ${clockText(twin.snap.t, false)}`}
+          kpis={[
+            {
+              label: 'Выполнение плана месяца',
+              value: formatNumber(monthOutput),
+              unit: `/ ${formatNumber(monthPlan)} · ${Math.round((monthOutput / monthPlan) * 100)} %`,
+              note: `прогноз на 31.10: ${formatNumber(forecast)}`,
+              ok: forecast >= monthPlan,
+            },
+            { label: 'OEE выбранных участков', value: formatNumber(oee.oee * 100, 1), unit: '%', note: `цель ≥ ${th.oeeMin} %`, ok: oee.oee * 100 >= th.oeeMin },
+            { label: 'Уровень брака', value: formatNumber(defectRate, 1), unit: '%', note: `порог ≤ ${formatNumber(th.defectMax, 0)} %`, ok: defectRate <= th.defectMax },
+            {
+              label: 'Простои за сутки 15.10',
+              value: String(todayMinutes),
+              unit: 'мин',
+              note: `${todayEvents} ${plural(todayEvents, ['событие', 'события', 'событий'])} · лимит ${th.downtimeMax} мин/ед.`,
+              ok: today.every((d) => d.minutes <= th.downtimeMax),
+            },
+            { label: 'Средняя загрузка линий', value: formatNumber(loadAvg, 0), unit: '%', note: 'Сварка, Окраска, Сборка', ok: null },
+          ]}
+          planFact={planFact}
+          plan={Math.round(120 * share)}
+          oeeData={oeeData}
+          oeeTarget={th.oeeMin}
+          defectData={defectData}
+          defectMax={th.defectMax}
+          pareto={pareto}
+          models={modelOutputs(monthRows.reduce((a, r) => a + r.fact, 0))}
+          forecastPoints={fc.points.map((pt) => ({
+            ...pt,
+            actual: pt.actual !== undefined ? scale(pt.actual) : undefined,
+            forecast: pt.forecast !== undefined ? scale(pt.forecast) : undefined,
+            band: pt.band ? [scale(pt.band[0]), scale(pt.band[1])] : undefined,
+          }))}
+          monthPlan={monthPlan}
+          forecast={forecast}
+          predictions={twin.predictions}
+          effect={effect}
+          downtimes={downtimes}
+        />,
+        document.body,
+      )}
     </div>
   )
+}
+
+/** Выпуск по моделям: история не хранит модели — раскладываем по миксу плана. */
+function modelOutputs(monthOutputAll: number) {
+  const totalPlan = MODEL_LIST.reduce((a, m) => a + m.monthPlan, 0)
+  return MODEL_LIST.map((m) => ({ name: m.name, plan: m.monthPlan, fact: Math.round((monthOutputAll * m.monthPlan) / totalPlan) }))
 }
 
 function Kpi({ label, value, unit, children }: { label: string; value: string; unit: string; children: React.ReactNode }) {
@@ -489,7 +557,7 @@ function FilterBar({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[200px]">
-              <DropdownMenuItem onSelect={() => setTimeout(() => window.print(), 50)} className="text-[13px]">
+              <DropdownMenuItem onSelect={() => setTimeout(() => printReport(filters), 50)} className="text-[13px]">
                 <FileTextIcon className="text-alarm" />
                 PDF-отчёт
               </DropdownMenuItem>
@@ -508,6 +576,14 @@ function FilterBar({
       </span>
     </div>
   )
+}
+
+/** Печать в PDF: имя файла по умолчанию берётся из заголовка документа. */
+function printReport(filters: Filters) {
+  const prev = document.title
+  document.title = `Сводка СарыаркаАвтоПром ${formatDate(filters.from)}–${formatDate(filters.to)}`
+  window.addEventListener('afterprint', () => (document.title = prev), { once: true })
+  window.print()
 }
 
 function Labeled({ label, children }: { label: string; children: React.ReactNode }) {
@@ -680,17 +756,18 @@ function DowntimeJournal({ records, from, to }: { records: ReturnType<typeof dow
   )
 }
 
-function BusinessEffect({ history }: { history: ReturnType<typeof downtimeRecords> }) {
-  const [share, setShare] = useState(30)
-  const [margin, setMargin] = useState('400000')
+function BusinessEffect({
+  effect,
+  setShare,
+  setMargin,
+}: {
+  effect: { share: number; margin: number; perDay: number; monthMinutes: number; cars: number; money: number }
+  setShare: (v: number) => void
+  setMargin: (v: number) => void
+}) {
   // Незапланированные простои за полные рабочие дни месяца → в среднем за день → на 22 рабочих дня.
-  const unplanned = history.filter((d) => !d.planned && !d.live)
-  const days = new Set(history.filter((d) => !d.live).map((d) => d.date)).size || 1
-  const perDay = unplanned.reduce((a, d) => a + d.minutes, 0) / days
-  const monthMinutes = perDay * 22
-  const cars = Math.round((monthMinutes * (share / 100) * 60) / TAKT)
-  const m = Number(margin.replace(/\s/g, '')) || 0
-  const money = (cars * m) / 1e6
+  const { share, perDay, monthMinutes, cars, money } = effect
+  const m = effect.margin
   return (
     <div className="flex flex-col gap-4 rounded-lg border bg-card px-5 py-[18px]">
       <div className="flex flex-col gap-[3px]">
@@ -714,7 +791,7 @@ function BusinessEffect({ history }: { history: ReturnType<typeof downtimeRecord
           <input
             inputMode="numeric"
             value={formatNumber(m)}
-            onChange={(e) => setMargin(e.target.value.replace(/\D/g, ''))}
+            onChange={(e) => setMargin(Number(e.target.value.replace(/\D/g, '')) || 0)}
             className="h-full min-w-0 flex-1 bg-transparent px-3 text-right font-mono text-sm outline-none"
           />
           <span className="flex h-full items-center border-l bg-muted px-3 text-xs text-muted-foreground">₸</span>
