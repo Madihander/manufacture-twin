@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;min-width:1440px;background:#F5F7FA;color:#0F1B2A;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0077B6;text-decoration:none}a:hover{color:#0B3B60;text-decoration:underline}
+*{box-sizing:border-box}
+</style>
+</helmet>
+
+<div data-screen-label="03 Сценарии" style="height:100vh;min-height:900px;display:flex;flex-direction:column;background:#F5F7FA">
+
+  <header style="height:64px;flex:none;background:#FFFFFF;border-bottom:1px solid #E3E8EF;display:flex;align-items:center;padding:0 20px 0 24px;gap:24px;position:relative;z-index:30">
+    <div style="display:flex;align-items:center;gap:20px;flex:none">
+      <img src="assets/allur-logo.png" alt="Allur" style="height:48px;margin:0 -16px;display:block">
+      <div style="width:1px;height:30px;background:#E3E8EF"></div>
+      <div style="display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:15px;font-weight:600;letter-spacing:-0.01em">СарыаркаАвтоПром</div>
+        <div style="font-size:12px;color:#5B6B7F">Цифровой двойник</div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;min-width:0">
+      <div style="flex:none;display:flex;gap:4px;padding:4px;background:#F5F7FA;border:1px solid #E3E8EF;border-radius:10px">
+        <a href="Топология.dc.html" style="height:34px;padding:0 16px;border-radius:7px;color:#5B6B7F;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;text-decoration:none" style-hover="color:#0F1B2A;text-decoration:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path></svg>Топология</a>
+        <a href="Сводка.dc.html" style="height:34px;padding:0 16px;border-radius:7px;color:#5B6B7F;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;text-decoration:none" style-hover="color:#0F1B2A;text-decoration:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>Сводка</a>
+        <span style="height:34px;padding:0 16px;border-radius:7px;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="6" x2="6" y1="3" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>Сценарии</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <button style="height:36px;padding:0 10px 0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer;white-space:nowrap" style-hover="background:#F5F7FA"><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="color:#5B6B7F;font-weight:400">Модель</span></sc-if>Chevrolet Cobalt<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+      <span style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>Смена 2 · <span style="font-family:'JetBrains Mono',monospace;font-size:12px">16:00–00:00</span></span>
+      <a href="Топология.dc.html" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;text-decoration:none" style-hover="background:#F5F7FA;text-decoration:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="white-space:nowrap">ИИ-диспетчер</span></sc-if><span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#C8453B;color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center">3</span></a>
+      <div style="width:1px;height:24px;background:#E3E8EF;margin:0 2px"></div>
+      <button title="Уведомления" style="position:relative;width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg><span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:#C8453B;border:1.5px solid #FFFFFF"></span></button>
+      <button title="Настройки" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.730.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+      <div title="Начальник смены" style="display:flex;align-items:center;gap:10px;padding-left:4px">
+        <span style="width:34px;height:34px;border-radius:50%;background:#E6F3FA;color:#0B3B60;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center">НС</span>
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;line-height:1.25;white-space:nowrap">Начальник<br><span style="color:#5B6B7F">смены</span></span></sc-if>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ anyOpen }}"><div onClick="{{ closeAll }}" style="position:fixed;inset:0;z-index:35"></div></sc-if>
+
+  <div style="flex:1;min-height:0;display:flex">
+
+    <aside style="width:360px;flex:none;background:#FFFFFF;border-right:1px solid #E3E8EF;overflow:auto;padding:18px 20px 20px;display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Что если</span>
+        <span style="font-size:22px;font-weight:400;letter-spacing:-0.01em">Параметры сценария</span>
+      </div>
+
+      <div style="border:1px solid #E3E8EF;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>Инцидент</span>
+        <div style="display:flex;flex-direction:column;gap:6px;position:relative">
+          <span style="font-size:12px;color:#5B6B7F">Оборудование</span>
+          <button onClick="{{ openEq }}" style="height:36px;padding:0 10px 0 12px;border-radius:8px;border:1px solid {{ bEq }};background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:8px;font:400 13px 'JetBrains Mono',monospace;color:#0F1B2A;cursor:pointer">{{ eq }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <sc-if value="{{ oEq }}">
+            <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;max-height:280px;overflow:auto;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 12px 32px rgba(15,27,42,0.12);display:flex;flex-direction:column;z-index:50">
+              <sc-for list="{{ eqOpts }}" as="o" hint-placeholder-count="10"><div onClick="{{ o.click }}" style="height:32px;padding:0 10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;background:{{ o.bg }};color:{{ o.fg }};cursor:pointer"><span style="font-family:'JetBrains Mono',monospace">{{ o.label }}</span><span style="font-size:12px;color:#5B6B7F">{{ o.sec }}</span></div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;position:relative">
+          <span style="font-size:12px;color:#5B6B7F">Тип</span>
+          <button onClick="{{ openType }}" style="height:36px;padding:0 10px 0 12px;border-radius:8px;border:1px solid {{ bType }};background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:8px;font:400 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer">{{ type }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <sc-if value="{{ oType }}">
+            <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 12px 32px rgba(15,27,42,0.12);display:flex;flex-direction:column;z-index:50">
+              <sc-for list="{{ typeOpts }}" as="o" hint-placeholder-count="4"><div onClick="{{ o.click }}" style="height:32px;padding:0 10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;font-size:13px;background:{{ o.bg }};color:{{ o.fg }};cursor:pointer">{{ o.label }}<sc-if value="{{ o.on }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;color:#5B6B7F">Длительность</span><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#0B3B60;font-weight:500">{{ dur }} мин</span></div>
+          <div style="position:relative;height:18px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:6px;border-radius:999px;background:#E3E8EF"></div><div style="position:absolute;left:0;width:{{ durW }};height:6px;border-radius:999px;background:#0088CC"></div><div style="position:absolute;left:{{ durW }};width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0088CC;pointer-events:none"></div><input type="range" min="0" max="180" step="5" value="{{ dur }}" onChange="{{ setDur }}" style="position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer"></div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>0</span><span>180 мин</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;color:#5B6B7F">Время начала</span><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#0B3B60;font-weight:500">{{ startTxt }}</span></div>
+          <div style="position:relative;height:18px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:6px;border-radius:999px;background:#E3E8EF"></div><div style="position:absolute;left:{{ startW }};width:{{ winW }};height:6px;background:#C8453B;opacity:0.35"></div><div style="position:absolute;left:{{ startW }};width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0088CC;pointer-events:none"></div><input type="range" min="0" max="480" step="5" value="{{ startMin }}" onChange="{{ setStart }}" style="position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer"></div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>20:00</span><span>00:00</span></div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #E3E8EF;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M17 18h1"></path><path d="M12 18h1"></path><path d="M7 18h1"></path></svg>Производство</span>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#5B6B7F">Смен в сутки</span>
+          <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden"><sc-for list="{{ shiftOpts }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.click }}" style="height:32px;min-width:48px;padding:0 12px;border:none;border-right:1px solid #E3E8EF;background:{{ o.bg }};color:{{ o.fg }};font:500 13px 'JetBrains Mono',monospace;cursor:pointer">{{ o.label }}</button></sc-for></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;color:#5B6B7F">Такт</span><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#0B3B60;font-weight:500">{{ taktTxt }} мин</span></div>
+          <div style="position:relative;height:18px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:6px;border-radius:999px;background:#E3E8EF"></div><div style="position:absolute;left:0;width:{{ taktW }};height:6px;border-radius:999px;background:#0088CC"></div><div style="position:absolute;left:{{ taktW }};width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0088CC;pointer-events:none"></div><input type="range" min="180" max="360" step="10" value="{{ takt }}" onChange="{{ setTakt }}" style="position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer"></div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>3:00</span><span>6:00</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:12px;color:#5B6B7F">Брак на окраске</span><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:{{ defFg }};font-weight:500">{{ defTxt }} %</span></div>
+          <div style="position:relative;height:18px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:6px;border-radius:999px;background:#E3E8EF"></div><div style="position:absolute;left:0;width:{{ defW }};height:6px;border-radius:999px;background:{{ defBar }}"></div><div style="position:absolute;left:25%;top:-2px;bottom:-2px;border-left:1.5px dashed #94A3B8"></div><div style="position:absolute;left:{{ defW }};width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid {{ defBar }};pointer-events:none"></div><input type="range" min="0" max="80" step="1" value="{{ def10 }}" onChange="{{ setDef }}" style="position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer"></div>
+          <div style="position:relative;height:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span style="position:absolute;left:0">0</span><span style="position:absolute;left:25%;transform:translateX(-50%)">порог 2</span><span style="position:absolute;right:0">8 %</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;position:relative">
+          <span style="font-size:12px;color:#5B6B7F">Микс моделей</span>
+          <button onClick="{{ openMix }}" style="height:36px;padding:0 10px 0 12px;border-radius:8px;border:1px solid {{ bMix }};background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:8px;font:400 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer">{{ mix }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <sc-if value="{{ oMix }}">
+            <div style="position:absolute;top:calc(100% + 4px);left:0;right:0;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 12px 32px rgba(15,27,42,0.12);display:flex;flex-direction:column;z-index:50">
+              <sc-for list="{{ mixOpts }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.click }}" style="height:32px;padding:0 10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;font-size:13px;background:{{ o.bg }};color:{{ o.fg }};cursor:pointer">{{ o.label }}<sc-if value="{{ o.on }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <sc-if value="{{ mixCustom }}">
+          <div style="display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:8px;background:#F5F7FA">
+            <sc-for list="{{ mixSliders }}" as="m" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:62px minmax(0,1fr) 40px;gap:10px;align-items:center">
+                <span style="display:flex;align-items:center;gap:6px;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:{{ m.c }}"></span>{{ m.n }}</span>
+                <div style="position:relative;height:16px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:4px;border-radius:999px;background:#E3E8EF"></div><div style="position:absolute;left:0;width:{{ m.w }};height:4px;border-radius:999px;background:{{ m.c }}"></div><div style="position:absolute;left:{{ m.w }};width:14px;height:14px;margin-left:-7px;border-radius:50%;background:#FFFFFF;border:2px solid {{ m.c }};pointer-events:none"></div><input type="range" min="0" max="100" step="1" value="{{ m.v }}" onChange="{{ m.set }}" style="position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer"></div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right">{{ m.v }} %</span>
+              </div>
+            </sc-for>
+            <div style="display:flex;height:6px;border-radius:999px;overflow:hidden"><sc-for list="{{ mixSliders }}" as="m" hint-placeholder-count="3"><span style="width:{{ m.w }};background:{{ m.c }}"></span></sc-for></div>
+            <span style="font-size:11px;color:#5B6B7F">Сумма <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">100 %</span> — остальные доли пересчитываются автоматически</span>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="border:1px solid #E3E8EF;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>План</span>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:12px;color:#5B6B7F">Цель на месяц</span>
+          <div style="height:36px;border:1px solid #E3E8EF;border-radius:8px;display:flex;align-items:center;overflow:hidden"><input value="{{ goalTxt }}" onChange="{{ setGoal }}" style="flex:1;min-width:0;height:100%;border:none;outline:none;padding:0 12px;font:400 13px 'JetBrains Mono',monospace;color:#0F1B2A;background:transparent"><span style="height:100%;padding:0 10px;border-left:1px solid #E3E8EF;background:#F5F7FA;display:flex;align-items:center;font-size:12px;color:#5B6B7F">авто</span></div>
+        </div>
+        <div onClick="{{ toggleSat }}" style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer"><span style="width:16px;height:16px;border-radius:4px;background:{{ satBg }};border:1.5px solid {{ satBd }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ sat }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></span>Учитывать субботние смены</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px">
+        <button onClick="{{ run }}" style="height:40px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;opacity:{{ runOp }}" style-hover="background:#072A45"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>Запустить сценарий</button>
+        <button onClick="{{ resetParams }}" style="height:40px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#F5F7FA">Сбросить</button>
+        <button onClick="{{ save }}" style="height:40px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#F5F7FA">Сохранить</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;padding-top:6px">
+        <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Сохранённые сценарии</span>
+        <div style="display:flex;flex-direction:column;border:1px solid #E3E8EF;border-radius:10px;overflow:hidden">
+          <sc-for list="{{ saved }}" as="v" hint-placeholder-count="3">
+            <div onClick="{{ v.click }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #E3E8EF;background:{{ v.bg }};box-shadow:{{ v.bar }};cursor:pointer" style-hover="background:#F5F7FA">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"></path><path d="M7 3v4a1 1 0 0 0 1 1h7"></path></svg>
+              <span style="flex:1;min-width:0;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ v.name }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ v.date }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </aside>
+
+    <section style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px;padding:22px 24px;overflow:auto">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;color:#5B6B7F"><span>СХЕМА ПОТОКА</span><span style="color:#B8C2CF">|</span><span>СЦЕНАРИЙ</span></div>
+          <span style="font-size:30px;font-weight:400;letter-spacing:-0.02em;line-height:1.15">{{ type }} · <span style="font-family:'JetBrains Mono',monospace;font-size:26px">{{ eq }}</span></span>
+          <span style="font-size:14px;color:#5B6B7F">Начало <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">{{ startTxt }}</span> · длительность <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">{{ dur }} мин</span> · такт <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">{{ taktTxt }}</span></span>
+        </div>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;border:1px solid #E3E8EF;background:#FFFFFF;font-size:12px;font-weight:500;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#0088CC"></span>Момент <span style="font-family:'JetBrains Mono',monospace">{{ snapTxt }}</span> — пик очереди</span>
+      </div>
+
+      <sc-if value="{{ running }}">
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:18px">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="font-weight:500">Моделирование… <span style="font-family:'JetBrains Mono',monospace">{{ prog }} %</span></span><span style="color:#5B6B7F">смена 2 · <span style="font-family:'JetBrains Mono',monospace">{{ progClock }}</span> модельного времени</span></div>
+            <div style="height:8px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="height:100%;width:{{ progW }};background:#0088CC;border-radius:999px;transition:width .3s"></div></div>
+          </div>
+          <button onClick="{{ stop }}" style="height:36px;padding:0 14px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;flex:none" style-hover="background:#F5F7FA"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="5" y="5" width="14" height="14" rx="2"></rect></svg>Остановить</button>
+        </div>
+      </sc-if>
+
+      <div style="flex:1;min-height:380px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;justify-content:center;gap:28px;background-image:linear-gradient(#F0F3F7 1px,transparent 1px),linear-gradient(90deg,#F0F3F7 1px,transparent 1px);background-size:32px 32px">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr) 44px minmax(0,1fr)">
+          <sc-for list="{{ flowTop }}" as="f" hint-placeholder-count="3">
+            <div style="min-width:0;position:relative;background:#FFFFFF;border:{{ f.bw }} solid {{ f.border }};box-shadow:{{ f.ring }};border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ f.code }}</span><sc-if value="{{ f.alarm }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8453B" style="stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></sc-if></div>
+              <span style="font-size:14px;font-weight:500;line-height:1.25">{{ f.name }}</span>
+              <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px"><sc-for list="{{ f.cars }}" as="c" hint-placeholder-count="6"><span style="height:12px;border-radius:3px;background:{{ c.bg }};border:1px solid {{ c.bd }}"></span></sc-for></div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#5B6B7F"><span>{{ f.utilLbl }}</span><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">{{ f.util }} %</span></div>
+                <div style="height:4px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="height:100%;width:{{ f.utilW }};background:{{ f.utilC }}"></div></div>
+              </div>
+              <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:{{ f.fg }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ f.dot }};flex:none"></span>{{ f.stText }}</span>
+              <sc-if value="{{ f.hasNote }}"><span style="font-size:11px;line-height:1.35;color:{{ f.fg }}">{{ f.note }}</span></sc-if>
+            </div>
+            <sc-if value="{{ f.hasConn }}">
+              <div style="position:relative;display:flex;align-items:center;justify-content:center">
+                <div style="position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;background:repeating-linear-gradient(90deg,#CBD5E1 0 6px,#E3E8EF 6px 10px)"></div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" style="stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;position:relative;background:#FFFFFF;border-radius:50%"><path d="{{ f.arrowPath }}"></path></svg>
+                <sc-if value="{{ f.cq }}">
+                  <div style="position:absolute;bottom:calc(50% + 14px);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2">
+                    <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid #F2C9C4"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Очередь {{ queue }}</span>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </sc-for>
+
+          <div style="grid-column:1 / 5;grid-row:2"></div>
+          <div style="grid-column:5;grid-row:2;position:relative;display:flex;justify-content:center;min-height:{{ vH }}">
+            <div style="position:absolute;top:0;bottom:0;left:50%;width:4px;margin-left:-2px;background:repeating-linear-gradient(180deg,#CBD5E1 0 6px,#E3E8EF 6px 10px)"></div>
+            <sc-if value="{{ vQueue }}">
+              <div style="position:absolute;right:calc(50% + 12px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;gap:6px;z-index:1">
+                <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid #F2C9C4"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Очередь {{ queue }}</span>
+                <div style="display:grid;grid-template-columns:repeat(4,22px);gap:4px;padding:6px;border-radius:8px;background:#FDF1EF;border:1px dashed #E8A49C">
+                  <sc-for list="{{ queueCars }}" as="q" hint-placeholder-count="7"><span style="height:14px;border-radius:4px;background:#FFFFFF;border:1px solid #C8453B"></span></sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ vArrow }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" style="stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;position:relative;align-self:center;background:#FFFFFF;border-radius:50%"><path d="m6 9 6 6 6-6"></path></svg></sc-if>
+          </div>
+
+          <sc-for list="{{ flowBot }}" as="f" hint-placeholder-count="3">
+            <div style="min-width:0;position:relative;background:#FFFFFF;border:{{ f.bw }} solid {{ f.border }};box-shadow:{{ f.ring }};border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ f.code }}</span><sc-if value="{{ f.alarm }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8453B" style="stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></sc-if></div>
+              <span style="font-size:14px;font-weight:500;line-height:1.25">{{ f.name }}</span>
+              <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px"><sc-for list="{{ f.cars }}" as="c" hint-placeholder-count="6"><span style="height:12px;border-radius:3px;background:{{ c.bg }};border:1px solid {{ c.bd }}"></span></sc-for></div>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#5B6B7F"><span>{{ f.utilLbl }}</span><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">{{ f.util }} %</span></div>
+                <div style="height:4px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="height:100%;width:{{ f.utilW }};background:{{ f.utilC }}"></div></div>
+              </div>
+              <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:{{ f.fg }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ f.dot }};flex:none"></span>{{ f.stText }}</span>
+              <sc-if value="{{ f.hasNote }}"><span style="font-size:11px;line-height:1.35;color:{{ f.fg }}">{{ f.note }}</span></sc-if>
+            </div>
+            <sc-if value="{{ f.hasConn }}">
+              <div style="position:relative;display:flex;align-items:center;justify-content:center">
+                <div style="position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;background:repeating-linear-gradient(90deg,#CBD5E1 0 6px,#E3E8EF 6px 10px)"></div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" style="stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;position:relative;background:#FFFFFF;border-radius:50%"><path d="{{ f.arrowPath }}"></path></svg>
+                <sc-if value="{{ f.cq }}">
+                  <div style="position:absolute;bottom:calc(50% + 14px);left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2">
+                    <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:600;white-space:nowrap;border:1px solid #F2C9C4"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Очередь {{ queue }}</span>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#5B6B7F"><span>Окно инцидента в смене</span><span style="display:flex;gap:14px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#C8453B;opacity:0.5"></span>простой <span style="font-family:'JetBrains Mono',monospace">{{ eq }}</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#E09A1F;opacity:0.5"></span>рассасывание очереди</span></span></div>
+          <div style="position:relative;height:14px;border-radius:999px;background:#EEF2F6;overflow:hidden">
+            <div style="position:absolute;left:{{ startW }};width:{{ winW }};top:0;bottom:0;background:#C8453B;opacity:0.5"></div>
+            <div style="position:absolute;left:{{ recL }};width:{{ recW }};top:0;bottom:0;background:#E09A1F;opacity:0.5"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>00:00</span></div>
+        </div>
+
+        <div style="display:flex;gap:18px;font-size:12px;color:#5B6B7F;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:10px;border-radius:3px;background:#E6F3FA;border:1px solid #0088CC"></span>кузов в работе</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:10px;border-radius:3px;background:#FFFFFF;border:1px solid #C8453B"></span>кузов в очереди</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:10px;border-radius:3px;background:#F5F7FA;border:1px dashed #CBD5E1"></span>пустое место</span>
+        </div>
+      </div>
+    </section>
+
+    <aside style="width:420px;flex:none;background:#FFFFFF;border-left:1px solid #E3E8EF;display:flex;flex-direction:column">
+      <div style="flex:1;min-height:0;overflow:auto;padding:18px 20px;display:grid;align-content:start;grid-template-columns:minmax(0,1fr);grid-auto-rows:max-content;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Результат</span>
+          <span style="font-size:22px;font-weight:400;letter-spacing:-0.01em">Сравнение с базовым</span>
+        </div>
+
+        <sc-if value="{{ running }}">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="height:30px;width:78%;border-radius:999px;background:#EEF2F6"></div>
+            <div style="border:1px solid #E3E8EF;border-radius:10px;overflow:hidden">
+              <div style="height:34px;background:#F5F7FA;border-bottom:1px solid #E3E8EF"></div>
+              <sc-for list="{{ skelRows }}" as="k" hint-placeholder-count="6"><div style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:12px;padding:12px;border-bottom:1px solid #E3E8EF"><span style="height:12px;border-radius:4px;background:#EEF2F6;width:{{ k.w }}"></span><span style="height:12px;border-radius:4px;background:#EEF2F6"></span><span style="height:12px;border-radius:4px;background:#EEF2F6"></span><span style="height:12px;border-radius:4px;background:#EEF2F6;width:70%;justify-self:end"></span></div></sc-for>
+            </div>
+            <div style="height:16px;width:55%;border-radius:4px;background:#EEF2F6"></div>
+            <div style="height:180px;border-radius:10px;background:#EEF2F6"></div>
+            <div style="height:40px;border-radius:8px;background:#EEF2F6"></div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ done }}">
+          <span style="justify-self:start;display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:13px;font-weight:500"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8453B" style="stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round"><path d="M10 2v7.31"></path><path d="M14 9.3V1.99"></path><path d="M8.5 2h7"></path><path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path></svg>Узкое место: Сборка-1 → простой Окраски</span>
+        </sc-if>
+        <sc-if value="{{ done }}">
+          <div style="border:1px solid #E3E8EF;border-radius:10px;overflow:hidden;font-size:13px">
+            <div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,0.9fr) minmax(0,1fr) minmax(0,1fr);gap:10px;padding:9px 12px;background:#F5F7FA;border-bottom:1px solid #E3E8EF;font-size:12px;color:#5B6B7F"><span>Метрика</span><span style="text-align:right">Базовый</span><span style="text-align:right">Сценарий</span><span style="text-align:right">Δ</span></div>
+            <sc-for list="{{ cmp }}" as="r" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,0.9fr) minmax(0,1fr) minmax(0,1fr);gap:10px;padding:11px 12px;border-bottom:1px solid #E3E8EF;align-items:center">
+                <span>{{ r.n }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right;color:#5B6B7F;white-space:nowrap">{{ r.b }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right;white-space:nowrap">{{ r.s }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right;color:{{ r.fg }};font-weight:500;white-space:nowrap">{{ r.d }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ done }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:500">Накопленный выпуск за смену</span><span style="font-size:12px;color:#5B6B7F">авто, 16:00–00:00</span></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;border-top:2px dashed #94A3B8"></span>Базовый</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:#0088CC"></span>Сценарий</span></div></div>
+            <div style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:6px">
+              <div style="position:relative;height:170px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span style="position:absolute;right:0;top:0;transform:translateY(-50%)">120</span><span style="position:absolute;right:0;top:33.3%;transform:translateY(-50%)">80</span><span style="position:absolute;right:0;top:66.7%;transform:translateY(-50%)">40</span><span style="position:absolute;right:0;bottom:0;transform:translateY(50%)">0</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="position:relative;height:170px">
+                  <div style="position:absolute;left:0;right:0;top:0;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:33.3%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:66.7%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;bottom:0;height:1px;background:#CBD5E1"></div>
+                  <div style="position:absolute;left:{{ startW }};width:{{ winW }};top:0;bottom:0;background:rgba(200,69,59,0.08)"></div>
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible"><polyline points="{{ basePts }}" fill="none" stroke="#94A3B8" stroke-width="1.75" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"></polyline><polyline points="{{ scenPts }}" fill="none" stroke="#0088CC" stroke-width="2.25" vector-effect="non-scaling-stroke" stroke-linejoin="round"></polyline></svg>
+                  <span style="position:absolute;right:0;top:{{ baseEndY }};transform:translate(0,-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;background:#FFFFFF;padding:0 2px">118</span>
+                  <span style="position:absolute;right:0;top:{{ scenEndY }};transform:translate(0,30%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#0077B6;background:#FFFFFF;padding:0 2px">{{ outS }}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>20:00</span><span>00:00</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+      <div style="flex:none;padding:14px 20px;border-top:1px solid #E3E8EF">
+        <button onClick="{{ applyAI }}" style="width:100%;height:40px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;opacity:{{ aiOp }}" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>Применить рекомендации ИИ к сценарию</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer style="height:72px;flex:none;background:#FFFFFF;border-top:1px solid #E3E8EF;display:flex;align-items:center;gap:20px;padding:0 24px;position:relative;z-index:30">
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ togglePlay }}" style="height:40px;width:112px;padding:0 14px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-hover="background:#072A45">
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg></sc-if>
+        <sc-if value="{{ paused }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></sc-if>
+        {{ playLabel }}
+      </button>
+      <button onClick="{{ resetClock }}" title="Сброс" style="width:40px;height:40px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+    </div>
+    <div style="width:1px;height:36px;background:#E3E8EF"></div>
+    <div style="display:flex;flex-direction:column;gap:4px;flex:none;width:186px">
+      <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Время симуляции</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:15px;white-space:nowrap">15.10.2026 · {{ clock }}</span>
+    </div>
+    <div style="flex:1;min-width:0;position:relative;height:48px">
+      <div style="position:absolute;left:0;right:0;top:22px;height:6px;border-radius:999px;background:#E3E8EF"></div>
+      <div style="position:absolute;left:0;width:{{ pos }};top:22px;height:6px;border-radius:999px;background:#0088CC"></div>
+      <sc-for list="{{ markers }}" as="m" hint-placeholder-count="3">
+        <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="position:absolute;left:{{ m.left }};top:2px;width:16px;height:20px;margin-left:-8px;display:flex;justify-content:center;cursor:pointer;z-index:2">
+          <span style="width:4px;height:13px;border-radius:2px;background:{{ m.color }}"></span>
+          <sc-if value="{{ m.show }}">
+            <div style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:220px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:10px;box-shadow:0 8px 24px rgba(15,27,42,0.10);padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:default">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px"><span>{{ m.time }} · {{ m.code }}</span><span style="color:#5B6B7F">{{ m.dur }}</span></div>
+              <span style="font-size:13px;font-weight:500">{{ m.text }}</span>
+              <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:{{ m.soft }};color:{{ m.fg }};font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.color }}"></span>{{ m.stText }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="position:absolute;left:{{ pos }};top:16px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0B3B60;z-index:3"></div>
+      <div style="position:absolute;left:0;right:0;top:34px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>00:00</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <span style="font-size:12px;color:#5B6B7F">Скорость</span>
+      <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden">
+        <sc-for list="{{ speeds }}" as="s" hint-placeholder-count="5"><button onClick="{{ s.click }}" style="height:34px;min-width:44px;padding:0 10px;border:none;border-right:1px solid #E3E8EF;background:{{ s.bg }};color:{{ s.fg }};font:500 12px 'JetBrains Mono',monospace;cursor:pointer">{{ s.label }}</button></sc-for>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex:none;font-size:12px;color:#5B6B7F"><span style="height:24px;padding:0 8px;border:1px solid #E3E8EF;border-bottom-width:2px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#0F1B2A;display:flex;align-items:center">Space</span>пауза</div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;demoState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Результат&quot;,&quot;Выполняется&quot;],&quot;default&quot;:&quot;Результат&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Демо-состояния&quot;}}">
+const EQUIP = [['ABB-01', 'Сварка-1'], ['ABB-02', 'Сварка-1'], ['ABB-03', 'Сварка-1'], ['ABB-04', 'Сварка-1'], ['Камера-02', 'Окраска-1'], ['ПС-01', 'Окраска-1'], ['Конвейер-03', 'Сборка-1'], ['СЗ-01', 'Сборка-1'], ['СГ-01', 'ОТК'], ['КЛ-01', 'ОТК']];
+const EQ_SEC = { 'Сварка-1': 1, 'Окраска-1': 2, 'Сборка-1': 3, 'ОТК': 4 };
+const TYPES = ['Обрыв цепи', 'Плановое ТО', 'Ошибка датчика', 'Замена фильтра'];
+const MIXES = ['Только Cobalt', 'Как в плане', 'Свой'];
+const MIX_M = [['Cobalt', '#0B3B60'], ['Onix', '#0088CC'], ['J7', '#7CC4E8']];
+const SECS = [['WH-IN', 'Склад комплектующих', 3], ['WLD-1', 'Сварка-1', 4], ['PNT-1', 'Окраска-1', 6], ['ASM-1', 'Сборка-1', 9], ['QC-1', 'Контроль качества', 3], ['WH-OUT', 'Склад ГП', 6]];
+const DEF = { eq: 'Конвейер-03', type: 'Обрыв цепи', dur: 55, startMin: 255, shifts: '2', takt: 240, def: 5.2, mix: 'Как в плане', mixV: [52, 38, 10], goal: 5500, goalTxt: '5 500', sat: false, savedIdx: null };
+const SAVED = [
+  { name: 'Обрыв цепи 1 ч', date: '14.10.2026', p: { dur: 60 } },
+  { name: '3 смены в конце месяца', date: '12.10.2026', p: { shifts: '3', dur: 0 } },
+  { name: 'Брак окраски 2 %', date: '09.10.2026', p: { def: 2.0, dur: 0 } },
+];
+const T0 = 78130, START = 57600, SPAN = 28800;
+const ST = { warn: { dot: '#E09A1F', soft: '#FDF3E2', fg: '#94600F', text: 'Внимание' }, alarm: { dot: '#C8453B', soft: '#FBEAE8', fg: '#A3352C', text: 'Авария' } };
+const MARKERS = [
+  { time: '17:05', code: 'ABB-01', text: 'Ошибка датчика', dur: '25 мин', st: 'warn', left: '13.54%' },
+  { time: '18:40', code: 'Камера-02', text: 'Замена фильтра', dur: '40 мин', st: 'warn', left: '33.33%' },
+  { time: '20:15', code: 'Конвейер-03', text: 'Обрыв цепи', dur: '55 мин', st: 'alarm', left: '53.13%' },
+];
+const fmt = n => (n < 0 ? '−' : '') + String(Math.abs(Math.round(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const dec = (n, d = 1) => (n < 0 ? '−' : '') + Math.abs(n).toFixed(d).replace('.', ',');
+const hm = m => { const t = (16 * 60 + m) % 1440; return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'); };
+
+class Component extends DCLogic {
+  state = { vw: typeof window !== 'undefined' ? window.innerWidth : 1920, ...DEF, open: null, phase: 'done', prog: 0, res: null, playing: true, t: T0, speed: '8×', hm: null };
+
+  componentDidMount() {
+    this.setState({ res: this.calc(DEF) });
+    if (this.props.demoState === 'Выполняется') this.setState({ phase: 'running', prog: 64 });
+    this.iv = setInterval(() => { if (!this.state.playing) return; const k = parseInt(this.state.speed, 10) || 1; this.setState(s => { let t = s.t + k; if (t >= START + SPAN) t = START; return { t }; }); }, 1000);
+    this.onKey = e => { if (e.code === 'Space' && !/input|textarea/i.test(e.target.tagName)) { e.preventDefault(); this.setState(s => ({ playing: !s.playing })); } };
+    this.onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
+  }
+  componentDidUpdate(prev) {
+    if (prev.demoState !== this.props.demoState) { clearInterval(this.runIv); this.setState(this.props.demoState === 'Выполняется' ? { phase: 'running', prog: 64 } : { phase: 'done' }); }
+  }
+  componentWillUnmount() { clearInterval(this.iv); clearInterval(this.runIv); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize); }
+
+  calc(p) {
+    const affects = (EQ_SEC[(EQUIP.find(e => e[0] === p.eq) || [])[1]] || 3);
+    const out = Math.round(118 * (240 / p.takt) - p.dur / 4 - (p.def - 5.2) * 1.2);
+    let month = 5190 + (out - 118) * 10;
+    if (p.shifts === '3') month += 11 * out;
+    if (p.sat) month += 2 * 2 * out;
+    return { out, month, oee: 87.2 - p.dur * 4.3 / 55 - (p.def - 5.2) * 0.4, down: 150 + p.dur, queue: 2 + Math.round(p.dur / 11), loss: (118 - out) * 0.4, sec: affects, dur: p.dur, startMin: p.startMin, takt: p.takt, goal: p.goal };
+  }
+
+  renderVals() {
+    const s = this.state, r = s.res || this.calc(DEF);
+    const toggle = k => () => this.setState(st => ({ open: st.open === k ? null : k }));
+    const bd = k => s.open === k ? '#0088CC' : '#E3E8EF';
+    const pick = (opts, key, close = true) => opts.map(l => { const on = s[key] === l; return { label: l, on, bg: on ? '#E6F3FA' : 'transparent', fg: on ? '#0B3B60' : '#0F1B2A', click: () => this.setState({ [key]: l, open: close ? null : s.open, savedIdx: null }) }; });
+    const set = k => e => this.setState({ [k]: +e.target.value, savedIdx: null });
+    const running = s.phase === 'running';
+    const bad = (d, worseIfPositive) => d === 0 ? '#5B6B7F' : ((d > 0) === worseIfPositive ? '#A3352C' : '#1F7A50');
+    const sign = (n, f) => (n > 0 ? '+' : '') + f(n);
+    const dOut = r.out - 118, dMon = r.month - 5190, dOee = r.oee - 87.2, dDown = r.down - 150, dQ = r.queue - 2;
+    const winEnd = Math.min(480, r.startMin + r.dur);
+    const recDur = Math.min(480 - winEnd, Math.round(r.queue * r.takt / 60 * 1.2));
+    const xs = m => (m / 480 * 100);
+    const lost = 118 - r.out;
+    const scen = m => { const before = Math.min(m, r.startMin), during = Math.max(0, Math.min(m, winEnd) - r.startMin), after = Math.max(0, m - winEnd); const rate = 118 / 480; const span = 480 - r.dur; const rate2 = span > 0 ? (r.out) / span : 0; return (before + after) * rate2 + during * 0; };
+    const ptsOf = f => Array.from({ length: 49 }, (_, i) => { const m = i * 10; return `${xs(m).toFixed(2)},${(100 - f(m) / 120 * 100).toFixed(2)}`; }).join(' ');
+    const flow = SECS.map(([code, name, n], i) => {
+      const isB = i === r.sec && r.dur > 0, blocked = i === r.sec - 1 && r.dur > 0, starved = i > r.sec && r.dur > 0;
+      const util = isB ? Math.round(100 - r.dur / 4.8) : blocked ? Math.round(100 - r.dur / 1.45) : starved ? Math.round(96 - r.dur / 6) : [88, 96, 94, 96, 91, 100][i];
+      const st = isB ? 'alarm' : (blocked || starved) ? 'warn' : 'ok';
+      const S = st === 'alarm' ? ST.alarm : st === 'warn' ? ST.warn : { dot: '#2E9E6B', fg: '#1F7A50', text: 'Норма' };
+      const cnt = Math.min(6, isB ? 2 : n), cars = Array.from({ length: 6 }, (_, k) => k < cnt ? { bg: '#E6F3FA', bd: '#0088CC' } : { bg: '#F5F7FA', bd: '#E3E8EF' });
+      return { code, name, cars, alarm: isB, dot: S.dot, fg: S.fg, stText: isB ? 'Простой' : blocked ? 'Блокирована' : starved ? 'Голодает' : S.text,
+        hasNote: isB || blocked, note: isB ? `${s.eq} · ${s.type.toLowerCase()} ${r.dur} мин` : blocked ? 'Некуда передать кузов — очередь перед Сборкой' : '',
+        util, utilW: util + '%', utilC: isB ? '#C8453B' : blocked ? '#E09A1F' : '#0088CC', utilLbl: 'Загрузка',
+        border: isB ? '#C8453B' : blocked ? '#E09A1F' : '#E3E8EF', bw: isB ? '1.5px' : '1px', ring: isB ? '0 0 0 4px #FBEAE8' : 'none',
+        conn: i < SECS.length - 1, queue: i === r.sec - 1 && r.dur > 0, arrow: !(i === r.sec - 1 && r.dur > 0), connW: i === r.sec - 1 && r.dur > 0 ? '132px' : '28px' };
+    });
+    return {
+      wide: s.vw >= 1600,
+      anyOpen: !!s.open, closeAll: () => this.setState({ open: null }),
+      eq: s.eq, openEq: toggle('eq'), oEq: s.open === 'eq', bEq: bd('eq'),
+      eqOpts: EQUIP.map(([l, sec]) => { const on = s.eq === l; return { label: l, sec, bg: on ? '#E6F3FA' : 'transparent', fg: on ? '#0B3B60' : '#0F1B2A', click: () => this.setState({ eq: l, open: null, savedIdx: null }) }; }),
+      type: s.type, openType: toggle('type'), oType: s.open === 'type', bType: bd('type'), typeOpts: pick(TYPES, 'type'),
+      dur: s.dur, durW: (s.dur / 180 * 100).toFixed(2) + '%', setDur: set('dur'),
+      startMin: s.startMin, startTxt: hm(s.startMin), startW: xs(s.startMin).toFixed(2) + '%', winW: (Math.min(480 - s.startMin, s.dur) / 480 * 100).toFixed(2) + '%', setStart: set('startMin'),
+      shiftOpts: ['2', '3'].map(l => ({ label: l, bg: s.shifts === l ? '#E6F3FA' : '#FFFFFF', fg: s.shifts === l ? '#0B3B60' : '#5B6B7F', click: () => this.setState({ shifts: l, savedIdx: null }) })),
+      takt: s.takt, taktTxt: `${Math.floor(s.takt / 60)}:${String(s.takt % 60).padStart(2, '0')}`, taktW: ((s.takt - 180) / 180 * 100).toFixed(2) + '%', setTakt: set('takt'),
+      def10: Math.round(s.def * 10), defTxt: dec(s.def), defW: (s.def / 8 * 100).toFixed(2) + '%', defBar: s.def > 2 ? '#C8453B' : '#0088CC', defFg: s.def > 2 ? '#A3352C' : '#0B3B60', setDef: e => this.setState({ def: +e.target.value / 10, savedIdx: null }),
+      mix: s.mix, openMix: toggle('mix'), oMix: s.open === 'mix', bMix: bd('mix'), mixOpts: pick(MIXES, 'mix'), mixCustom: s.mix === 'Свой',
+      mixSliders: MIX_M.map(([n, c], i) => ({ n, c, v: s.mixV[i], w: s.mixV[i] + '%', set: e => {
+        const v = +e.target.value, rest = 100 - v, o = [0, 1, 2].filter(j => j !== i), sum = o.reduce((a, j) => a + s.mixV[j], 0);
+        const a = [...s.mixV]; a[i] = v; let first = sum > 0 ? Math.round(s.mixV[o[0]] / sum * rest) : Math.round(rest / 2); a[o[0]] = first; a[o[1]] = rest - first;
+        this.setState({ mixV: a, savedIdx: null }); } })),
+      goalTxt: s.goalTxt, setGoal: e => { const raw = e.target.value.replace(/[^\d]/g, ''); this.setState({ goalTxt: raw ? fmt(+raw) : '', goal: +raw || 0 }); },
+      sat: s.sat, satBg: s.sat ? '#0B3B60' : '#FFFFFF', satBd: s.sat ? '#0B3B60' : '#CBD5E1', toggleSat: () => this.setState({ sat: !s.sat, savedIdx: null }),
+      runOp: running ? 0.5 : 1,
+      run: () => {
+        if (running) return;
+        clearInterval(this.runIv);
+        this.setState({ phase: 'running', prog: 0 });
+        this.runIv = setInterval(() => this.setState(st => {
+          const p = Math.min(100, st.prog + 4);
+          if (p >= 100) { clearInterval(this.runIv); return { prog: 100, phase: 'done', res: this.calc(st) }; }
+          return { prog: p };
+        }), 120);
+      },
+      stop: () => { clearInterval(this.runIv); this.setState({ phase: 'done' }); },
+      resetParams: () => this.setState({ ...DEF, open: null }),
+      save: () => {},
+      saved: SAVED.map((v, i) => ({ ...v, bg: s.savedIdx === i ? '#E6F3FA' : '#FFFFFF', bar: s.savedIdx === i ? 'inset 3px 0 0 #0088CC' : 'none', click: () => this.setState({ ...DEF, ...v.p, savedIdx: i }) })),
+      running, done: !running, prog: s.prog, progW: s.prog + '%', progClock: hm(Math.round(s.prog / 100 * 480)),
+      skelRows: ['70%', '84%', '60%', '78%', '66%', '52%'].map(w => ({ w })),
+      snapTxt: hm(Math.min(480, r.startMin + r.dur)),
+      flowTop: [0, 1, 2].map(i => ({ ...flow[i], hasConn: i < 2, cq: r.dur > 0 && r.sec - 1 === i, arrowPath: 'm9 18 6-6-6-6' })),
+      flowBot: [5, 4, 3].map((i, k) => ({ ...flow[i], hasConn: k < 2, cq: r.dur > 0 && r.sec - 1 === i - 1, arrowPath: 'm15 18-6-6 6-6' })),
+      vQueue: r.dur > 0 && r.sec === 3, vArrow: !(r.dur > 0 && r.sec === 3), vH: r.dur > 0 && r.sec === 3 ? '104px' : '44px',
+      queue: r.queue, queueCars: Array.from({ length: Math.min(12, r.queue) }, () => ({})),
+      recL: xs(winEnd).toFixed(2) + '%', recW: (recDur / 480 * 100).toFixed(2) + '%',
+      outS: r.out,
+      cmp: [
+        { n: 'Выпуск за смену', b: '118', s: String(r.out), d: sign(dOut, fmt), fg: bad(dOut, false) },
+        { n: 'Прогноз на месяц', b: '5 190', s: fmt(r.month), d: sign(dMon, fmt), fg: bad(dMon, false) },
+        { n: 'OEE завода', b: '87,2 %', s: dec(r.oee) + ' %', d: sign(Math.round(dOee * 10) / 10, v => dec(v)) + ' п.п.', fg: bad(Math.round(dOee * 10), false) },
+        { n: 'Простой за сутки', b: '150', s: r.down + ' мин', d: sign(dDown, fmt), fg: bad(dDown, true) },
+        { n: 'Макс. очередь', b: '2', s: String(r.queue), d: sign(dQ, fmt), fg: bad(dQ, true) },
+        { n: 'Потери, ₸', b: '—', s: r.loss > 0 ? dec(r.loss) + ' млн' : '—', d: r.loss !== 0 ? sign(Math.round(r.loss * 10) / 10, v => dec(v)) + ' млн' : '0', fg: bad(Math.round(r.loss * 10), true) },
+      ],
+      basePts: ptsOf(m => m / 480 * 118), scenPts: ptsOf(scen),
+      baseEndY: (100 - 118 / 120 * 100).toFixed(2) + '%', scenEndY: (100 - r.out / 120 * 100).toFixed(2) + '%',
+      aiOp: running ? 0.5 : 1,
+      applyAI: () => this.setState({ dur: Math.min(s.dur, 25), def: Math.min(s.def, 2.0), savedIdx: null }),
+      playing: s.playing, paused: !s.playing, playLabel: s.playing ? 'Пауза' : 'Пуск',
+      togglePlay: () => this.setState(st => ({ playing: !st.playing })), resetClock: () => this.setState({ t: T0 }),
+      clock: [Math.floor(s.t / 3600) % 24, Math.floor(s.t / 60) % 60, s.t % 60].map(n => String(n).padStart(2, '0')).join(':'),
+      pos: ((s.t - START) / SPAN * 100).toFixed(2) + '%',
+      markers: MARKERS.map((m, i) => ({ ...m, color: ST[m.st].dot, soft: ST[m.st].soft, fg: ST[m.st].fg, stText: ST[m.st].text, show: s.hm === i, enter: () => this.setState({ hm: i }), leave: () => this.setState({ hm: null }) })),
+      speeds: ['1×', '4×', '8×', '16×', '32×'].map(l => ({ label: l, bg: s.speed === l ? '#E6F3FA' : '#FFFFFF', fg: s.speed === l ? '#0B3B60' : '#5B6B7F', click: () => this.setState({ speed: l }) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

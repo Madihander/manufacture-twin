@@ -1,0 +1,135 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@theme inline {
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Яркий голубой из дизайн-системы. В shadcn `accent` — это фон hover,
+     поэтому бренд-голубой вынесен в отдельные токены. */
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-ok: var(--ok);
+  --color-ok-soft: var(--ok-soft);
+  --color-ok-fg: var(--ok-fg);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-fg: var(--warn-fg);
+  --color-alarm: var(--alarm);
+  --color-alarm-soft: var(--alarm-soft);
+  --color-alarm-fg: var(--alarm-fg);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-plan: var(--chart-plan);
+  --color-skeleton: var(--skeleton);
+  --color-switch-off: var(--switch-off);
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: var(--radius);
+  --radius-xl: 16px;
+
+  --shadow-popover: 0 12px 32px rgba(15, 27, 42, 0.12);
+  --shadow-dialog: 0 24px 48px rgba(15, 27, 42, 0.18);
+  --shadow-sheet: -12px 0 32px rgba(15, 27, 42, 0.12);
+  --shadow-toast: 0 8px 24px rgba(15, 27, 42, 0.12);
+}
+
+:root {
+  --background: #f5f7fa;
+  --foreground: #0f1b2a;
+  --card: #ffffff;
+  --card-foreground: #0f1b2a;
+  --popover: #ffffff;
+  --popover-foreground: #0f1b2a;
+  --primary: #0b3b60;
+  --primary-foreground: #ffffff;
+  --primary-hover: #072a45;
+  --secondary: #ffffff;
+  --secondary-foreground: #0f1b2a;
+  --muted: #f5f7fa;
+  --muted-foreground: #5b6b7f;
+  --accent: #e6f3fa;
+  --accent-foreground: #0b3b60;
+  --destructive: #c8453b;
+  --border: #e3e8ef;
+  --border-strong: #d5dce5;
+  --input: #e3e8ef;
+  --ring: #0088cc;
+
+  --brand: #0088cc;
+  --brand-strong: #0077b6;
+  --brand-soft: #e6f3fa;
+
+  --ok: #2e9e6b;
+  --ok-soft: #e7f5ee;
+  --ok-fg: #1f7a50;
+  --warn: #e09a1f;
+  --warn-soft: #fdf3e2;
+  --warn-fg: #94600f;
+  --alarm: #c8453b;
+  --alarm-soft: #fbeae8;
+  --alarm-fg: #a3352c;
+
+  --chart-1: #0b3b60;
+  --chart-2: #0088cc;
+  --chart-3: #7cc4e8;
+  --chart-plan: #94a3b8;
+  --skeleton: #eef2f6;
+  --switch-off: #cbd5e1;
+
+  --radius: 12px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility overline {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}

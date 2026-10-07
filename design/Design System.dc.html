@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;min-width:1440px;background:#F5F7FA;color:#0F1B2A;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0077B6;text-decoration:none}a:hover{color:#0B3B60;text-decoration:underline}
+*{box-sizing:border-box}
+</style>
+</helmet>
+
+<header style="height:72px;background:#FFFFFF;border-bottom:1px solid #E3E8EF;display:flex;align-items:center;justify-content:space-between;padding:0 32px;gap:24px">
+  <div style="display:flex;align-items:center;gap:20px">
+    <img src="assets/allur-logo.png" alt="Allur" style="height:52px;margin:0 -18px 0 -18px;display:block">
+    <div style="width:1px;height:32px;background:#E3E8EF"></div>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <div style="font-size:16px;font-weight:600;letter-spacing:-0.01em">СарыаркаАвтоПром</div>
+      <div style="font-size:12px;color:#5B6B7F">Цифровой двойник</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.06em;color:#0F1B2A">
+    <span>ЗАВОД 01</span><span style="width:1px;height:16px;background:#E3E8EF"></span><span>СМЕНА 2 · 16:00–00:00</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#5B6B7F">
+    <span>15.10.2026</span><span style="color:#0F1B2A;font-weight:500">21:42</span>
+  </div>
+</header>
+
+<main style="max-width:1600px;margin:0 auto;padding:48px 32px 96px;display:flex;flex-direction:column;gap:56px">
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;gap:12px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#5B6B7F;font-weight:500"><span>Дизайн-система</span><span style="color:#E3E8EF">|</span><span>v0.1</span></div>
+    <h1 style="margin:0;font-size:44px;font-weight:400;letter-spacing:-0.02em">Цифровой двойник завода</h1>
+    <p style="margin:0;font-size:15px;color:#5B6B7F;max-width:720px;line-height:1.55;text-wrap:pretty">Токены, типографика и базовые компоненты на shadcn/ui + Tailwind. Светлая тема, экран 1920×1080, минимальная ширина 1440.</p>
+  </div>
+
+  <section data-screen-label="01 Палитра" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">01</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Палитра · токены темы</span></div>
+
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px">
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:88px;background:#0B3B60"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Primary · Navy</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--primary · #0B3B60</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:88px;background:#072A45"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Primary hover</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--primary-hover · #072A45</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:88px;background:#0088CC"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Accent</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--accent · #0088CC</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:88px;background:#0077B6;display:flex;align-items:flex-end;padding:10px 12px;color:#FFFFFF;font-size:13px;font-weight:500">Белый текст</div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Accent strong</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--accent-strong · #0077B6</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:88px;background:#E6F3FA;border-bottom:1px solid #E3E8EF"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Accent soft</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--accent-soft · #E6F3FA</div></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px">
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:56px;background:#F5F7FA;border-bottom:1px solid #E3E8EF"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Background</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--background · #F5F7FA</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:56px;background:#FFFFFF;border-bottom:1px solid #E3E8EF"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Card</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--card · #FFFFFF</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:56px;background:#E3E8EF"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Border</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--border · #E3E8EF</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:56px;background:#0F1B2A"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Foreground</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--foreground · #0F1B2A</div></div></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden"><div style="height:56px;background:#5B6B7F"></div><div style="padding:14px 16px;display:flex;flex-direction:column;gap:4px"><div style="font-size:14px;font-weight:500">Muted foreground</div><div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">--muted-foreground · #5B6B7F</div></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) minmax(0,2fr);gap:16px">
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:8px"><div style="flex:1;height:44px;border-radius:8px;background:#2E9E6B"></div><div style="flex:1;height:44px;border-radius:8px;background:#E7F5EE"></div><div style="flex:1;height:44px;border-radius:8px;background:#1F7A50"></div></div>
+        <div style="font-size:14px;font-weight:500">Норма</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">--ok #2E9E6B<br>--ok-soft #E7F5EE<br>--ok-fg #1F7A50</div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:8px"><div style="flex:1;height:44px;border-radius:8px;background:#E09A1F"></div><div style="flex:1;height:44px;border-radius:8px;background:#FDF3E2"></div><div style="flex:1;height:44px;border-radius:8px;background:#94600F"></div></div>
+        <div style="font-size:14px;font-weight:500">Внимание</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">--warn #E09A1F<br>--warn-soft #FDF3E2<br>--warn-fg #94600F</div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:8px"><div style="flex:1;height:44px;border-radius:8px;background:#C8453B"></div><div style="flex:1;height:44px;border-radius:8px;background:#FBEAE8"></div><div style="flex:1;height:44px;border-radius:8px;background:#A3352C"></div></div>
+        <div style="font-size:14px;font-weight:500">Авария</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">--alarm #C8453B<br>--alarm-soft #FBEAE8<br>--alarm-fg #A3352C</div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:8px"><div style="flex:1;height:44px;border-radius:8px;background:#0B3B60"></div><div style="flex:1;height:44px;border-radius:8px;background:#0088CC"></div><div style="flex:1;height:44px;border-radius:8px;background:#7CC4E8"></div><div style="flex:1;height:44px;border-radius:8px;border:1.5px dashed #94A3B8"></div></div>
+        <div style="font-size:14px;font-weight:500">Серии графиков</div>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6"><span>--chart-1<br>Cobalt</span><span>--chart-2<br>Onix</span><span>--chart-3<br>JAC J7</span><span>--chart-plan<br>#94A3B8</span></div>
+      </div>
+    </div>
+    <p style="margin:0;font-size:13px;color:#5B6B7F;line-height:1.55;max-width:900px">Для текста на мягких плашках статусов добавлены тёмные оттенки <span style="font-family:'JetBrains Mono',monospace">*-fg</span>: исходные #E09A1F и #2E9E6B на светлом фоне дают контраст ниже 4.5:1. Яркий цвет статуса используется для точки.</p>
+
+    <sc-if value="{{ showCode }}" hint-placeholder-val="{{ true }}">
+      <pre style="margin:0;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;color:#0F1B2A;overflow:auto">:root {
+  --background: #F5F7FA;   --foreground: #0F1B2A;
+  --card: #FFFFFF;         --card-foreground: #0F1B2A;
+  --popover: #FFFFFF;      --popover-foreground: #0F1B2A;
+  --primary: #0B3B60;      --primary-foreground: #FFFFFF;   --primary-hover: #072A45;
+  --secondary: #FFFFFF;    --secondary-foreground: #0F1B2A;
+  --muted: #F5F7FA;        --muted-foreground: #5B6B7F;
+  --accent: #0088CC;       --accent-strong: #0077B6;        --accent-soft: #E6F3FA;
+  --destructive: #C8453B;  --border: #E3E8EF;  --input: #E3E8EF;  --ring: #0088CC;
+  --ok: #2E9E6B;   --ok-soft: #E7F5EE;   --ok-fg: #1F7A50;
+  --warn: #E09A1F; --warn-soft: #FDF3E2; --warn-fg: #94600F;
+  --alarm: #C8453B; --alarm-soft: #FBEAE8; --alarm-fg: #A3352C;
+  --chart-1: #0B3B60; --chart-2: #0088CC; --chart-3: #7CC4E8; --chart-plan: #94A3B8;
+  --radius: 12px;  /* card */   --radius-md: 8px; /* button, input */
+}</pre>
+    </sc-if>
+  </section>
+
+  <section data-screen-label="02 Типографика" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">02</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Типографика</span></div>
+    <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:8px 32px">
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid #E3E8EF">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">KPI · Inter 48 / 300<br>tracking −0.02em</div>
+        <div style="font-size:48px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">82,4 <span style="font-size:20px;color:#5B6B7F">%</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid #E3E8EF">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">H1 · Inter 40 / 400</div>
+        <div style="font-size:40px;font-weight:400;letter-spacing:-0.02em;line-height:1.1">Сборка-1</div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid #E3E8EF">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">H2 · Inter 28 / 400</div>
+        <div style="font-size:28px;font-weight:400;letter-spacing:-0.01em">Обзор смены</div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid #E3E8EF">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">H3 · Inter 18 / 500</div>
+        <div style="font-size:18px;font-weight:500">Текущие простои</div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid #E3E8EF">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">Body · Inter 15 / 400<br>line-height 1.55</div>
+        <div style="font-size:15px;line-height:1.55;max-width:640px">Робот ABB-02 остановлен из-за ошибки позиционирования сварочных клещей. Линия работает с пониженным тактом.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid #E3E8EF">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">Small · Inter 13 / 400<br>muted-foreground</div>
+        <div style="font-size:13px;color:#5B6B7F">Обновлено 2 мин назад · порог OEE ≥ 85 %</div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid #E3E8EF">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">Overline · Inter 12 / 500<br>caps, tracking 0.14em</div>
+        <div style="display:flex;gap:12px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F"><span>Пульт смены</span><span style="color:#E3E8EF">|</span><span>Сварка-1</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px;align-items:baseline;padding:20px 0">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F;line-height:1.6">Mono · JetBrains 13 / 400<br>коды, время, числа</div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:13px"><span>ABB-01</span><span>WLD-1</span><span>PNT-1</span><span>15.10.2026</span><span>21:42:08</span><span>1 248</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div style="display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:24px">
+    <section data-screen-label="03 Кнопки" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">03</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Кнопки · Button</span></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:28px 32px;display:flex;flex-direction:column;gap:24px;flex:1">
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">default</span>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#072A45"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>Запустить сценарий</button>
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#072A45;color:#FFFFFF;font:500 14px Inter,sans-serif">Hover</button>
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;opacity:0.4">Disabled</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">secondary</span>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>Экспорт отчёта</button>
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:1px solid #E3E8EF;background:#F5F7FA;color:#0F1B2A;font:500 14px Inter,sans-serif">Hover</button>
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:1px solid #0088CC;background:#E6F3FA;color:#0B3B60;font:500 14px Inter,sans-serif">Выбрано</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">ghost</span>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <button style="height:40px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Сбросить</button>
+            <button style="height:40px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0077B6;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer" style-hover="background:#E6F3FA">Все инциденты<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg></button>
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#0077B6;color:#FFFFFF;font:500 14px Inter,sans-serif;cursor:pointer" style-hover="background:#0B3B60">Accent strong</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">icon</span>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <button title="Слои" style="width:40px;height:40px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></svg></button>
+            <button title="Слои (активно)" style="width:40px;height:40px;border-radius:8px;border:1px solid #0088CC;background:#E6F3FA;color:#0077B6;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></svg></button>
+            <button title="Поиск" style="width:40px;height:40px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>
+            <div style="display:flex;flex-direction:column;border:1px solid #E3E8EF;border-radius:8px;background:#FFFFFF;overflow:hidden">
+              <button title="Приблизить" style="width:40px;height:36px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></button>
+              <div style="height:1px;background:#E3E8EF;margin:0 8px"></div>
+              <button title="Отдалить" style="width:40px;height:36px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M5 12h14"></path></svg></button>
+            </div>
+            <span style="font-size:13px;color:#5B6B7F">40 × 40, иконки lucide 16–18 px, stroke 2</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">sizes</span>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <button style="height:32px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif">sm · 32</button>
+            <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif">default · 40</button>
+            <button style="height:48px;padding:0 20px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 15px Inter,sans-serif">lg · 48</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-screen-label="04 Бейджи" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">04</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Статусы · Badge</span></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:28px 32px;display:flex;flex-direction:column;gap:28px;flex:1">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">soft · точка + текст</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#E7F5EE;color:#1F7A50;font-size:13px;font-weight:500"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>Норма</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#FDF3E2;color:#94600F;font-size:13px;font-weight:500"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:13px;font-weight:500"><span style="width:7px;height:7px;border-radius:50%;background:#C8453B"></span>Авария</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">inline · в таблицах и списках</span>
+          <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:14px">
+            <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#2E9E6B"></span>Норма</span>
+            <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+            <span style="display:inline-flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:#C8453B"></span>Авария</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">outline · служебные</span>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:6px;border:1px solid #E3E8EF;background:#FFFFFF;color:#5B6B7F;font-size:12px;font-weight:500">8 единиц</span>
+            <span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:6px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font-family:'JetBrains Mono',monospace;font-size:12px">WLD-1</span>
+            <span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:6px;background:#E6F3FA;color:#0B3B60;font-size:12px;font-weight:500">Cobalt</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font-size:12px;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>Симуляция · <span style="font-family:'JetBrains Mono',monospace">8×</span></span>
+          </div>
+        </div>
+        <p style="margin:0;font-size:13px;color:#5B6B7F;line-height:1.55">Статус всегда показывается точкой и словом. Цвет без текста не используется.</p>
+      </div>
+    </section>
+  </div>
+
+  <section data-screen-label="05 KPI" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">05</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Карточка KPI · Card</span></div>
+    <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px;color:#5B6B7F">OEE линии</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FDF3E2;color:#94600F;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>Внимание</span></div>
+        <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:48px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">82,4</span><span style="font-size:18px;color:#5B6B7F">%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#5B6B7F"><span>Порог ≥ 85 %</span><span style="font-family:'JetBrains Mono',monospace;color:#94600F">−2,6 п.п.</span></div>
+        <svg viewBox="0 0 240 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block"><line x1="0" y1="18" x2="240" y2="18" stroke="#94A3B8" stroke-dasharray="4 4" style="stroke-width:1"></line><polyline points="0,14 22,12 44,16 66,13 88,15 110,20 132,26 154,24 176,30 198,28 220,27 240,25" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linejoin:round"></polyline><circle cx="240" cy="25" r="3" fill="#0088CC"></circle></svg>
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>21:42</span></div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px;color:#5B6B7F">Брак</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#E7F5EE;color:#1F7A50;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>Норма</span></div>
+        <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:48px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">1,6</span><span style="font-size:18px;color:#5B6B7F">%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#5B6B7F"><span>Порог ≤ 2 %</span><span style="font-family:'JetBrains Mono',monospace;color:#1F7A50">запас 0,4 п.п.</span></div>
+        <svg viewBox="0 0 240 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block"><line x1="0" y1="14" x2="240" y2="14" stroke="#94A3B8" stroke-dasharray="4 4" style="stroke-width:1"></line><polyline points="0,34 22,30 44,36 66,32 88,28 110,33 132,30 154,26 176,31 198,29 220,27 240,28" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linejoin:round"></polyline><circle cx="240" cy="28" r="3" fill="#0088CC"></circle></svg>
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>21:42</span></div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px;color:#5B6B7F">Простой критичного</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Авария</span></div>
+        <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:48px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">74</span><span style="font-size:18px;color:#5B6B7F">мин</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#5B6B7F"><span>Порог ≤ 60 мин/сут</span><span style="font-family:'JetBrains Mono',monospace;color:#A3352C">+14 мин</span></div>
+        <svg viewBox="0 0 240 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block"><line x1="0" y1="20" x2="240" y2="20" stroke="#94A3B8" stroke-dasharray="4 4" style="stroke-width:1"></line><polyline points="0,52 22,50 44,48 66,48 88,44 110,40 132,40 154,34 176,26 198,20 220,14 240,8" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linejoin:round"></polyline><circle cx="240" cy="8" r="3" fill="#0088CC"></circle></svg>
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>00:00</span><span>21:42</span></div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px;color:#5B6B7F">Выпуск смены</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#E7F5EE;color:#1F7A50;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>Норма</span></div>
+        <div style="display:flex;align-items:baseline;gap:6px"><span style="font-size:48px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">83</span><span style="font-size:18px;color:#5B6B7F">/ 120 авто</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#5B6B7F"><span>План к 21:42 — 85</span><span style="font-family:'JetBrains Mono',monospace;color:#5B6B7F">69,2 %</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px;padding-top:6px">
+          <div style="position:relative;height:8px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="position:absolute;left:0;top:0;bottom:0;width:69.2%;background:#0088CC;border-radius:999px"></div></div>
+          <div style="display:flex;gap:16px;font-size:12px;color:#5B6B7F;flex-wrap:wrap"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0B3B60"></span>Cobalt 52</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0088CC"></span>Onix 23</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#7CC4E8"></span>JAC J7 8</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px">
+    <section data-screen-label="06 Инциденты" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">06</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Строка инцидента</span></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid #E3E8EF"><span style="font-size:18px;font-weight:500">Инциденты смены</span><span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:6px;border:1px solid #E3E8EF;color:#5B6B7F;font-size:12px;font-weight:500">4 открыто</span></div>
+
+        <div style="display:grid;grid-template-columns:56px minmax(0,1fr) auto 20px;gap:16px;align-items:center;padding:16px 24px;border-bottom:1px solid #E3E8EF;background:#E6F3FA;box-shadow:inset 3px 0 0 #0088CC;cursor:pointer">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px">21:18</span>
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-size:14px;font-weight:500">Ошибка позиционирования клещей</span><span style="display:flex;gap:8px;font-size:13px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">ABB-02</span>Сварка-1 · простой 24 мин</span></div>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Авария</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg>
+        </div>
+        <div style="display:grid;grid-template-columns:56px minmax(0,1fr) auto 20px;gap:16px;align-items:center;padding:16px 24px;border-bottom:1px solid #E3E8EF;cursor:pointer" style-hover="background:#F5F7FA">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px">20:51</span>
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-size:14px;font-weight:500">Температура печи выше уставки</span><span style="display:flex;gap:8px;font-size:13px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">ПС-01</span>Окраска-1 · +6 °C</span></div>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FDF3E2;color:#94600F;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg>
+        </div>
+        <div style="display:grid;grid-template-columns:56px minmax(0,1fr) auto 20px;gap:16px;align-items:center;padding:16px 24px;cursor:pointer" style-hover="background:#F5F7FA">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#5B6B7F">19:07</span>
+          <div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-size:14px;font-weight:500;color:#5B6B7F">Отклонение момента затяжки</span><span style="display:flex;gap:8px;font-size:13px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace">СЗ-01</span>Сборка-1 · закрыт в 19:31</span></div>
+          <span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;background:#F5F7FA;border:1px solid #E3E8EF;color:#5B6B7F;font-size:12px;font-weight:500">Закрыт</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg>
+        </div>
+      </div>
+      <div style="display:flex;gap:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F"><span>selected · accent-soft + полоса 3px</span><span>hover · background</span><span>resolved · muted</span></div>
+    </section>
+
+    <section data-screen-label="07 Оборудование" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">07</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Строка оборудования</span></div>
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid #E3E8EF"><span style="font-size:18px;font-weight:500">Сварка-1</span><span style="font-size:13px;color:#5B6B7F">4 робота · 3 в работе</span></div>
+
+        <div style="display:grid;grid-template-columns:44px minmax(0,1fr) 72px;gap:16px;align-items:center;padding:16px 24px;border-bottom:1px solid #E3E8EF;cursor:pointer" style-hover="background:#F5F7FA">
+          <div style="width:44px;height:44px;border:1px solid #E3E8EF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px">01</div>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="display:flex;gap:10px;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500">ABB-01</span><span style="font-size:13px;color:#5B6B7F">Робот точечной сварки</span></span><span style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>Норма</span></div>
+            <div style="height:4px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="height:100%;width:91%;background:#0088CC"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:15px">91 %</span><span style="font-size:12px;color:#5B6B7F">OEE</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:44px minmax(0,1fr) 72px;gap:16px;align-items:center;padding:16px 24px;border-bottom:1px solid #E3E8EF;background:#E6F3FA;box-shadow:inset 3px 0 0 #0088CC;cursor:pointer">
+          <div style="width:44px;height:44px;border:1px solid #0088CC;background:#FFFFFF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:#0077B6">02</div>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="display:flex;gap:10px;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500">ABB-02</span><span style="font-size:13px;color:#5B6B7F">Остановлен 24 мин</span></span><span style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><span style="width:7px;height:7px;border-radius:50%;background:#C8453B"></span>Авария</span></div>
+            <div style="height:4px;border-radius:999px;background:#FFFFFF;overflow:hidden"><div style="height:100%;width:58%;background:#C8453B"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:15px">58 %</span><span style="font-size:12px;color:#5B6B7F">OEE</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:44px minmax(0,1fr) 72px;gap:16px;align-items:center;padding:16px 24px;cursor:pointer" style-hover="background:#F5F7FA">
+          <div style="width:44px;height:44px;border:1px solid #E3E8EF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px">03</div>
+          <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span style="display:flex;gap:10px;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500">ABB-03</span><span style="font-size:13px;color:#5B6B7F">Износ электродов 86 %</span></span><span style="display:inline-flex;align-items:center;gap:6px;font-size:13px"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span>Внимание</span></div>
+            <div style="height:4px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="height:100%;width:84%;background:#0088CC"></div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span style="font-family:'JetBrains Mono',monospace;font-size:15px">84 %</span><span style="font-size:12px;color:#5B6B7F">OEE</span></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F"><span>Progress · accent, при аварии — alarm</span></div>
+    </section>
+  </div>
+
+  <section data-screen-label="08 Лейблы на карте" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">08</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Лейбл объекта на карте</span></div>
+    <div style="position:relative;height:340px;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(135deg,#EEF2F6 0 1px,#F5F7FA 1px 14px)">
+      <span style="position:absolute;left:24px;bottom:20px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">3D-сцена цеха</span>
+
+      <div style="position:absolute;left:8%;top:70px;display:flex;flex-direction:column;align-items:center">
+        <div style="display:flex;align-items:center;gap:8px;height:30px;padding:0 10px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#0F1B2A;cursor:pointer" style-hover="border-color:#0088CC"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>ABB-01</div>
+        <div style="width:1px;height:40px;background:#94A3B8"></div><div style="width:7px;height:7px;border-radius:50%;background:#FFFFFF;border:1.5px solid #94A3B8"></div>
+        <span style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">норма</span>
+      </div>
+
+      <div style="position:absolute;left:28%;top:110px;display:flex;flex-direction:column;align-items:center">
+        <div style="display:flex;align-items:center;gap:8px;height:30px;padding:0 10px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#0F1B2A"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span>ПС-01<span style="font-family:Inter,sans-serif;font-size:12px;color:#94600F">Внимание</span></div>
+        <div style="width:1px;height:40px;background:#94A3B8"></div><div style="width:7px;height:7px;border-radius:50%;background:#FFFFFF;border:1.5px solid #94A3B8"></div>
+        <span style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">внимание + текст</span>
+      </div>
+
+      <div style="position:absolute;left:50%;top:60px;display:flex;flex-direction:column;align-items:center">
+        <div style="display:flex;align-items:center;gap:8px;height:30px;padding:0 10px;background:#FFFFFF;border:1px solid #C8453B;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#0F1B2A"><span style="width:7px;height:7px;border-radius:50%;background:#C8453B;box-shadow:0 0 0 3px #FBEAE8"></span>ABB-02<span style="font-family:Inter,sans-serif;font-size:12px;color:#A3352C">Авария</span></div>
+        <div style="width:1px;height:40px;background:#C8453B"></div><div style="width:7px;height:7px;border-radius:50%;background:#C8453B"></div>
+        <span style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">авария · рамка alarm</span>
+      </div>
+
+      <div style="position:absolute;left:70%;top:100px;display:flex;flex-direction:column;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:4px;padding:8px 12px;background:#FFFFFF;border:1.5px solid #0088CC;border-radius:6px;box-shadow:0 0 0 4px #E6F3FA">
+          <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#0F1B2A"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>Конвейер-03</div>
+          <div style="font-size:12px;color:#5B6B7F">Сборка-1 · такт 4:02</div>
+        </div>
+        <div style="width:1px;height:40px;background:#0088CC"></div><div style="width:7px;height:7px;border-radius:50%;background:#0088CC"></div>
+        <span style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">выбран · раскрыт</span>
+      </div>
+
+      <div style="position:absolute;left:86%;top:150px;display:flex;flex-direction:column;align-items:center">
+        <div style="display:flex;align-items:center;gap:8px;height:26px;padding:0 8px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.04em;color:#0F1B2A"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>QC-1<span style="color:#94A3B8">·</span><span style="font-family:Inter,sans-serif;letter-spacing:0;color:#5B6B7F">ОТК</span></div>
+        <span style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">участок</span>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="09 Контролы" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">09</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Контролы</span></div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start">
+
+      <div style="grid-column:span 2;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Tabs · режимы</span>
+        <div style="display:flex;gap:4px;padding:4px;background:#F5F7FA;border:1px solid #E3E8EF;border-radius:10px;align-self:flex-start">
+          <button onClick="{{ setTab0 }}" style="height:36px;padding:0 16px;border-radius:7px;border:none;background:{{ tab0.bg }};color:{{ tab0.fg }};font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path><circle cx="12" cy="12" r="2"></circle><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"></path></svg>Онлайн</button>
+          <button onClick="{{ setTab1 }}" style="height:36px;padding:0 16px;border-radius:7px;border:none;background:{{ tab1.bg }};color:{{ tab1.fg }};font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="6" x2="6" y1="3" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>Сценарии</button>
+          <button onClick="{{ setTab2 }}" style="height:36px;padding:0 16px;border-radius:7px;border:none;background:{{ tab2.bg }};color:{{ tab2.fg }};font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2"></path><path d="M8.5 2h7"></path><path d="M7 16h10"></path></svg>Аналитика</button>
+        </div>
+        <div style="display:flex;gap:24px;border-bottom:1px solid #E3E8EF">
+          <span style="padding:10px 0;font-size:14px;font-weight:500;color:#0B3B60;box-shadow:inset 0 -2px 0 #0B3B60">Обзор</span>
+          <span style="padding:10px 0;font-size:14px;color:#5B6B7F">Оборудование</span>
+          <span style="padding:10px 0;font-size:14px;color:#5B6B7F">Инциденты</span>
+          <span style="padding:10px 0;font-size:14px;color:#5B6B7F">Качество</span>
+        </div>
+        <span style="font-size:13px;color:#5B6B7F">Сегментные вкладки — переключение режима в шапке; подчёркнутые — разделы внутри панели.</span>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">ToggleGroup · скорость симуляции</span>
+        <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden;align-self:flex-start">
+          <sc-for list="{{ speeds }}" as="s" hint-placeholder-count="5">
+            <button onClick="{{ s.onClick }}" style="height:36px;min-width:52px;padding:0 12px;border:none;border-right:1px solid #E3E8EF;background:{{ s.bg }};color:{{ s.fg }};font:500 13px 'JetBrains Mono',monospace;cursor:pointer">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        <span style="font-size:13px;color:#5B6B7F">Выбранный — accent-soft, текст primary.</span>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:300px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Select · открыт</span>
+        <label style="font-size:13px;font-weight:500">Модель</label>
+        <div style="height:40px;padding:0 12px;border:1px solid #0088CC;box-shadow:0 0 0 3px #E6F3FA;border-radius:8px;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;font-size:14px">Chevrolet Cobalt<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></div>
+        <div style="padding:4px;border:1px solid #E3E8EF;border-radius:8px;background:#FFFFFF;box-shadow:0 4px 12px rgba(15,27,42,0.06);display:flex;flex-direction:column">
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">Все модели</div>
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#E6F3FA;color:#0B3B60">Chevrolet Cobalt<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></div>
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">Chevrolet Onix</div>
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">JAC J7</div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:300px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">DropdownMenu + Checkbox</span>
+        <button style="align-self:flex-start;height:40px;padding:0 14px;border-radius:8px;border:1px solid #E3E8EF;background:#F5F7FA;color:#0F1B2A;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></svg>Слои<span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">3</span></button>
+        <div style="width:260px;padding:4px;border:1px solid #E3E8EF;border-radius:8px;background:#FFFFFF;box-shadow:0 4px 12px rgba(15,27,42,0.06);display:flex;flex-direction:column">
+          <div style="padding:8px 10px 6px;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#5B6B7F">Слои карты</div>
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px"><span style="width:16px;height:16px;border-radius:4px;background:#0B3B60;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></span>Статусы оборудования</div>
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px;background:#F5F7FA"><span style="width:16px;height:16px;border-radius:4px;background:#0B3B60;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></span>Тепловая карта простоев</div>
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px"><span style="width:16px;height:16px;border-radius:4px;border:1.5px solid #CBD5E1;background:#FFFFFF"></span>Поток кузовов</div>
+          <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px"><span style="width:16px;height:16px;border-radius:4px;background:#0B3B60;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></span>Подписи участков</div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px;min-height:300px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Command · поиск</span>
+        <div style="border:1px solid #E3E8EF;border-radius:10px;background:#FFFFFF;box-shadow:0 4px 12px rgba(15,27,42,0.06);overflow:hidden">
+          <div style="height:44px;padding:0 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #E3E8EF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="flex:1;font-family:'JetBrains Mono',monospace;font-size:14px">abb<span style="display:inline-block;width:1px;height:16px;background:#0F1B2A;vertical-align:-3px;margin-left:1px"></span></span><span style="height:22px;padding:0 6px;border:1px solid #E3E8EF;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;display:flex;align-items:center">⌘K</span></div>
+          <div style="padding:4px;display:flex;flex-direction:column">
+            <div style="padding:8px 10px 4px;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#5B6B7F">Оборудование</div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px;background:#E6F3FA"><span style="width:7px;height:7px;border-radius:50%;background:#C8453B"></span><span style="font-family:'JetBrains Mono',monospace;color:#0B3B60">ABB-02</span><span style="flex:1;color:#5B6B7F;font-size:13px">Сварка-1</span><span style="font-size:12px;color:#A3352C">Авария</span></div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span><span style="font-family:'JetBrains Mono',monospace">ABB-03</span><span style="flex:1;color:#5B6B7F;font-size:13px">Сварка-1</span><span style="font-size:12px;color:#94600F">Внимание</span></div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span><span style="font-family:'JetBrains Mono',monospace">ABB-01</span><span style="flex:1;color:#5B6B7F;font-size:13px">Сварка-1</span><span style="font-size:12px;color:#1F7A50">Норма</span></div>
+            <div style="padding:8px 10px 4px;font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#5B6B7F">Участки</div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="18" height="18" x="3" y="3" rx="2"></rect></svg><span style="font-family:'JetBrains Mono',monospace">WLD-1</span><span style="color:#5B6B7F;font-size:13px">Сварка-1</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="grid-column:span 2;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Slider · обычный</span><span style="font-size:13px">Порог OEE <span style="font-family:'JetBrains Mono',monospace;color:#0B3B60;font-weight:500">85 %</span></span></div>
+          <div style="position:relative;height:18px;display:flex;align-items:center">
+            <div style="position:absolute;left:0;right:0;height:6px;border-radius:999px;background:#E3E8EF"></div>
+            <div style="position:absolute;left:0;width:70%;height:6px;border-radius:999px;background:#0088CC"></div>
+            <div style="position:absolute;left:70%;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0088CC"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>50 %</span><span>100 %</span></div>
+        </div>
+        <div style="height:1px;background:#E3E8EF"></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Slider · таймлайн смены</span><span style="display:flex;gap:16px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#E09A1F"></span>Внимание</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#C8453B"></span>Авария</span></span></div>
+          <div style="position:relative;height:40px">
+            <div style="position:absolute;left:0;right:0;top:26px;height:6px;border-radius:999px;background:#E3E8EF"></div>
+            <div style="position:absolute;left:0;width:71.25%;top:26px;height:6px;border-radius:999px;background:#0088CC"></div>
+            <div title="17:20 · ПС-01" style="position:absolute;left:16.7%;top:12px;width:4px;height:12px;margin-left:-2px;border-radius:2px;background:#E09A1F"></div>
+            <div title="19:07 · СЗ-01" style="position:absolute;left:38.9%;top:12px;width:4px;height:12px;margin-left:-2px;border-radius:2px;background:#E09A1F"></div>
+            <div title="20:51 · ПС-01" style="position:absolute;left:61.4%;top:12px;width:4px;height:12px;margin-left:-2px;border-radius:2px;background:#E09A1F"></div>
+            <div title="21:18 · ABB-02" style="position:absolute;left:66.25%;top:12px;width:4px;height:12px;margin-left:-2px;border-radius:2px;background:#C8453B"></div>
+            <div style="position:absolute;left:71.25%;top:20px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0B3B60"></div>
+            <div style="position:absolute;left:71.25%;top:-8px;transform:translateX(-50%);height:20px;padding:0 6px;border-radius:4px;background:#0B3B60;color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:11px;display:flex;align-items:center">21:42</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>00:00</span></div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:20px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Switch · Checkbox · Input</span>
+        <div onClick="{{ toggleSw }}" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">
+          <span style="font-size:14px">Автообновление</span>
+          <span style="position:relative;width:40px;height:22px;border-radius:999px;background:{{ swBg }};transition:background .15s"><span style="position:absolute;top:2px;left:{{ swLeft }};width:18px;height:18px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(15,27,42,0.2);transition:left .15s"></span></span>
+        </div>
+        <div onClick="{{ toggleCb }}" style="display:flex;align-items:center;gap:10px;cursor:pointer">
+          <span style="width:16px;height:16px;border-radius:4px;background:{{ cbBg }};border:1.5px solid {{ cbBorder }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ cb }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></span>
+          <span style="font-size:14px">Показывать закрытые инциденты</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <label style="font-size:13px;font-weight:500">Целевой OEE</label>
+          <div style="height:40px;border:1px solid #E3E8EF;border-radius:8px;background:#FFFFFF;display:flex;align-items:center;overflow:hidden">
+            <span style="flex:1;padding:0 12px;font-family:'JetBrains Mono',monospace;font-size:14px">85</span>
+            <span style="height:100%;padding:0 12px;border-left:1px solid #E3E8EF;background:#F5F7FA;display:flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:#5B6B7F">%</span>
+          </div>
+          <span style="font-size:12px;color:#5B6B7F">Допустимо 50–100</span>
+        </div>
+      </div>
+
+      <div style="grid-column:1 / -1;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Диапазон дат · Button + Popover + Calendar</span>
+        <button style="align-self:flex-start;height:40px;padding:0 14px;border-radius:8px;border:1px solid #0088CC;box-shadow:0 0 0 3px #E6F3FA;background:#FFFFFF;color:#0F1B2A;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:10px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg><span style="font-family:'JetBrains Mono',monospace;font-size:13px;white-space:nowrap">01.10.2026 – 15.10.2026</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+        <div style="align-self:flex-start;display:flex;border:1px solid #E3E8EF;border-radius:12px;background:#FFFFFF;box-shadow:0 8px 24px rgba(15,27,42,0.08);overflow:hidden">
+          <div style="width:180px;padding:12px 8px;border-right:1px solid #E3E8EF;display:flex;flex-direction:column;gap:2px">
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">Текущая смена</div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">Сегодня</div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">Вчера</div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">7 дней</div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px;background:#E6F3FA;color:#0B3B60;font-weight:500">С начала месяца</div>
+            <div style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:14px">Прошлый месяц</div>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <div style="display:flex;gap:32px;padding:16px 20px">
+              <sc-for list="{{ months }}" as="m" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;gap:8px;width:252px">
+                  <div style="height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500">{{ m.label }}</div>
+                  <div style="display:grid;grid-template-columns:repeat(7,36px)">
+                    <sc-for list="{{ weekdays }}" as="w" hint-placeholder-count="7"><span style="height:28px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#5B6B7F">{{ w }}</span></sc-for>
+                    <sc-for list="{{ m.cells }}" as="c" hint-placeholder-count="35"><span style="height:36px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;background:{{ c.bg }};color:{{ c.fg }};border-radius:{{ c.r }};font-weight:{{ c.w }}">{{ c.d }}</span></sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid #E3E8EF">
+              <span style="font-size:13px;color:#5B6B7F">15 дней · 30 смен</span>
+              <div style="display:flex;gap:8px"><button style="height:32px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;font:500 13px Inter,sans-serif">Отмена</button><button style="height:32px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif">Применить</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="10 Графики" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">10</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Графики · Recharts</span></div>
+    <div style="display:flex;gap:32px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">
+      <span>оси · JetBrains Mono 11 · #5B6B7F</span><span>сетка · только горизонтальная · #E3E8EF</span><span>порог · пунктир #94A3B8 + подпись справа</span><span>за порогом · alarm #C8453B</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:500">Выпуск по моделям</span><span style="font-size:13px;color:#5B6B7F">авто в сутки</span></div>
+          <div style="display:flex;gap:16px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0B3B60"></span>Cobalt</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0088CC"></span>Onix</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#7CC4E8"></span>JAC J7</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px">
+          <div style="position:relative;height:200px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">
+            <span style="position:absolute;right:0;top:0;transform:translateY(-50%)">120</span><span style="position:absolute;right:0;top:33.3%;transform:translateY(-50%)">80</span><span style="position:absolute;right:0;top:66.7%;transform:translateY(-50%)">40</span><span style="position:absolute;right:0;bottom:0;transform:translateY(50%)">0</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="position:relative;height:200px">
+              <div style="position:absolute;left:0;right:0;top:0;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:33.3%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:66.7%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;bottom:0;height:1px;background:#CBD5E1"></div>
+              <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))">
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px"><div style="width:20px;height:90%;background:#0B3B60;border-radius:3px 3px 0 0"></div><div style="width:20px;height:65%;background:#0088CC;border-radius:3px 3px 0 0"></div><div style="width:20px;height:17.5%;background:#7CC4E8;border-radius:3px 3px 0 0"></div></div>
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px"><div style="width:20px;height:93.3%;background:#0B3B60;border-radius:3px 3px 0 0"></div><div style="width:20px;height:67.5%;background:#0088CC;border-radius:3px 3px 0 0"></div><div style="width:20px;height:16.7%;background:#7CC4E8;border-radius:3px 3px 0 0"></div></div>
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px"><div style="width:20px;height:80%;background:#0B3B60;border-radius:3px 3px 0 0"></div><div style="width:20px;height:61.7%;background:#0088CC;border-radius:3px 3px 0 0"></div><div style="width:20px;height:18.3%;background:#7CC4E8;border-radius:3px 3px 0 0"></div></div>
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px;background:#F5F7FA"><div style="width:20px;height:91.7%;background:#0B3B60;border-radius:3px 3px 0 0"></div><div style="width:20px;height:66.7%;background:#0088CC;border-radius:3px 3px 0 0"></div><div style="width:20px;height:15.8%;background:#7CC4E8;border-radius:3px 3px 0 0"></div></div>
+                <div style="display:flex;align-items:flex-end;justify-content:center;gap:4px"><div style="width:20px;height:86.7%;background:#0B3B60;border-radius:3px 3px 0 0"></div><div style="width:20px;height:63.3%;background:#0088CC;border-radius:3px 3px 0 0"></div><div style="width:20px;height:18.3%;background:#7CC4E8;border-radius:3px 3px 0 0"></div></div>
+              </div>
+              <div style="position:absolute;left:47%;top:8px;width:168px;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 4px 12px rgba(15,27,42,0.08);display:flex;flex-direction:column;gap:6px">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">14.10.2026</span>
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:#0B3B60"></span><span style="flex:1">Cobalt</span><span style="font-family:'JetBrains Mono',monospace">110</span></div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:#0088CC"></span><span style="flex:1">Onix</span><span style="font-family:'JetBrains Mono',monospace">80</span></div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:#7CC4E8"></span><span style="flex:1">JAC J7</span><span style="font-family:'JetBrains Mono',monospace">19</span></div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;text-align:center"><span>11.10</span><span>12.10</span><span>13.10</span><span>14.10</span><span>15.10</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:500">OEE линии</span><span style="font-size:13px;color:#5B6B7F">смена 2, по часам</span></div>
+          <div style="display:flex;gap:16px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:#0088CC"></span>OEE</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#C8453B"></span>ниже порога</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 72px;gap:8px">
+          <div style="position:relative;height:200px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">
+            <span style="position:absolute;right:0;top:0;transform:translateY(-50%)">100</span><span style="position:absolute;right:0;top:33.3%;transform:translateY(-50%)">90</span><span style="position:absolute;right:0;top:66.7%;transform:translateY(-50%)">80</span><span style="position:absolute;right:0;bottom:0;transform:translateY(50%)">70</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="position:relative;height:200px">
+              <div style="position:absolute;left:0;right:0;top:0;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:33.3%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:66.7%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;bottom:0;height:1px;background:#CBD5E1"></div>
+              <div style="position:absolute;left:0;right:-80px;top:50%;border-top:1.5px dashed #94A3B8"></div>
+              <svg viewBox="0 0 600 200" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible"><polyline points="0,80 100,73.3 200,93.3 250,100" fill="none" stroke="#0088CC" vector-effect="non-scaling-stroke" style="stroke-width:2;stroke-linejoin:round"></polyline><polyline points="250,100 300,106.7 400,126.7 500,113.3 600,120" fill="none" stroke="#C8453B" vector-effect="non-scaling-stroke" style="stroke-width:2;stroke-linejoin:round"></polyline></svg>
+              <span style="position:absolute;left:0%;top:40%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:50%;background:#FFFFFF;border:2px solid #0088CC"></span>
+              <span style="position:absolute;left:16.67%;top:36.7%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:50%;background:#FFFFFF;border:2px solid #0088CC"></span>
+              <span style="position:absolute;left:33.33%;top:46.7%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:50%;background:#FFFFFF;border:2px solid #0088CC"></span>
+              <span style="position:absolute;left:50%;top:53.3%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:50%;background:#C8453B"></span>
+              <span style="position:absolute;left:66.67%;top:63.3%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:50%;background:#C8453B"></span>
+              <span style="position:absolute;left:83.33%;top:56.7%;width:8px;height:8px;transform:translate(-50%,-50%);border-radius:50%;background:#C8453B"></span>
+              <span style="position:absolute;left:100%;top:60%;width:10px;height:10px;transform:translate(-50%,-50%);border-radius:50%;background:#C8453B;box-shadow:0 0 0 4px #FBEAE8"></span>
+            </div>
+            <div style="position:relative;height:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span style="position:absolute;left:0">16:00</span><span style="position:absolute;left:16.67%;transform:translateX(-50%)">17:00</span><span style="position:absolute;left:33.33%;transform:translateX(-50%)">18:00</span><span style="position:absolute;left:50%;transform:translateX(-50%)">19:00</span><span style="position:absolute;left:66.67%;transform:translateX(-50%)">20:00</span><span style="position:absolute;left:83.33%;transform:translateX(-50%)">21:00</span><span style="position:absolute;right:0">21:42</span></div>
+          </div>
+          <div style="position:relative;height:200px"><span style="position:absolute;left:12px;top:50%;transform:translateY(-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;background:#FFFFFF;white-space:nowrap">Порог 85 %</span></div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:500">Простой оборудования</span><span style="font-size:13px;color:#5B6B7F">мин за сутки</span></div>
+          <div style="display:flex;gap:16px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0088CC"></span>в пределах</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#C8453B"></span>выше лимита</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 56px;gap:12px;height:20px"><span></span><div style="position:relative"><span style="position:absolute;left:66.7%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;white-space:nowrap">Лимит 60</span></div><span></span></div>
+          <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 56px;gap:12px;height:40px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:13px">ABB-02</span><div style="position:relative;height:40px;display:flex;align-items:center"><div style="height:14px;width:82.2%;background:#C8453B;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:66.7%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#A3352C;text-align:right">74</span></div>
+          <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 56px;gap:12px;height:40px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:13px">Камера-02</span><div style="position:relative;height:40px;display:flex;align-items:center"><div style="height:14px;width:42.2%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:66.7%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right">38</span></div>
+          <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 56px;gap:12px;height:40px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:13px">ПС-01</span><div style="position:relative;height:40px;display:flex;align-items:center"><div style="height:14px;width:24.4%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:66.7%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right">22</span></div>
+          <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 56px;gap:12px;height:40px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:13px">Конвейер-03</span><div style="position:relative;height:40px;display:flex;align-items:center"><div style="height:14px;width:13.3%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:66.7%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right">12</span></div>
+          <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 56px;gap:12px;height:40px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:13px">СЗ-01</span><div style="position:relative;height:40px;display:flex;align-items:center;border-bottom:0"><div style="height:14px;width:6.7%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:66.7%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:13px;text-align:right">6</span></div>
+          <div style="display:grid;grid-template-columns:112px minmax(0,1fr) 56px;gap:12px;padding-top:6px"><span></span><div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;border-top:1px solid #CBD5E1;padding-top:6px"><span>0</span><span>30</span><span>60</span><span>90</span></div><span></span></div>
+        </div>
+      </div>
+
+      <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:500">Индикатор риска</span><span style="font-size:13px;color:#5B6B7F">вероятность отказа, горизонт 48 ч</span></div>
+        <div style="flex:1;display:flex;align-items:center;gap:40px">
+          <div style="position:relative;width:180px;height:180px;flex:none">
+            <svg width="180" height="180" viewBox="0 0 180 180" style="display:block;transform:rotate(-90deg)"><circle cx="90" cy="90" r="72" fill="none" stroke="#E3E8EF" style="stroke-width:14"></circle><circle cx="90" cy="90" r="72" fill="none" stroke="#E09A1F" stroke-dasharray="289.5 452.4" style="stroke-width:14;stroke-linecap:round"></circle></svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1;white-space:nowrap">64<span style="font-size:18px;color:#5B6B7F"> %</span></span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">ABB-03</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;flex:1">
+            <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#FDF3E2;color:#94600F;font-size:13px;font-weight:500"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:2px;background:#2E9E6B"></span><span style="flex:1">Норма</span><span style="font-family:'JetBrains Mono',monospace;color:#5B6B7F">0–39 %</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:2px;background:#E09A1F"></span><span style="flex:1">Внимание</span><span style="font-family:'JetBrains Mono',monospace;color:#5B6B7F">40–69 %</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:8px;height:8px;border-radius:2px;background:#C8453B"></span><span style="flex:1">Авария</span><span style="font-family:'JetBrains Mono',monospace;color:#5B6B7F">70–100 %</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section data-screen-label="11 Уведомления и ИИ" style="display:flex;flex-direction:column;gap:20px">
+    <div style="display:flex;align-items:baseline;gap:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">11</span><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Уведомления и ИИ</span></div>
+    <div style="display:grid;grid-template-columns:420px minmax(0,1fr);gap:24px;align-items:start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Sonner · toast аварии</span>
+        <div style="position:relative;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;box-shadow:0 8px 24px rgba(15,27,42,0.08);overflow:hidden;display:flex">
+          <div style="width:4px;background:#C8453B;flex:none"></div>
+          <div style="flex:1;padding:16px 16px 16px 14px;display:flex;gap:12px">
+            <div style="width:32px;height:32px;border-radius:8px;background:#FBEAE8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8453B" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:600">Авария · <span style="font-family:'JetBrains Mono',monospace;font-weight:500">ABB-02</span></span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">21:18</span></div>
+              <span style="font-size:13px;color:#5B6B7F;line-height:1.5">Ошибка позиционирования клещей. Сварка-1 работает на трёх роботах.</span>
+              <div style="display:flex;gap:8px;padding-top:6px"><button style="height:32px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#072A45">Перейти</button><button style="height:32px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#F5F7FA">Скрыть</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">Card · прогноз ИИ</span>
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden;display:flex">
+          <div style="width:4px;background:#E09A1F;flex:none"></div>
+          <div style="flex:1;padding:24px 28px;display:flex;flex-direction:column;gap:24px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>Прогноз ИИ</div>
+                <span style="font-size:18px;font-weight:500">Вероятен отказ сервопривода оси 4</span>
+                <span style="display:flex;gap:8px;font-size:13px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">ABB-03</span>Сварка-1</span>
+              </div>
+              <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:#FDF3E2;color:#94600F;font-size:13px;font-weight:500;flex:none"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+            </div>
+            <div style="display:flex;gap:48px">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:#5B6B7F">Вероятность</span><span style="font-size:48px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1;white-space:nowrap">64<span style="font-size:20px;color:#5B6B7F"> %</span></span></div>
+              <div style="width:1px;background:#E3E8EF"></div>
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:13px;color:#5B6B7F">Горизонт</span><span style="font-size:48px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1;white-space:nowrap">36<span style="font-size:20px;color:#5B6B7F"> ч</span></span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+              <div style="padding:16px;border:1px solid #E3E8EF;border-radius:8px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Признаки</span>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;line-height:1.45">
+                  <span>Ток двигателя оси 4 вырос на <span style="font-family:'JetBrains Mono',monospace">12 %</span> за 3 смены</span>
+                  <span>Вибрация <span style="font-family:'JetBrains Mono',monospace">4,8 мм/с</span> при норме ≤ 3,5</span>
+                </div>
+              </div>
+              <div style="padding:16px;border:1px solid #E3E8EF;border-radius:8px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Рекомендация</span>
+                <span style="font-size:13px;line-height:1.45">Диагностика оси 4 в межсменный перерыв <span style="font-family:'JetBrains Mono',monospace">00:00–00:30</span></span>
+              </div>
+              <div style="padding:16px;border:1px solid #E3E8EF;border-radius:8px;background:#E6F3FA;border-color:#E6F3FA;display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#0B3B60">Эффект</span>
+                <span style="font-size:13px;line-height:1.45;color:#0B3B60">Предотвращённый простой ≈ <span style="font-family:'JetBrains Mono',monospace">3,5 ч</span>, сохранено <span style="font-family:'JetBrains Mono',monospace">52</span> авто</span>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px">
+              <button style="height:40px;padding:0 16px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>Показать на карте</button>
+              <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#072A45"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Создать заявку ТО</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showTokenCode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Отображение&quot;}}">
+class Component extends DCLogic {
+  state = { tab: 0, speed: '8×', sw: true, cb: true };
+  month(y, m, label) {
+    const off = (new Date(y, m, 1).getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate();
+    const s = new Date(2026, 9, 1).getTime(), e = new Date(2026, 9, 15).getTime();
+    const cells = [];
+    for (let i = 0; i < off; i++) cells.push({ d: '', bg: 'transparent', fg: '#0F1B2A', r: '8px', w: 400 });
+    for (let d = 1; d <= n; d++) {
+      const t = new Date(y, m, d).getTime(), edge = t === s || t === e, inr = t > s && t < e;
+      cells.push({ d, bg: edge ? '#0B3B60' : inr ? '#E6F3FA' : 'transparent', fg: edge ? '#FFFFFF' : inr ? '#0B3B60' : '#0F1B2A', r: edge ? '8px' : '0', w: edge ? 500 : 400 });
+    }
+    return { label, cells };
+  }
+  renderVals() {
+    const tab = i => this.state.tab === i ? { bg: '#0B3B60', fg: '#FFFFFF' } : { bg: 'transparent', fg: '#5B6B7F' };
+    const { sw, cb } = this.state;
+    return {
+      showCode: this.props.showTokenCode ?? true,
+      tab0: tab(0), tab1: tab(1), tab2: tab(2),
+      setTab0: () => this.setState({ tab: 0 }), setTab1: () => this.setState({ tab: 1 }), setTab2: () => this.setState({ tab: 2 }),
+      speeds: ['1×', '4×', '8×', '16×', '32×'].map(l => ({ label: l, bg: this.state.speed === l ? '#E6F3FA' : '#FFFFFF', fg: this.state.speed === l ? '#0B3B60' : '#5B6B7F', onClick: () => this.setState({ speed: l }) })),
+      sw, swBg: sw ? '#0088CC' : '#CBD5E1', swLeft: sw ? '20px' : '2px', toggleSw: () => this.setState({ sw: !sw }),
+      cb, cbBg: cb ? '#0B3B60' : '#FFFFFF', cbBorder: cb ? '#0B3B60' : '#CBD5E1', toggleCb: () => this.setState({ cb: !cb }),
+      weekdays: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+      months: [this.month(2026, 8, 'Сентябрь 2026'), this.month(2026, 9, 'Октябрь 2026')],
+    };
+  }
+}
+</script>
+</body>
+</html>

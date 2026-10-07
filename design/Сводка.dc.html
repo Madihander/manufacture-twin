@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;min-width:1440px;background:#F5F7FA;color:#0F1B2A;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0077B6;text-decoration:none}a:hover{color:#0B3B60;text-decoration:underline}
+*{box-sizing:border-box}
+</style>
+</helmet>
+
+<div data-screen-label="02 Сводка" style="height:100vh;min-height:900px;display:flex;flex-direction:column;background:#F5F7FA">
+
+  <header style="height:64px;flex:none;background:#FFFFFF;border-bottom:1px solid #E3E8EF;display:flex;align-items:center;padding:0 20px 0 24px;gap:24px;position:relative;z-index:30">
+    <div style="display:flex;align-items:center;gap:20px;flex:none">
+      <img src="assets/allur-logo.png" alt="Allur" style="height:48px;margin:0 -16px;display:block">
+      <div style="width:1px;height:30px;background:#E3E8EF"></div>
+      <div style="display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:15px;font-weight:600;letter-spacing:-0.01em">СарыаркаАвтоПром</div>
+        <div style="font-size:12px;color:#5B6B7F">Цифровой двойник</div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;min-width:0">
+      <div style="flex:none;display:flex;gap:4px;padding:4px;background:#F5F7FA;border:1px solid #E3E8EF;border-radius:10px">
+        <a href="Топология.dc.html" style="height:34px;padding:0 16px;border-radius:7px;color:#5B6B7F;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;text-decoration:none" style-hover="color:#0F1B2A;text-decoration:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path></svg>Топология</a>
+        <span style="height:34px;padding:0 16px;border-radius:7px;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>Сводка</span>
+        <a href="Сценарии.dc.html" style="height:34px;padding:0 16px;border-radius:7px;color:#5B6B7F;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;text-decoration:none" style-hover="color:#0F1B2A;text-decoration:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="6" x2="6" y1="3" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>Сценарии</a>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <button style="height:36px;padding:0 10px 0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer;white-space:nowrap" style-hover="background:#F5F7FA"><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="color:#5B6B7F;font-weight:400">Модель</span></sc-if>Chevrolet Cobalt<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+      <span style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>Смена 2 · <span style="font-family:'JetBrains Mono',monospace;font-size:12px">16:00–00:00</span></span>
+      <a href="Топология.dc.html" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;text-decoration:none" style-hover="background:#F5F7FA;text-decoration:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="white-space:nowrap">ИИ-диспетчер</span></sc-if><span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#C8453B;color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center">3</span></a>
+      <div style="width:1px;height:24px;background:#E3E8EF;margin:0 2px"></div>
+      <button title="Уведомления" style="position:relative;width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg><span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:#C8453B;border:1.5px solid #FFFFFF"></span></button>
+      <button title="Настройки" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+      <div title="Начальник смены" style="display:flex;align-items:center;gap:10px;padding-left:4px">
+        <span style="width:34px;height:34px;border-radius:50%;background:#E6F3FA;color:#0B3B60;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center">НС</span>
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;line-height:1.25;white-space:nowrap">Начальник<br><span style="color:#5B6B7F">смены</span></span></sc-if>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ anyOpen }}"><div onClick="{{ closeAll }}" style="position:fixed;inset:0;z-index:35"></div></sc-if>
+
+  <div style="flex:1;min-height:0;overflow:auto">
+
+    <div style="position:sticky;top:0;z-index:36;background:#FFFFFF;border-bottom:1px solid #E3E8EF;padding:12px 28px 10px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap">
+
+        <div style="display:flex;flex-direction:column;gap:4px;position:relative">
+          <span style="font-size:12px;color:#5B6B7F">Период</span>
+          <button onClick="{{ openPeriod }}" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid {{ bPeriod }};box-shadow:{{ rPeriod }};background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer;white-space:nowrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg><span style="font-family:'JetBrains Mono',monospace;font-size:12px">01.10.2026 — 15.10.2026</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <sc-if value="{{ oPeriod }}">
+            <div style="position:absolute;top:calc(100% + 6px);left:0;display:flex;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;box-shadow:0 12px 32px rgba(15,27,42,0.12);overflow:hidden;z-index:50">
+              <div style="width:168px;padding:12px 8px;border-right:1px solid #E3E8EF;display:flex;flex-direction:column;gap:2px">
+                <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4"><div onClick="{{ p.click }}" style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;font-size:13px;background:{{ p.bg }};color:{{ p.fg }};font-weight:{{ p.w }};cursor:pointer">{{ p.label }}</div></sc-for>
+              </div>
+              <div style="display:flex;flex-direction:column">
+                <div style="display:flex;gap:28px;padding:14px 18px">
+                  <sc-for list="{{ months }}" as="m" hint-placeholder-count="2">
+                    <div style="display:flex;flex-direction:column;gap:6px;width:238px">
+                      <div style="height:30px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500">{{ m.label }}</div>
+                      <div style="display:grid;grid-template-columns:repeat(7,34px)">
+                        <sc-for list="{{ weekdays }}" as="w" hint-placeholder-count="7"><span style="height:26px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#5B6B7F">{{ w }}</span></sc-for>
+                        <sc-for list="{{ m.cells }}" as="c" hint-placeholder-count="35"><span style="height:34px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;background:{{ c.bg }};color:{{ c.fg }};border-radius:{{ c.r }};font-weight:{{ c.w }}">{{ c.d }}</span></sc-for>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #E3E8EF">
+                  <span style="font-size:12px;color:#5B6B7F;white-space:nowrap">15 дней · 11 рабочих</span>
+                  <div style="display:flex;gap:8px"><button onClick="{{ closeAll }}" style="height:32px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#F5F7FA">Отмена</button><button onClick="{{ closeAll }}" style="height:32px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#072A45">Применить</button></div>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:4px;position:relative">
+          <span style="font-size:12px;color:#5B6B7F">Участки</span>
+          <button onClick="{{ openSecs }}" style="height:36px;min-width:160px;padding:0 10px 0 12px;border-radius:8px;border:1px solid {{ bSecs }};box-shadow:{{ rSecs }};background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer;white-space:nowrap">{{ secsLabel }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <sc-if value="{{ oSecs }}">
+            <div style="position:absolute;top:calc(100% + 6px);left:0;width:250px;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 12px 32px rgba(15,27,42,0.12);display:flex;flex-direction:column;z-index:50">
+              <sc-for list="{{ secOpts }}" as="o" hint-placeholder-count="6">
+                <div onClick="{{ o.click }}" style="height:34px;padding:0 8px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer" style-hover="background:#F5F7FA"><span style="width:16px;height:16px;border-radius:4px;background:{{ o.bg }};border:1.5px solid {{ o.border }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ o.on }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></span><span style="flex:1">{{ o.label }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ o.code }}</span></div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:4px;position:relative">
+          <span style="font-size:12px;color:#5B6B7F">Модель</span>
+          <button onClick="{{ openModel }}" style="height:36px;min-width:150px;padding:0 10px 0 12px;border-radius:8px;border:1px solid {{ bModel }};box-shadow:{{ rModel }};background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer;white-space:nowrap">{{ model }}<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          <sc-if value="{{ oModel }}">
+            <div style="position:absolute;top:calc(100% + 6px);left:0;width:180px;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 12px 32px rgba(15,27,42,0.12);display:flex;flex-direction:column;z-index:50">
+              <sc-for list="{{ modelOpts }}" as="o" hint-placeholder-count="4"><div onClick="{{ o.click }}" style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;font-size:13px;background:{{ o.bg }};color:{{ o.fg }};cursor:pointer">{{ o.label }}<sc-if value="{{ o.on }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></div></sc-for>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12px;color:#5B6B7F">Смена</span>
+          <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden">
+            <sc-for list="{{ shiftOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.click }}" style="height:34px;min-width:48px;padding:0 12px;border:none;border-right:1px solid #E3E8EF;background:{{ o.bg }};color:{{ o.fg }};font:500 13px Inter,sans-serif;cursor:pointer">{{ o.label }}</button></sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12px;color:#5B6B7F">Детализация</span>
+          <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden">
+            <sc-for list="{{ detOpts }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.click }}" style="height:34px;min-width:64px;padding:0 12px;border:none;border-right:1px solid #E3E8EF;background:{{ o.bg }};color:{{ o.fg }};font:500 13px Inter,sans-serif;cursor:pointer">{{ o.label }}</button></sc-for>
+          </div>
+        </div>
+
+        <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+          <button onClick="{{ resetAll }}" style="height:36px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>Сбросить</button>
+          <div style="position:relative">
+            <button onClick="{{ openExport }}" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid {{ bExport }};background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>Экспорт<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+            <sc-if value="{{ oExport }}">
+              <div style="position:absolute;top:calc(100% + 6px);right:0;width:180px;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 12px 32px rgba(15,27,42,0.12);display:flex;flex-direction:column;z-index:50">
+                <div onClick="{{ closeAll }}" style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C8453B" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg>PDF-отчёт</div>
+                <div onClick="{{ closeAll }}" style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2E9E6B" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M8 13h2"></path><path d="M14 13h2"></path><path d="M8 17h2"></path><path d="M14 17h2"></path></svg>Excel</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;height:22px;padding:0 9px;border-radius:6px;background:#F5F7FA;border:1px solid #E3E8EF;font-size:11px;color:#5B6B7F;white-space:nowrap"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">01–02.10</span> — данные кейса <span style="color:#B8C2CF">·</span> <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">03–15.10</span> — смоделированы</span>
+    </div>
+
+    <main style="padding:20px 28px 28px;display:flex;flex-direction:column;gap:16px">
+
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px">
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;color:#5B6B7F">Выполнение плана месяца</span>
+          <span style="display:flex;align-items:baseline;gap:6px;white-space:nowrap"><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">2 594</span><span style="font-size:15px;color:#5B6B7F">/ 5 500</span></span>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="width:47%;height:100%;background:#0088CC;border-radius:999px"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">47 %</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:auto"><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#A3352C;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>прогноз <span style="font-family:'JetBrains Mono',monospace">5 190</span></span><svg viewBox="0 0 96 28" preserveAspectRatio="none" style="width:96px;height:28px;display:block"><line x1="0" y1="2" x2="96" y2="2" stroke="#94A3B8" stroke-dasharray="3 3" style="stroke-width:1"></line><polyline points="0,27 10,25 19,23 29,21 38,19 48,17 58,15 67,13 77,11 86,9 96,7" fill="none" stroke="#0088CC" style="stroke-width:1.75"></polyline></svg></div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;color:#5B6B7F">OEE завода</span>
+          <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">87,2</span><span style="font-size:17px;color:#5B6B7F">%</span></span>
+          <span style="font-size:12px;color:#1F7A50"><span style="font-family:'JetBrains Mono',monospace">▲ 1,1 п.п.</span> к прошлой неделе</span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:auto"><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1F7A50;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>цель ≥ 85 %</span><svg viewBox="0 0 96 28" preserveAspectRatio="none" style="width:96px;height:28px;display:block"><line x1="0" y1="16" x2="96" y2="16" stroke="#94A3B8" stroke-dasharray="3 3" style="stroke-width:1"></line><polyline points="0,15 10,13 19,14 29,11 38,12 48,10 58,11 67,9 77,8 86,9 96,7" fill="none" stroke="#0088CC" style="stroke-width:1.75"></polyline></svg></div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;color:#5B6B7F">Уровень брака</span>
+          <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">2,6</span><span style="font-size:17px;color:#5B6B7F">%</span></span>
+          <span style="font-size:12px;color:#1F7A50"><span style="font-family:'JetBrains Mono',monospace">▼ 0,3 п.п.</span> к прошлой неделе</span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:auto"><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#A3352C;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>порог ≤ 2 %</span><svg viewBox="0 0 96 28" preserveAspectRatio="none" style="width:96px;height:28px;display:block"><line x1="0" y1="18" x2="96" y2="18" stroke="#94A3B8" stroke-dasharray="3 3" style="stroke-width:1"></line><polyline points="0,5 10,7 19,4 29,6 38,8 48,7 58,9 67,8 77,10 86,9 96,10" fill="none" stroke="#C8453B" style="stroke-width:1.75"></polyline></svg></div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;color:#5B6B7F">Простои за сутки</span>
+          <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">150</span><span style="font-size:17px;color:#5B6B7F">мин</span></span>
+          <span style="font-size:12px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">4</span> события</span>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:auto"><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1F7A50;line-height:1.3"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B;flex:none"></span>лимит 60 мин на единицу</span><div style="display:flex;align-items:flex-end;gap:3px;height:28px;flex:none"><span style="width:8px;height:52%;background:#7CC4E8;border-radius:2px 2px 0 0"></span><span style="width:8px;height:30%;background:#7CC4E8;border-radius:2px 2px 0 0"></span><span style="width:8px;height:66%;background:#7CC4E8;border-radius:2px 2px 0 0"></span><span style="width:8px;height:40%;background:#7CC4E8;border-radius:2px 2px 0 0"></span><span style="width:8px;height:74%;background:#7CC4E8;border-radius:2px 2px 0 0"></span><span style="width:8px;height:100%;background:#0088CC;border-radius:2px 2px 0 0"></span></div></div>
+        </div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-size:13px;color:#5B6B7F">Средняя загрузка линий</span>
+          <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">96</span><span style="font-size:17px;color:#5B6B7F">%</span></span>
+          <div style="height:6px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="width:96%;height:100%;background:#0088CC;border-radius:999px"></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:auto"><span style="font-size:12px;color:#5B6B7F">Сварка, Окраска, Сборка</span><svg viewBox="0 0 96 28" preserveAspectRatio="none" style="width:96px;height:28px;display:block"><polyline points="0,8 10,7 19,9 29,6 38,7 48,8 58,6 67,5 77,6 86,5 96,5" fill="none" stroke="#0088CC" style="stroke-width:1.75"></polyline></svg></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">План / факт по линиям</span><span style="font-size:13px;color:#5B6B7F">Авто за смену, среднее по рабочему дню · план 120</span></div>
+            <div style="display:flex;gap:14px;font-size:12px;color:#5B6B7F;flex-wrap:wrap;justify-content:flex-end"><sc-for list="{{ lineLegend }}" as="l" hint-placeholder-count="3"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:{{ l.c }}"></span>{{ l.n }}</span></sc-for><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;border-top:1.5px dashed #94A3B8"></span>План</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 52px;gap:8px">
+            <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><sc-for list="{{ t1 }}" as="t" hint-placeholder-count="5"><span style="position:absolute;right:0;top:{{ t.top }};transform:translateY(-50%)">{{ t.label }}</span></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;height:220px">
+                <sc-for list="{{ t1 }}" as="t" hint-placeholder-count="5"><div style="position:absolute;left:0;right:0;top:{{ t.top }};height:1px;background:{{ t.c }}"></div></sc-for>
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(11,minmax(0,1fr))">
+                  <sc-for list="{{ c1 }}" as="g" hint-placeholder-count="11">
+                    <div onMouseEnter="{{ g.enter }}" onMouseLeave="{{ g.leave }}" style="position:relative;display:flex;align-items:flex-end;justify-content:center;gap:2px;background:{{ g.bg }};cursor:default">
+                      <sc-for list="{{ g.bars }}" as="b" hint-placeholder-count="3"><div style="width:22%;max-width:12px;height:{{ b.h }};background:{{ b.c }};border-radius:2px 2px 0 0"></div></sc-for>
+                      <sc-if value="{{ g.hov }}">
+                        <div style="position:absolute;top:6px;left:{{ g.tl }};transform:{{ g.tt }};width:172px;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 4px 12px rgba(15,27,42,0.08);display:flex;flex-direction:column;gap:6px;z-index:5;pointer-events:none">
+                          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ g.date }}.2026</span>
+                          <sc-for list="{{ g.tip }}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:8px;height:8px;border-radius:2px;background:{{ r.c }}"></span><span style="flex:1">{{ r.n }}</span><span style="font-family:'JetBrains Mono',monospace;color:{{ r.fg }}">{{ r.v }}</span></div></sc-for>
+                          <div style="display:flex;justify-content:space-between;font-size:12px;color:#5B6B7F;border-top:1px solid #E3E8EF;padding-top:6px"><span>План</span><span style="font-family:'JetBrains Mono',monospace">120</span></div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="position:absolute;left:0;right:-60px;top:25%;border-top:1.5px dashed #94A3B8;pointer-events:none"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(11,minmax(0,1fr));font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;text-align:center"><sc-for list="{{ days }}" as="d" hint-placeholder-count="11"><span>{{ d }}</span></sc-for></div>
+            </div>
+            <div style="position:relative;height:220px"><span style="position:absolute;left:8px;top:25%;transform:translateY(-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;white-space:nowrap;background:#FFFFFF">План 120</span></div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">OEE по участкам</span><span style="font-size:13px;color:#5B6B7F">%, по рабочим дням · точки ниже цели — красные</span></div>
+            <div style="display:flex;gap:14px;font-size:12px;color:#5B6B7F;flex-wrap:wrap;justify-content:flex-end"><sc-for list="{{ oeeLegend }}" as="l" hint-placeholder-count="4"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:{{ l.c }}"></span>{{ l.n }}</span></sc-for></div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 52px;gap:8px">
+            <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><sc-for list="{{ t2 }}" as="t" hint-placeholder-count="4"><span style="position:absolute;right:0;top:{{ t.top }};transform:translateY(-50%)">{{ t.label }}</span></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;height:220px">
+                <sc-for list="{{ t2 }}" as="t" hint-placeholder-count="4"><div style="position:absolute;left:0;right:0;top:{{ t.top }};height:1px;background:{{ t.c }}"></div></sc-for>
+                <div style="position:absolute;left:0;right:-60px;top:50%;border-top:1.5px dashed #94A3B8"></div>
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible"><sc-for list="{{ c2 }}" as="s" hint-placeholder-count="4"><polyline points="{{ s.pts }}" fill="none" stroke="{{ s.c }}" stroke-width="{{ s.w }}" vector-effect="non-scaling-stroke" stroke-linejoin="round"></polyline></sc-for></svg>
+                <sc-for list="{{ c2 }}" as="s" hint-placeholder-count="4"><sc-for list="{{ s.dots }}" as="p" hint-placeholder-count="11"><span style="position:absolute;left:{{ p.x }};top:{{ p.y }};width:{{ p.sz }};height:{{ p.sz }};transform:translate(-50%,-50%);border-radius:50%;background:{{ p.bg }};border:1.5px solid {{ p.c }};pointer-events:none"></span></sc-for></sc-for>
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(11,minmax(0,1fr))">
+                  <sc-for list="{{ c2cols }}" as="g" hint-placeholder-count="11">
+                    <div onMouseEnter="{{ g.enter }}" onMouseLeave="{{ g.leave }}" style="position:relative;display:flex;justify-content:center">
+                      <sc-if value="{{ g.hov }}">
+                        <div style="width:1px;height:100%;background:#CBD5E1"></div>
+                        <div style="position:absolute;top:6px;left:{{ g.tl }};transform:{{ g.tt }};width:172px;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 4px 12px rgba(15,27,42,0.08);display:flex;flex-direction:column;gap:6px;z-index:5;pointer-events:none">
+                          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ g.date }}.2026</span>
+                          <sc-for list="{{ g.tip }}" as="r" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:10px;height:2px;background:{{ r.c }}"></span><span style="flex:1">{{ r.n }}</span><span style="font-family:'JetBrains Mono',monospace;color:{{ r.fg }}">{{ r.v }}</span></div></sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(11,minmax(0,1fr));font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;text-align:center"><sc-for list="{{ days }}" as="d" hint-placeholder-count="11"><span>{{ d }}</span></sc-for></div>
+            </div>
+            <div style="position:relative;height:220px"><span style="position:absolute;left:8px;top:50%;transform:translateY(-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;white-space:nowrap;background:#FFFFFF">Цель 85 %</span></div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Брак по участкам, %</span><span style="font-size:13px;color:#5B6B7F">За период · выше порога — красным</span></div>
+            <div style="display:flex;gap:14px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0088CC"></span>в норме</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#C8453B"></span>выше порога</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 52px;gap:8px">
+            <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><sc-for list="{{ t3 }}" as="t" hint-placeholder-count="4"><span style="position:absolute;right:0;top:{{ t.top }};transform:translateY(-50%)">{{ t.label }}</span></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;height:220px">
+                <sc-for list="{{ t3 }}" as="t" hint-placeholder-count="4"><div style="position:absolute;left:0;right:0;top:{{ t.top }};height:1px;background:{{ t.c }}"></div></sc-for>
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))">
+                  <sc-for list="{{ c3 }}" as="b" hint-placeholder-count="4">
+                    <div onMouseEnter="{{ b.enter }}" onMouseLeave="{{ b.leave }}" style="position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;background:{{ b.colBg }}">
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:{{ b.fg }};margin-bottom:6px;font-weight:{{ b.fw }}">{{ b.v }}</span>
+                      <div style="width:44%;max-width:64px;height:{{ b.h }};background:{{ b.c }};border-radius:3px 3px 0 0"></div>
+                      <sc-if value="{{ b.hov }}">
+                        <div style="position:absolute;top:6px;left:50%;transform:translateX(-50%);width:180px;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 4px 12px rgba(15,27,42,0.08);display:flex;flex-direction:column;gap:6px;z-index:5;pointer-events:none">
+                          <span style="font-size:13px;font-weight:500">{{ b.n }}</span>
+                          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">Брак</span><span style="font-family:'JetBrains Mono',monospace;color:{{ b.fg }}">{{ b.v }} %</span></div>
+                          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">Дефектов</span><span style="font-family:'JetBrains Mono',monospace">{{ b.cnt }}</span></div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="position:absolute;left:0;right:-60px;top:66.67%;border-top:1.5px dashed #C8453B;pointer-events:none"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));font-size:12px;text-align:center"><sc-for list="{{ c3 }}" as="b" hint-placeholder-count="4"><span style="color:{{ b.lblFg }};font-weight:{{ b.fw }}">{{ b.n }}</span></sc-for></div>
+            </div>
+            <div style="position:relative;height:220px"><span style="position:absolute;left:8px;top:66.67%;transform:translateY(-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#A3352C;white-space:nowrap;background:#FFFFFF">Порог 2 %</span></div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Парето простоев</span><span style="font-size:13px;color:#5B6B7F">Минуты по причинам и накопленная доля · 4 причины дают 100 %</span></div>
+            <div style="display:flex;gap:14px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0B3B60"></span>минуты</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:#0088CC"></span>накопительно, %</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:32px minmax(0,1fr) 40px;gap:8px">
+            <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><sc-for list="{{ t4 }}" as="t" hint-placeholder-count="4"><span style="position:absolute;right:0;top:{{ t.top }};transform:translateY(-50%)">{{ t.label }}</span></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;height:220px">
+                <sc-for list="{{ t4 }}" as="t" hint-placeholder-count="4"><div style="position:absolute;left:0;right:0;top:{{ t.top }};height:1px;background:{{ t.c }}"></div></sc-for>
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))">
+                  <sc-for list="{{ c4 }}" as="b" hint-placeholder-count="4">
+                    <div onMouseEnter="{{ b.enter }}" onMouseLeave="{{ b.leave }}" style="position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;background:{{ b.colBg }}">
+                      <span style="font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:6px">{{ b.v }}</span>
+                      <div style="width:50%;max-width:72px;height:{{ b.h }};background:#0B3B60;border-radius:3px 3px 0 0"></div>
+                      <sc-if value="{{ b.hov }}">
+                        <div style="position:absolute;top:44px;left:50%;transform:translateX(-50%);width:180px;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 4px 12px rgba(15,27,42,0.08);display:flex;flex-direction:column;gap:6px;z-index:5;pointer-events:none">
+                          <span style="font-size:13px;font-weight:500">{{ b.n }}</span>
+                          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">Простой</span><span style="font-family:'JetBrains Mono',monospace">{{ b.v }} мин</span></div>
+                          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">Накопительно</span><span style="font-family:'JetBrains Mono',monospace">{{ b.cum }} %</span></div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none"><polyline points="{{ c4pts }}" fill="none" stroke="#0088CC" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"></polyline></svg>
+                <sc-for list="{{ c4 }}" as="b" hint-placeholder-count="4"><span style="position:absolute;left:{{ b.px }};top:{{ b.py }};width:9px;height:9px;transform:translate(-50%,-50%);border-radius:50%;background:#FFFFFF;border:2px solid #0088CC;pointer-events:none"></span><span style="position:absolute;left:{{ b.px }};top:{{ b.py }};transform:translate(8px,-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#0077B6;pointer-events:none">{{ b.cum }} %</span></sc-for>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));font-size:12px;text-align:center"><sc-for list="{{ c4 }}" as="b" hint-placeholder-count="4"><span>{{ b.n }}</span></sc-for></div>
+            </div>
+            <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#0077B6"><span style="position:absolute;left:0;top:0;transform:translateY(-50%)">100 %</span><span style="position:absolute;left:0;top:50%;transform:translateY(-50%)">50 %</span><span style="position:absolute;left:0;bottom:0;transform:translateY(50%)">0 %</span></div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Выпуск по моделям</span><span style="font-size:13px;color:#5B6B7F">Факт с начала месяца против плана месяца</span></div>
+            <div style="display:flex;gap:14px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#0B3B60"></span>факт</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:#E3E8EF"></span>план</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:18px;padding-top:6px">
+            <sc-for list="{{ c5 }}" as="m" hint-placeholder-count="3">
+              <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="position:relative;display:grid;grid-template-columns:110px minmax(0,1fr) 128px;gap:14px;align-items:center">
+                <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500"><span style="width:8px;height:8px;border-radius:2px;background:{{ m.c }}"></span>{{ m.n }}</span>
+                <div style="position:relative;height:22px">
+                  <div style="position:absolute;left:0;top:0;bottom:0;width:{{ m.planW }};background:#E3E8EF;border-radius:0 4px 4px 0"></div>
+                  <div style="position:absolute;left:0;top:4px;bottom:4px;width:{{ m.factW }};background:{{ m.c }};border-radius:0 3px 3px 0"></div>
+                </div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right;white-space:nowrap">{{ m.fact }} <span style="color:#5B6B7F">/ {{ m.plan }}</span></span>
+                <sc-if value="{{ m.hov }}">
+                  <div style="position:absolute;left:124px;bottom:calc(100% + 6px);width:200px;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 4px 12px rgba(15,27,42,0.08);display:flex;flex-direction:column;gap:6px;z-index:5;pointer-events:none">
+                    <span style="font-size:13px;font-weight:500">Chevrolet {{ m.n }}</span>
+                    <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">Выполнено</span><span style="font-family:'JetBrains Mono',monospace">{{ m.pct }} %</span></div>
+                    <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">Осталось</span><span style="font-family:'JetBrains Mono',monospace">{{ m.left }}</span></div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+            <div style="display:grid;grid-template-columns:110px minmax(0,1fr) 128px;gap:14px"><span></span><div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;border-top:1px solid #CBD5E1;padding-top:6px"><span>0</span><span>625</span><span>1 250</span><span>1 875</span><span>2 500</span></div><span></span></div>
+          </div>
+          <div style="margin-top:auto;display:flex;gap:10px;padding:10px 12px;border-radius:8px;background:#FDF3E2;color:#94600F;font-size:13px;line-height:1.45"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E09A1F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;margin-top:1px"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg><span>Сумма плана по моделям <span style="font-family:'JetBrains Mono',monospace">4 800</span> &lt; цели <span style="font-family:'JetBrains Mono',monospace">5 500</span>: <span style="font-family:'JetBrains Mono',monospace">700</span> авто не распределены по моделям</span></div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Прогноз выпуска до конца месяца</span><span style="font-size:13px;color:#5B6B7F">Накопительно по рабочим дням октября</span></div>
+            <span style="height:26px;padding:0 10px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:6px;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Прогноз 5 190 · недобор 310</span>
+          </div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr) 60px;gap:8px">
+            <div style="position:relative;height:220px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><sc-for list="{{ t6 }}" as="t" hint-placeholder-count="4"><span style="position:absolute;right:0;top:{{ t.top }};transform:translateY(-50%)">{{ t.label }}</span></sc-for></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;height:220px">
+                <sc-for list="{{ t6 }}" as="t" hint-placeholder-count="4"><div style="position:absolute;left:0;right:0;top:{{ t.top }};height:1px;background:{{ t.c }}"></div></sc-for>
+                <div style="position:absolute;left:0;right:-66px;top:8.33%;border-top:1.5px dashed #94A3B8"></div>
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible">
+                  <polygon points="{{ c6band }}" fill="#0088CC" fill-opacity="0.12" stroke="none"></polygon>
+                  <polyline points="{{ c6fact }}" fill="none" stroke="#0B3B60" stroke-width="2.25" vector-effect="non-scaling-stroke" stroke-linejoin="round"></polyline>
+                  <polyline points="{{ c6fc }}" fill="none" stroke="#0088CC" stroke-width="2" stroke-dasharray="6 4" vector-effect="non-scaling-stroke"></polyline>
+                </svg>
+                <span style="position:absolute;left:{{ c6todayX }};top:0;bottom:0;border-left:1px solid #CBD5E1"></span>
+                <span style="position:absolute;left:{{ c6todayX }};top:{{ c6todayY }};width:10px;height:10px;transform:translate(-50%,-50%);border-radius:50%;background:#0B3B60;box-shadow:0 0 0 3px #E6F3FA"></span>
+                <span style="position:absolute;left:100%;top:{{ c6endY }};width:9px;height:9px;transform:translate(-50%,-50%);border-radius:50%;background:#FFFFFF;border:2px solid #0088CC"></span>
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:repeat(22,minmax(0,1fr))">
+                  <sc-for list="{{ c6cols }}" as="g" hint-placeholder-count="22">
+                    <div onMouseEnter="{{ g.enter }}" onMouseLeave="{{ g.leave }}" style="position:relative;display:flex;justify-content:center">
+                      <sc-if value="{{ g.hov }}">
+                        <div style="width:1px;height:100%;background:#CBD5E1"></div>
+                        <div style="position:absolute;top:30px;left:{{ g.tl }};transform:{{ g.tt }};width:184px;padding:10px 12px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 4px 12px rgba(15,27,42,0.08);display:flex;flex-direction:column;gap:6px;z-index:5;pointer-events:none">
+                          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ g.date }}.2026</span>
+                          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">{{ g.kind }}</span><span style="font-family:'JetBrains Mono',monospace">{{ g.v }}</span></div>
+                          <sc-if value="{{ g.isFc }}"><div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">Коридор</span><span style="font-family:'JetBrains Mono',monospace">{{ g.band }}</span></div></sc-if>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="position:relative;height:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><sc-for list="{{ c6x }}" as="x" hint-placeholder-count="5"><span style="position:absolute;left:{{ x.left }};transform:translateX(-50%)">{{ x.label }}</span></sc-for></div>
+            </div>
+            <div style="position:relative;height:220px"><span style="position:absolute;left:8px;top:8.33%;transform:translateY(-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;white-space:nowrap;background:#FFFFFF">Цель 5 500</span></div>
+          </div>
+          <div style="display:flex;gap:16px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:#0B3B60"></span>факт</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;border-top:2px dashed #0088CC"></span>прогноз</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:12px;height:10px;background:rgba(0,136,204,0.14)"></span>коридор неопределённости</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px;align-items:start">
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;display:flex;flex-direction:column;overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px">
+            <span style="font-size:16px;font-weight:500">Журнал простоев</span>
+            <span style="font-size:12px;color:#5B6B7F">{{ rowsTotal }} записей</span>
+          </div>
+          <div style="display:grid;grid-template-columns:110px 96px 120px minmax(0,1fr) 110px 100px;gap:12px;padding:10px 20px;background:#F5F7FA;border-top:1px solid #E3E8EF;border-bottom:1px solid #E3E8EF">
+            <sc-for list="{{ cols }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.click }}" style="display:flex;align-items:center;gap:4px;justify-content:{{ c.jc }};padding:0;border:none;background:transparent;font:500 12px Inter,sans-serif;color:{{ c.fg }};cursor:pointer;white-space:nowrap">{{ c.label }}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:{{ c.op }};transform:{{ c.rot }}"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg></button></sc-for>
+          </div>
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:110px 96px 120px minmax(0,1fr) 110px 100px;gap:12px;padding:12px 20px;border-bottom:1px solid #E3E8EF;align-items:center;font-size:13px" style-hover="background:#F5F7FA">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px">{{ r.date }}</span>
+              <span>{{ r.sec }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px">{{ r.eq }}</span>
+              <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.cause }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right">{{ r.dur }} мин</span>
+              <span style="justify-self:end;height:22px;padding:0 9px;border-radius:999px;background:{{ r.bg }};border:1px solid {{ r.bd }};color:{{ r.fg }};font-size:12px;font-weight:500;display:inline-flex;align-items:center">{{ r.status }}</span>
+            </div>
+          </sc-for>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 20px">
+            <span style="font-size:12px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">{{ pageInfo }}</span> из <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">{{ rowsTotal }}</span></span>
+            <div style="display:flex;gap:4px">
+              <button onClick="{{ prevPage }}" title="Назад" style="width:32px;height:32px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;opacity:{{ prevOp }};display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m15 18-6-6 6-6"></path></svg></button>
+              <sc-for list="{{ pages }}" as="p" hint-placeholder-count="2"><button onClick="{{ p.click }}" style="min-width:32px;height:32px;border-radius:8px;border:1px solid {{ p.bd }};background:{{ p.bg }};color:{{ p.fg }};font:500 12px 'JetBrains Mono',monospace;cursor:pointer">{{ p.n }}</button></sc-for>
+              <button onClick="{{ nextPage }}" title="Вперёд" style="width:32px;height:32px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;opacity:{{ nextOp }};display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:16px;font-weight:500">Эффект для бизнеса</span><span style="font-size:13px;color:#5B6B7F">Если двойник поможет предотвратить часть незапланированных простоев</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><span style="font-size:13px">Доля предотвращённых незапланированных простоев</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px;color:#0B3B60;font-weight:500">{{ share }} %</span></div>
+            <div style="position:relative;height:20px;display:flex;align-items:center">
+              <div style="position:absolute;left:0;right:0;height:6px;border-radius:999px;background:#E3E8EF"></div>
+              <div style="position:absolute;left:0;width:{{ shareW }};height:6px;border-radius:999px;background:#0088CC"></div>
+              <div style="position:absolute;left:{{ shareW }};width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0088CC;pointer-events:none"></div>
+              <input type="range" min="0" max="60" step="1" value="{{ share }}" onChange="{{ setShare }}" style="position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer">
+            </div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>0 %</span><span>60 %</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:13px">Условная маржа на автомобиль, ₸</span>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 156px;gap:14px;align-items:center">
+              <div style="position:relative;height:20px;display:flex;align-items:center">
+                <div style="position:absolute;left:0;right:0;height:6px;border-radius:999px;background:#E3E8EF"></div>
+                <div style="position:absolute;left:0;width:{{ marginW }};height:6px;border-radius:999px;background:#0088CC"></div>
+                <div style="position:absolute;left:{{ marginW }};width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0088CC;pointer-events:none"></div>
+                <input type="range" min="100000" max="1000000" step="10000" value="{{ margin }}" onChange="{{ setMarginRange }}" style="position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer">
+              </div>
+              <div style="height:38px;border:1px solid #E3E8EF;border-radius:8px;display:flex;align-items:center;overflow:hidden" style-focus-within="border-color:#0088CC">
+                <input value="{{ marginText }}" onChange="{{ setMarginText }}" style="flex:1;min-width:0;height:100%;border:none;outline:none;padding:0 10px;font:400 13px 'JetBrains Mono',monospace;color:#0F1B2A;text-align:right;background:transparent">
+                <span style="height:100%;padding:0 10px;border-left:1px solid #E3E8EF;background:#F5F7FA;display:flex;align-items:center;font-size:13px;color:#5B6B7F">₸</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+            <div style="padding:14px 16px;border-radius:10px;background:#E6F3FA;display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#0B3B60">Дополнительный выпуск</span><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1;white-space:nowrap">+{{ autos }}</span><span style="font-size:13px;color:#0B3B60">авто в месяц</span></div>
+            <div style="padding:14px 16px;border-radius:10px;background:#E6F3FA;display:flex;flex-direction:column;gap:6px"><span style="font-size:12px;color:#0B3B60">Дополнительная маржа</span><span style="font-size:40px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1;white-space:nowrap">≈ {{ money }}</span><span style="font-size:13px;color:#0B3B60">млн ₸ в месяц</span></div>
+          </div>
+          <span style="font-size:12px;color:#5B6B7F;line-height:1.5">расчёт: такт 4 мин, 22 рабочих дня; маржа — допущение</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer style="height:72px;flex:none;background:#FFFFFF;border-top:1px solid #E3E8EF;display:flex;align-items:center;gap:20px;padding:0 24px;position:relative;z-index:30">
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ togglePlay }}" style="height:40px;width:112px;padding:0 14px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-hover="background:#072A45">
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg></sc-if>
+        <sc-if value="{{ paused }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></sc-if>
+        {{ playLabel }}
+      </button>
+      <button onClick="{{ resetClock }}" title="Сброс" style="width:40px;height:40px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+    </div>
+    <div style="width:1px;height:36px;background:#E3E8EF"></div>
+    <div style="display:flex;flex-direction:column;gap:4px;flex:none;width:186px">
+      <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Время симуляции</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:15px;white-space:nowrap">15.10.2026 · {{ clock }}</span>
+    </div>
+    <div style="flex:1;min-width:0;position:relative;height:48px">
+      <div style="position:absolute;left:0;right:0;top:22px;height:6px;border-radius:999px;background:#E3E8EF"></div>
+      <div style="position:absolute;left:0;width:{{ pos }};top:22px;height:6px;border-radius:999px;background:#0088CC"></div>
+      <sc-for list="{{ markers }}" as="m" hint-placeholder-count="3">
+        <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="position:absolute;left:{{ m.left }};top:2px;width:16px;height:20px;margin-left:-8px;display:flex;justify-content:center;cursor:pointer;z-index:2">
+          <span style="width:4px;height:13px;border-radius:2px;background:{{ m.color }}"></span>
+          <sc-if value="{{ m.show }}">
+            <div style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:220px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:10px;box-shadow:0 8px 24px rgba(15,27,42,0.10);padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:default">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px"><span>{{ m.time }} · {{ m.code }}</span><span style="color:#5B6B7F">{{ m.dur }}</span></div>
+              <span style="font-size:13px;font-weight:500">{{ m.text }}</span>
+              <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:{{ m.soft }};color:{{ m.fg }};font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.color }}"></span>{{ m.stText }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="position:absolute;left:{{ pos }};top:16px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0B3B60;z-index:3"></div>
+      <div style="position:absolute;left:0;right:0;top:34px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>00:00</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <span style="font-size:12px;color:#5B6B7F">Скорость</span>
+      <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden">
+        <sc-for list="{{ speeds }}" as="s" hint-placeholder-count="5"><button onClick="{{ s.click }}" style="height:34px;min-width:44px;padding:0 10px;border:none;border-right:1px solid #E3E8EF;background:{{ s.bg }};color:{{ s.fg }};font:500 12px 'JetBrains Mono',monospace;cursor:pointer">{{ s.label }}</button></sc-for>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex:none;font-size:12px;color:#5B6B7F"><span style="height:24px;padding:0 8px;border:1px solid #E3E8EF;border-bottom-width:2px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#0F1B2A;display:flex;align-items:center">Space</span>пауза</div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const DAYS = ['01.10', '02.10', '05.10', '06.10', '07.10', '08.10', '09.10', '12.10', '13.10', '14.10', '15.10'];
+const LINES = [
+  { n: 'Сварка', c: '#0B3B60', v: [121, 119, 122, 120, 118, 121, 120, 119, 121, 120, 118] },
+  { n: 'Окраска', c: '#0088CC', v: [118, 116, 119, 117, 115, 118, 117, 116, 114, 113, 116] },
+  { n: 'Сборка', c: '#7CC4E8', v: [119, 118, 119, 118, 117, 118, 118, 118, 117, 116, 119] },
+];
+const OEE = [
+  { n: 'Сварка', c: '#0B3B60', v: [87.2, 86.8, 87.5, 86.1, 85.9, 86.4, 85.7, 85.2, 84.9, 85.1, 84.6] },
+  { n: 'Окраска', c: '#0088CC', w: 2.5, v: [88.1, 87.4, 86.9, 86.2, 85.5, 84.8, 84.1, 83.0, 81.9, 80.6, 79.3] },
+  { n: 'Сборка', c: '#7CC4E8', v: [89.4, 89.0, 89.8, 88.7, 88.9, 89.2, 88.4, 88.8, 88.0, 87.6, 88.1] },
+  { n: 'ОТК', c: '#5B6B7F', v: [91.8, 92.1, 91.5, 91.9, 92.4, 91.2, 91.7, 91.0, 91.6, 91.3, 91.0] },
+];
+const DEFECT = [{ n: 'Сварка', v: 0.9, cnt: 23 }, { n: 'Окраска', v: 5.2, cnt: 135 }, { n: 'Сборка', v: 1.6, cnt: 42 }, { n: 'ОТК', v: 0.7, cnt: 18 }];
+const PARETO = [{ n: 'Обрыв цепи', v: 55 }, { n: 'Замена фильтра', v: 40 }, { n: 'Плановое ТО', v: 30 }, { n: 'Ошибка датчика', v: 25 }];
+const MODELS = [{ n: 'Cobalt', c: '#0B3B60', f: 1362, p: 2500 }, { n: 'Onix', c: '#0088CC', f: 980, p: 1800 }, { n: 'JAC J7', c: '#7CC4E8', f: 252, p: 500 }];
+const WD = [1, 2, 5, 6, 7, 8, 9, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 26, 27, 28, 29, 30];
+const DAILY = [238, 236, 238, 236, 234, 236, 236, 236, 234, 232, 238];
+const SECTIONS = [['Склад комплектующих', 'WH-IN'], ['Сварка-1', 'WLD-1'], ['Окраска-1', 'PNT-1'], ['Сборка-1', 'ASM-1'], ['Контроль качества', 'QC-1'], ['Склад ГП', 'WH-OUT']];
+const LOG = [
+  ['02.10.2026', 'Сборка', 'Конвейер-03', 'Обрыв цепи', 55, 'Закрыт'],
+  ['02.10.2026', 'Сварка', 'ABB-04', 'Плановое ТО', 30, 'Закрыт'],
+  ['01.10.2026', 'Окраска', 'Камера-02', 'Замена фильтра', 40, 'Закрыт'],
+  ['01.10.2026', 'Сварка', 'ABB-01', 'Ошибка датчика', 25, 'Закрыт'],
+  ['15.10.2026', 'Сборка', 'Конвейер-03', 'Обрыв цепи', 55, 'Открыт'],
+  ['15.10.2026', 'Окраска', 'Камера-02', 'Замена фильтра', 40, 'Закрыт'],
+  ['15.10.2026', 'Сварка', 'ABB-04', 'Плановое ТО', 30, 'Закрыт'],
+  ['15.10.2026', 'Сварка', 'ABB-01', 'Ошибка датчика', 25, 'Закрыт'],
+  ['13.10.2026', 'Окраска', 'ПС-01', 'Температура печи выше уставки', 22, 'Закрыт'],
+  ['09.10.2026', 'Сборка', 'СЗ-01', 'Отклонение момента затяжки', 15, 'Закрыт'],
+  ['07.10.2026', 'Сварка', 'ABB-03', 'Износ электродов', 20, 'Закрыт'],
+].map(r => ({ date: r[0], sec: r[1], eq: r[2], cause: r[3], dur: r[4], status: r[5] }));
+const COLS = [['date', 'Дата'], ['sec', 'Участок'], ['eq', 'Оборудование'], ['cause', 'Причина'], ['dur', 'Длительность'], ['status', 'Статус']];
+const PAGE = 6;
+const T0 = 78130, START = 57600, SPAN = 28800;
+const ST = { warn: { dot: '#E09A1F', soft: '#FDF3E2', fg: '#94600F', text: 'Внимание' }, alarm: { dot: '#C8453B', soft: '#FBEAE8', fg: '#A3352C', text: 'Авария' } };
+const MARKERS = [
+  { time: '17:05', code: 'ABB-01', text: 'Ошибка датчика', dur: '25 мин', st: 'warn', left: '13.54%' },
+  { time: '18:40', code: 'Камера-02', text: 'Замена фильтра', dur: '40 мин', st: 'warn', left: '33.33%' },
+  { time: '20:15', code: 'Конвейер-03', text: 'Обрыв цепи', dur: '55 мин', st: 'alarm', left: '53.13%' },
+];
+const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const dec = n => String(n).replace('.', ',');
+const ticks = (vals, lo, hi, fmtF) => vals.map((v, i) => ({ label: fmtF ? fmtF(v) : v, top: ((hi - v) / (hi - lo) * 100).toFixed(2) + '%', c: i === vals.length - 1 ? '#CBD5E1' : '#E3E8EF' }));
+const tipPos = (i, n) => i < 2 ? { tl: '4px', tt: 'none' } : i > n - 3 ? { tl: 'calc(100% - 4px)', tt: 'translateX(-100%)' } : { tl: '50%', tt: 'translateX(-50%)' };
+const DEFAULTS = { open: null, preset: 'Текущий месяц', secs: [true, true, true, true, true, true], model: 'Все модели', shift: 'Все', det: 'День' };
+
+class Component extends DCLogic {
+  state = { vw: typeof window !== 'undefined' ? window.innerWidth : 1920, ...DEFAULTS, hov: null, sort: null, page: 0, share: 30, margin: 400000, marginText: '400 000', playing: true, t: T0, speed: '8×', hm: null };
+
+  componentDidMount() {
+    this.iv = setInterval(() => { if (!this.state.playing) return; const k = parseInt(this.state.speed, 10) || 1; this.setState(s => { let t = s.t + k; if (t >= START + SPAN) t = START; return { t }; }); }, 1000);
+    this.onKey = e => { if (e.code === 'Space' && !/input|textarea/i.test(e.target.tagName)) { e.preventDefault(); this.setState(s => ({ playing: !s.playing })); } };
+    this.onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('keydown', this.onKey); window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() { clearInterval(this.iv); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize); }
+
+  month(y, m, label) {
+    const off = (new Date(y, m, 1).getDay() + 6) % 7, n = new Date(y, m + 1, 0).getDate();
+    const s = new Date(2026, 9, 1).getTime(), e = new Date(2026, 9, 15).getTime();
+    const cells = [];
+    for (let i = 0; i < off; i++) cells.push({ d: '', bg: 'transparent', fg: '#0F1B2A', r: '8px', w: 400 });
+    for (let d = 1; d <= n; d++) {
+      const t = new Date(y, m, d).getTime(), edge = t === s || t === e, inr = t > s && t < e;
+      cells.push({ d, bg: edge ? '#0B3B60' : inr ? '#E6F3FA' : 'transparent', fg: edge ? '#FFFFFF' : inr ? '#0B3B60' : '#0F1B2A', r: edge ? '8px' : '0', w: edge ? 500 : 400 });
+    }
+    return { label, cells };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const hv = (c, i) => s.hov && s.hov.c === c && s.hov.i === i;
+    const enter = (c, i) => () => this.setState({ hov: { c, i } });
+    const leave = () => this.setState({ hov: null });
+    const toggle = k => () => this.setState(st => ({ open: st.open === k ? null : k }));
+    const ring = k => ({ b: s.open === k ? '#0088CC' : '#E3E8EF', r: s.open === k ? '0 0 0 3px #E6F3FA' : 'none' });
+    const seg = (opts, key) => opts.map(l => ({ label: l, bg: s[key] === l ? '#E6F3FA' : '#FFFFFF', fg: s[key] === l ? '#0B3B60' : '#5B6B7F', click: () => this.setState({ [key]: l }) }));
+    const nSecs = s.secs.filter(Boolean).length;
+
+    const c1 = DAYS.map((d, i) => ({ date: d, hov: hv('c1', i), bg: hv('c1', i) ? '#F5F7FA' : 'transparent', enter: enter('c1', i), leave, ...tipPos(i, 11),
+      bars: LINES.map(l => ({ c: l.c, h: (l.v[i] / 160 * 100).toFixed(2) + '%' })),
+      tip: LINES.map(l => ({ c: l.c, n: l.n, v: l.v[i], fg: l.v[i] < 120 ? '#A3352C' : '#0F1B2A' })) }));
+
+    const xp = i => ((i + 0.5) / 11 * 100);
+    const yO = v => ((100 - v) / 30 * 100);
+    const c2 = OEE.map(l => ({ c: l.c, w: l.w || 1.75, pts: l.v.map((v, i) => `${xp(i).toFixed(2)},${yO(v).toFixed(2)}`).join(' '),
+      dots: l.v.map((v, i) => { const bad = v < 85; return { x: xp(i).toFixed(2) + '%', y: yO(v).toFixed(2) + '%', c: bad ? '#C8453B' : l.c, bg: bad ? '#C8453B' : '#FFFFFF', sz: bad ? '8px' : '7px' }; }) }));
+    const c2cols = DAYS.map((d, i) => ({ date: d, hov: hv('c2', i), enter: enter('c2', i), leave, ...tipPos(i, 11),
+      tip: OEE.map(l => ({ c: l.c, n: l.n, v: dec(l.v[i].toFixed(1)) + ' %', fg: l.v[i] < 85 ? '#A3352C' : '#0F1B2A' })) }));
+
+    const c3 = DEFECT.map((b, i) => { const bad = b.v > 2, h = hv('c3', i); return { n: b.n, v: dec(b.v), cnt: b.cnt, h: (b.v / 6 * 100).toFixed(2) + '%', c: bad ? '#C8453B' : '#0088CC', fg: bad ? '#A3352C' : '#0F1B2A', lblFg: bad ? '#A3352C' : '#0F1B2A', fw: bad ? 600 : 400, hov: h, colBg: h ? '#F5F7FA' : 'transparent', enter: enter('c3', i), leave }; });
+
+    const total = PARETO.reduce((a, b) => a + b.v, 0);
+    let acc = 0;
+    const c4 = PARETO.map((b, i) => { acc += b.v; const cum = acc / total * 100; const h = hv('c4', i);
+      return { n: b.n, v: b.v, h: (b.v / 60 * 100).toFixed(2) + '%', cum: dec(cum.toFixed(1)).replace(',0', ''), px: ((i + 0.5) / 4 * 100).toFixed(2) + '%', py: (100 - cum).toFixed(2) + '%', _x: (i + 0.5) / 4 * 100, _y: 100 - cum, hov: h, colBg: h ? '#F5F7FA' : 'transparent', enter: enter('c4', i), leave }; });
+
+    const c5 = MODELS.map((m, i) => ({ n: m.n, c: m.c, fact: fmt(m.f), plan: fmt(m.p), planW: (m.p / 2500 * 100) + '%', factW: (m.f / 2500 * 100).toFixed(2) + '%', pct: dec((m.f / m.p * 100).toFixed(1)), left: fmt(m.p - m.f), hov: hv('c5', i), enter: enter('c5', i), leave }));
+
+    const cum = []; DAILY.reduce((a, v, i) => (cum[i] = a + v), 0);
+    const x6 = i => ((i + 0.5) / 22 * 100), y6 = v => (100 - v / 6000 * 100);
+    const fcV = i => 2594 + (i - 10) * 236, bw = i => (i - 10) * 16;
+    const fcIdx = Array.from({ length: 12 }, (_, k) => k + 10);
+    const c6cols = WD.map((d, i) => { const isFc = i > 10; const v = i <= 10 ? cum[i] : fcV(i);
+      return { date: String(d).padStart(2, '0') + '.10', hov: hv('c6', i), enter: enter('c6', i), leave, ...tipPos(i, 22), isFc, kind: isFc ? 'Прогноз' : 'Факт', v: fmt(v), band: `${fmt(v - bw(i))}–${fmt(v + bw(i))}` }; });
+
+    const rowsAll = s.sort ? [...LOG].sort((a, b) => {
+      const k = s.sort.k; let av = a[k], bv = b[k];
+      if (k === 'date') { av = av.split('.').reverse().join(''); bv = bv.split('.').reverse().join(''); }
+      return (av > bv ? 1 : av < bv ? -1 : 0) * s.sort.d;
+    }) : LOG;
+    const pages = Math.ceil(rowsAll.length / PAGE), page = Math.min(s.page, pages - 1);
+    const autos = Math.round(120 * (s.share / 100) * 22 / 4);
+    const fmtT = t => [Math.floor(t / 3600) % 24, Math.floor(t / 60) % 60, t % 60].map(n => String(n).padStart(2, '0')).join(':');
+
+    return {
+      wide: s.vw >= 1600,
+      anyOpen: !!s.open, closeAll: () => this.setState({ open: null }),
+      openPeriod: toggle('period'), oPeriod: s.open === 'period', bPeriod: ring('period').b, rPeriod: ring('period').r,
+      openSecs: toggle('secs'), oSecs: s.open === 'secs', bSecs: ring('secs').b, rSecs: ring('secs').r,
+      openModel: toggle('model'), oModel: s.open === 'model', bModel: ring('model').b, rModel: ring('model').r,
+      openExport: toggle('export'), oExport: s.open === 'export', bExport: ring('export').b,
+      presets: ['Сегодня', 'Вчера', '7 дней', 'Текущий месяц'].map(l => { const on = s.preset === l; return { label: l, bg: on ? '#E6F3FA' : 'transparent', fg: on ? '#0B3B60' : '#0F1B2A', w: on ? 500 : 400, click: () => this.setState({ preset: l }) }; }),
+      weekdays: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+      months: [this.month(2026, 8, 'Сентябрь 2026'), this.month(2026, 9, 'Октябрь 2026')],
+      secsLabel: nSecs === 6 ? 'Все участки' : nSecs === 0 ? 'Не выбрано' : `${nSecs} из 6 участков`,
+      secOpts: SECTIONS.map(([label, code], i) => { const on = s.secs[i]; return { label, code, on, bg: on ? '#0B3B60' : '#FFFFFF', border: on ? '#0B3B60' : '#CBD5E1', click: () => this.setState(st => { const a = [...st.secs]; a[i] = !a[i]; return { secs: a }; }) }; }),
+      model: s.model,
+      modelOpts: ['Все модели', 'Chevrolet Cobalt', 'Chevrolet Onix', 'JAC J7'].map(l => { const on = s.model === l; return { label: l, on, bg: on ? '#E6F3FA' : 'transparent', fg: on ? '#0B3B60' : '#0F1B2A', click: () => this.setState({ model: l, open: null }) }; }),
+      shiftOpts: seg(['Все', '1', '2'], 'shift'), detOpts: seg(['День', 'Смена'], 'det'),
+      resetAll: () => this.setState({ ...DEFAULTS, secs: [true, true, true, true, true, true] }),
+
+      days: DAYS,
+      lineLegend: LINES, oeeLegend: OEE,
+      t1: ticks([160, 120, 80, 40, 0], 0, 160), c1,
+      t2: ticks([100, 90, 80, 70], 70, 100), c2, c2cols,
+      t3: ticks([6, 4, 2, 0], 0, 6), c3,
+      t4: ticks([60, 40, 20, 0], 0, 60), c4, c4pts: c4.map(b => `${b._x.toFixed(2)},${b._y.toFixed(2)}`).join(' '),
+      c5,
+      t6: ticks([6000, 4000, 2000, 0], 0, 6000, fmt),
+      c6fact: cum.map((v, i) => `${x6(i).toFixed(2)},${y6(v).toFixed(2)}`).join(' '),
+      c6fc: fcIdx.map(i => `${x6(i).toFixed(2)},${y6(fcV(i)).toFixed(2)}`).join(' '),
+      c6band: [...fcIdx.map(i => `${x6(i).toFixed(2)},${y6(fcV(i) + bw(i)).toFixed(2)}`), ...fcIdx.slice().reverse().map(i => `${x6(i).toFixed(2)},${y6(fcV(i) - bw(i)).toFixed(2)}`)].join(' '),
+      c6todayX: x6(10).toFixed(2) + '%', c6todayY: y6(2594).toFixed(2) + '%', c6endY: y6(5190).toFixed(2) + '%',
+      c6cols,
+      c6x: [0, 6, 11, 16, 21].map(i => ({ label: String(WD[i]).padStart(2, '0') + '.10', left: x6(i).toFixed(2) + '%' })),
+
+      cols: COLS.map(([k, label]) => { const on = s.sort && s.sort.k === k; return { label, jc: k === 'dur' || k === 'status' ? 'flex-end' : 'flex-start', fg: on ? '#0B3B60' : '#5B6B7F', op: on ? 1 : 0.45, rot: 'none',
+        click: () => this.setState(st => ({ page: 0, sort: st.sort && st.sort.k === k ? (st.sort.d === 1 ? { k, d: -1 } : null) : { k, d: 1 } })) }; }),
+      rows: rowsAll.slice(page * PAGE, page * PAGE + PAGE).map(r => { const open = r.status === 'Открыт'; return { ...r, bg: open ? '#E6F3FA' : '#F5F7FA', bd: open ? '#E6F3FA' : '#E3E8EF', fg: open ? '#0B3B60' : '#5B6B7F' }; }),
+      rowsTotal: rowsAll.length,
+      pageInfo: `${page * PAGE + 1}–${Math.min(rowsAll.length, page * PAGE + PAGE)}`,
+      pages: Array.from({ length: pages }, (_, i) => ({ n: i + 1, bg: i === page ? '#0B3B60' : '#FFFFFF', fg: i === page ? '#FFFFFF' : '#0F1B2A', bd: i === page ? '#0B3B60' : '#E3E8EF', click: () => this.setState({ page: i }) })),
+      prevPage: () => this.setState({ page: Math.max(0, page - 1) }), nextPage: () => this.setState({ page: Math.min(pages - 1, page + 1) }),
+      prevOp: page === 0 ? 0.4 : 1, nextOp: page >= pages - 1 ? 0.4 : 1,
+
+      share: s.share, shareW: (s.share / 60 * 100).toFixed(2) + '%', setShare: e => this.setState({ share: +e.target.value }),
+      margin: s.margin, marginW: ((s.margin - 100000) / 900000 * 100).toFixed(2) + '%', marginText: s.marginText,
+      setMarginRange: e => { const v = +e.target.value; this.setState({ margin: v, marginText: fmt(v) }); },
+      setMarginText: e => { const raw = e.target.value.replace(/[^\d]/g, ''); const v = Math.max(0, +raw || 0); this.setState({ marginText: raw ? fmt(v) : '', margin: Math.min(1000000, Math.max(100000, v)) }); },
+      autos, money: fmt(autos * (+(s.marginText.replace(/\s/g, '')) || 0) / 1e6),
+
+      playing: s.playing, paused: !s.playing, playLabel: s.playing ? 'Пауза' : 'Пуск',
+      togglePlay: () => this.setState(st => ({ playing: !st.playing })), resetClock: () => this.setState({ t: T0 }),
+      clock: fmtT(s.t), pos: ((s.t - START) / SPAN * 100).toFixed(2) + '%',
+      markers: MARKERS.map((m, i) => ({ ...m, color: ST[m.st].dot, soft: ST[m.st].soft, fg: ST[m.st].fg, stText: ST[m.st].text, show: s.hm === i, enter: () => this.setState({ hm: i }), leave: () => this.setState({ hm: null }) })),
+      speeds: ['1×', '4×', '8×', '16×', '32×'].map(l => ({ label: l, bg: s.speed === l ? '#E6F3FA' : '#FFFFFF', fg: s.speed === l ? '#0B3B60' : '#5B6B7F', click: () => this.setState({ speed: l }) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

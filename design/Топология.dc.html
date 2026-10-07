@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;min-width:1440px;background:#F5F7FA;color:#0F1B2A;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#0077B6;text-decoration:none}a:hover{color:#0B3B60;text-decoration:underline}
+*{box-sizing:border-box}
+@keyframes dcBlink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes dcPulse{0%{transform:scale(1);opacity:.55}100%{transform:scale(2.8);opacity:0}}
+</style>
+</helmet>
+
+<div data-screen-label="01 Топология" style="height:100vh;min-height:900px;display:flex;flex-direction:column;background:#F5F7FA">
+
+  <header style="height:64px;flex:none;background:#FFFFFF;border-bottom:1px solid #E3E8EF;display:flex;align-items:center;padding:0 20px 0 24px;gap:24px;position:relative;z-index:30">
+    <div style="display:flex;align-items:center;gap:20px;flex:none">
+      <img src="assets/allur-logo.png" alt="Allur" style="height:48px;margin:0 -16px;display:block">
+      <div style="width:1px;height:30px;background:#E3E8EF"></div>
+      <div style="display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:15px;font-weight:600;letter-spacing:-0.01em">СарыаркаАвтоПром</div>
+        <div style="font-size:12px;color:#5B6B7F">Цифровой двойник</div>
+      </div>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center;min-width:0">
+      <div style="flex:none;display:flex;gap:4px;padding:4px;background:#F5F7FA;border:1px solid #E3E8EF;border-radius:10px">
+        <button style="height:34px;padding:0 16px;border-radius:7px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"></path></svg>Топология</button>
+        <button onClick="{{ goSummary }}" style="height:34px;padding:0 16px;border-radius:7px;border:none;background:transparent;color:#5B6B7F;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="color:#0F1B2A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>Сводка</button>
+        <button onClick="{{ goScenarios }}" style="height:34px;padding:0 16px;border-radius:7px;border:none;background:transparent;color:#5B6B7F;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer" style-hover="color:#0F1B2A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="6" x2="6" y1="3" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg>Сценарии</button>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <button style="height:36px;padding:0 10px 0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer;white-space:nowrap" style-hover="background:#F5F7FA"><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="color:#5B6B7F;font-weight:400">Модель</span></sc-if>Chevrolet Cobalt<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+      <span style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;display:flex;align-items:center;gap:8px;font-size:13px;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>Смена 2 · <span style="font-family:'JetBrains Mono',monospace;font-size:12px">16:00–00:00</span></span>
+      <button onClick="{{ goAI }}" style="position:relative;height:36px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer" style-hover="background:#F5F7FA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg><sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="white-space:nowrap">ИИ-диспетчер</span></sc-if><span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#C8453B;color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center">3</span></button>
+      <div style="width:1px;height:24px;background:#E3E8EF;margin:0 2px"></div>
+      <div style="position:relative"><button onClick="{{ toggleBell }}" title="Уведомления" style="position:relative;width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg><sc-if value="{{ hasUnread }}" hint-placeholder-val="{{ true }}"><span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:#C8453B;border:1.5px solid #FFFFFF"></span></sc-if></button>
+        <sc-if value="{{ bellOpen }}">
+          <div style="position:absolute;top:calc(100% + 10px);right:-8px;width:380px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;box-shadow:0 12px 32px rgba(15,27,42,0.12);z-index:60;display:flex;flex-direction:column;overflow:hidden">
+            <div style="padding:14px 16px 12px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:500">Уведомления</span><a href="#" onClick="{{ markAll }}" style="font-size:12px;font-weight:500">Отметить все прочитанными</a></div>
+              <div style="display:flex;gap:4px;padding:3px;background:#F5F7FA;border:1px solid #E3E8EF;border-radius:8px;align-self:flex-start">
+                <sc-for list="{{ bellTabs }}" as="b" hint-placeholder-count="2"><button onClick="{{ b.click }}" style="height:28px;padding:0 12px;border-radius:6px;border:none;background:{{ b.bg }};color:{{ b.fg }};box-shadow:{{ b.sh }};font:500 12px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer">{{ b.label }}<span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">{{ b.count }}</span></button></sc-for>
+              </div>
+            </div>
+            <div style="border-top:1px solid #E3E8EF;display:flex;flex-direction:column">
+              <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="6">
+                <div onClick="{{ n.click }}" style="display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:start;padding:12px 16px;border-bottom:1px solid #E3E8EF;background:{{ n.bg }};cursor:pointer" style-hover="background:#F5F7FA">
+                  <span style="width:30px;height:30px;border-radius:8px;background:{{ n.soft }};color:{{ n.dot }};display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="{{ n.i1 }}"></path><path d="{{ n.i2 }}"></path><path d="{{ n.i3 }}"></path></svg></span>
+                  <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:13px;line-height:1.35"><span style="font-family:'JetBrains Mono',monospace;font-weight:500">{{ n.obj }}</span> · {{ n.text }}</span><span style="font-size:12px;color:{{ n.fg }}">{{ n.lvlText }}</span></div>
+                  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">{{ n.time }}</span><sc-if value="{{ n.unread }}"><span style="width:7px;height:7px;border-radius:50%;background:#0088CC"></span></sc-if></div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ noNotifs }}"><div style="padding:28px 16px;text-align:center;font-size:13px;color:#5B6B7F">Непрочитанных уведомлений нет</div></sc-if>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+      <button title="Настройки" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+      <div title="Начальник смены" style="display:flex;align-items:center;gap:10px;padding-left:4px">
+        <span style="width:34px;height:34px;border-radius:50%;background:#E6F3FA;color:#0B3B60;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center">НС</span>
+        <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px;line-height:1.25;white-space:nowrap">Начальник<br><span style="color:#5B6B7F">смены</span></span></sc-if>
+      </div>
+    </div>
+  </header>
+
+  <div style="flex:1;min-height:0;display:flex">
+
+    <aside style="width:240px;flex:none;background:#FFFFFF;border-right:1px solid #E3E8EF;display:flex;flex-direction:column">
+      <div style="padding:16px 16px 12px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Участки</span><button title="Свернуть панель" style="width:28px;height:28px;border-radius:6px;border:none;background:transparent;color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA;color:#0F1B2A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path><path d="m16 15-3-3 3-3"></path></svg></button></div>
+        <div style="height:36px;padding:0 10px;border:1px solid #E3E8EF;border-radius:8px;display:flex;align-items:center;gap:8px;background:#FFFFFF;cursor:text" style-hover="border-color:#CBD5E1"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="flex:1;min-width:0;font-size:12px;color:#5B6B7F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Участок или оборудование, напр. ABB-01</span></div>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;border-top:1px solid #E3E8EF">
+        <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+          <div onClick="{{ r.click }}" onMouseEnter="{{ r.enter }}" onMouseLeave="{{ r.leave }}" style="display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid #E3E8EF;background:{{ r.bg }};box-shadow:{{ r.bar }};cursor:pointer">
+            <span style="width:28px;height:28px;border-radius:7px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;justify-content:center;color:#0088CC"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="{{ r.i1 }}"></path><path d="{{ r.i2 }}"></path><path d="{{ r.i3 }}"></path></svg></span>
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0">
+              <span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.list }}</span>
+              <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:{{ r.fg }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.dot }};flex:none"></span>{{ r.stText }}</span>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <span style="min-width:20px;height:18px;padding:0 6px;border-radius:999px;background:{{ r.incBg }};color:{{ r.incFg }};border:1px solid {{ r.incBorder }};font-family:'JetBrains Mono',monospace;font-size:11px;display:flex;align-items:center;justify-content:center">{{ r.inc }}</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;white-space:nowrap">{{ r.metric }}</span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:14px 16px;border-top:1px solid #E3E8EF;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Статусы</span>
+        <div style="display:flex;gap:14px;font-size:12px;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#2E9E6B"></span>Норма</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+          <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#C8453B"></span>Авария</span>
+        </div>
+        <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#5B6B7F"><span style="min-width:18px;height:16px;padding:0 5px;border-radius:999px;background:#0B3B60;color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:10px;display:flex;align-items:center;justify-content:center">2</span>активные инциденты</span>
+      </div>
+    </aside>
+
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#EEF2F6">
+      <div style="position:relative;flex:1;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#F7F9FB 0%,#EEF2F6 70%)">
+        <div ref="{{ sceneRef }}" style="position:absolute;inset:0;transform:{{ camT }};transform-origin:50% calc(50% + 20px);transition:transform .6s ease">{{ scene }}</div>
+
+        <div style="position:absolute;left:24px;top:22px;display:flex;flex-direction:column;gap:8px;pointer-events:none">
+          <div style="display:flex;gap:10px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.12em;color:#5B6B7F"><span>ГЛАВНЫЙ КОРПУС</span><span style="color:#B8C2CF">|</span><span>ЛИНИЯ 1</span></div>
+          <div style="font-size:34px;font-weight:400;letter-spacing:-0.02em;line-height:1.1">Сборочное производство</div>
+          <div style="font-size:14px;color:#5B6B7F">Chevrolet Cobalt · такт <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">4:00</span> мин</div>
+        </div>
+
+        <div style="position:absolute;inset:0;transform:scale({{ k }});transform-origin:50% calc(50% + 20px);pointer-events:none;z-index:8">
+        <sc-if value="{{ showLabels }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ labels }}" as="l" hint-placeholder-count="6">
+            <div onMouseEnter="{{ l.enter }}" onMouseLeave="{{ l.leave }}" onClick="{{ l.click }}" style="position:absolute;left:{{ l.left }};top:{{ l.top }};transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;z-index:{{ l.z }};cursor:pointer;pointer-events:auto;transition:left .6s ease, top .6s ease">
+              <sc-if value="{{ l.hover }}">
+                <div style="position:absolute;bottom:71px;left:calc(100% + 12px);width:264px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;box-shadow:0 8px 24px rgba(15,27,42,0.10);padding:14px 16px;display:flex;flex-direction:column;gap:12px;cursor:default">
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+                    <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:15px;font-weight:500">{{ l.list }}</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">{{ l.id }}</span></div>
+                    <span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:{{ l.soft }};color:{{ l.fg }};font-size:12px;font-weight:500;white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:{{ l.dot }}"></span>{{ l.stText }}</span>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+                    <div style="display:flex;justify-content:space-between"><span style="color:#5B6B7F">OEE</span><span style="font-family:'JetBrains Mono',monospace">{{ l.oee }}</span></div>
+                    <div style="display:flex;justify-content:space-between"><span style="color:#5B6B7F">План / факт смены</span><span style="font-family:'JetBrains Mono',monospace">{{ l.pf }}</span></div>
+                    <div style="display:flex;justify-content:space-between"><span style="color:#5B6B7F">Активные инциденты</span><span style="font-family:'JetBrains Mono',monospace">{{ l.inc }}</span></div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;padding-top:10px;border-top:1px solid #E3E8EF;font-size:12px;color:#5B6B7F"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M14 4.1 12 6"></path><path d="m5.1 8-2.9-.8"></path><path d="m6 12-1.9 2"></path><path d="M7.2 2.2 8 5.1"></path><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"></path></svg>Клик — подробности</div>
+                </div>
+              </sc-if>
+              <div style="display:flex;align-items:center;gap:8px;height:30px;padding:0 10px;background:#FFFFFF;border:1px solid {{ l.border }};box-shadow:{{ l.ring }};border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap">
+                <sc-if value="{{ l.alarm }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8453B" style="stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></sc-if>
+                <sc-if value="{{ l.notAlarm }}"><span style="width:7px;height:7px;border-radius:50%;background:{{ l.dot }}"></span></sc-if>
+                <span>{{ l.id }}</span><span style="color:#94A3B8">·</span><span style="font-family:Inter,sans-serif;font-size:13px">{{ l.lbl }}</span>
+                <span style="width:1px;height:14px;background:#E3E8EF"></span>
+                <span style="font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:{{ l.fg }}">{{ l.stText }}</span>
+              </div>
+              <div style="width:1px;height:64px;background:{{ l.stem }}"></div>
+              <div style="width:7px;height:7px;border-radius:50%;background:#FFFFFF;border:1.5px solid {{ l.stem }};margin-bottom:-3px"></div>
+            </div>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ showEq }}">
+          <div style="position:absolute;left:50%;top:calc(50% + 20px);transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;z-index:30">
+            <div style="display:flex;align-items:center;gap:8px;height:30px;padding:0 10px;background:#FFFFFF;border:1.5px solid #0088CC;box-shadow:0 0 0 4px #E6F3FA;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#E09A1F"></span>ABB-01<span style="width:1px;height:14px;background:#E3E8EF"></span><span style="font-family:Inter,sans-serif;font-size:12px;font-weight:500;color:#94600F">Внимание</span></div>
+            <div style="width:1px;height:44px;background:#0088CC"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:#0088CC;margin-bottom:-3px"></div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ showCar }}">
+          <div style="position:absolute;left:50%;top:calc(50% + 20px);transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;z-index:30">
+            <div style="display:flex;align-items:center;gap:8px;height:30px;padding:0 10px;background:#FFFFFF;border:1.5px solid #0088CC;box-shadow:0 0 0 4px #E6F3FA;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px;white-space:nowrap"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><path d="M5 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0M15 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0"></path><path d="M9 17h6"></path></svg>CB-2610-0871</div>
+            <div style="width:1px;height:44px;background:#0088CC"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:#0088CC;margin-bottom:-3px"></div>
+          </div>
+        </sc-if>
+        </div>
+
+        <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2px;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:10px;z-index:25">
+          <sc-for list="{{ tools }}" as="t" hint-placeholder-count="6">
+            <sc-if value="{{ t.sep }}"><div style="height:1px;background:#E3E8EF;margin:3px 6px"></div></sc-if>
+            <div style="position:relative">
+              <button onClick="{{ t.click }}" onMouseEnter="{{ t.enter }}" onMouseLeave="{{ t.leave }}" style="width:36px;height:36px;border-radius:7px;border:none;background:{{ t.bg }};color:{{ t.fg }};display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="{{ t.p1 }}"></path><path d="{{ t.p2 }}"></path><path d="{{ t.p3 }}"></path></svg></button>
+              <sc-if value="{{ t.tip }}"><span style="position:absolute;right:calc(100% + 10px);top:50%;transform:translateY(-50%);height:28px;padding:0 10px;border-radius:6px;background:#0F1B2A;color:#FFFFFF;font-size:12px;display:flex;align-items:center;white-space:nowrap;pointer-events:none">{{ t.name }}</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ layersOpen }}">
+          <div style="position:absolute;right:72px;top:calc(50% - 128px);width:268px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;box-shadow:0 8px 24px rgba(15,27,42,0.10);padding:14px;display:flex;flex-direction:column;gap:12px;z-index:26">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px;font-weight:500">Слои</span><button onClick="{{ closeLayers }}" style="width:24px;height:24px;border-radius:6px;border:none;background:transparent;color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ layerList }}" as="c" hint-placeholder-count="4">
+                <div onClick="{{ c.click }}" style="height:34px;padding:0 6px;border-radius:6px;display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer" style-hover="background:#F5F7FA">
+                  <span style="width:16px;height:16px;border-radius:4px;background:{{ c.bg }};border:1.5px solid {{ c.border }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ c.on }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></span>{{ c.label }}
+                </div>
+              </sc-for>
+            </div>
+            <div style="height:1px;background:#E3E8EF"></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:13px;color:#5B6B7F">Тепловая карта</span>
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #E3E8EF;border-radius:8px;overflow:hidden">
+                <sc-for list="{{ heatOpts }}" as="o" hint-placeholder-count="4">
+                  <button onClick="{{ o.click }}" style="height:32px;border:none;border-right:1px solid #E3E8EF;background:{{ o.bg }};color:{{ o.fg }};font:500 12px Inter,sans-serif;cursor:pointer">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="position:absolute;left:24px;bottom:24px;width:184px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:10px;padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px;z-index:5">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.12em;color:#5B6B7F">ПЛАН ЦЕХА</span>
+          <div style="position:relative;height:96px;background:#F5F7FA;border-radius:6px">
+            <div style="position:absolute;left:6px;right:6px;top:47px;height:2px;background:#CBD5E1"></div>
+            <div style="position:absolute;left:8px;right:8px;top:22px;bottom:22px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px">
+              <span style="background:#FFFFFF;border:1px solid #B8C2CF;border-radius:2px"></span>
+              <span style="background:#FFFFFF;border:1px solid #B8C2CF;border-radius:2px"></span>
+              <span style="background:#FBEAE8;border:1px solid #C8453B;border-radius:2px"></span>
+              <span style="background:#FFFFFF;border:1px solid #B8C2CF;border-radius:2px"></span>
+              <span style="background:#FFFFFF;border:1px solid #B8C2CF;border-radius:2px"></span>
+              <span style="background:#FFFFFF;border:1px solid #B8C2CF;border-radius:2px"></span>
+            </div>
+            <div style="position:absolute;left:4px;top:12px;width:134px;height:72px;border:1.5px solid #0088CC;border-radius:3px;background:rgba(0,136,204,0.06)"></div>
+          </div>
+        </div>
+
+        <sc-if value="{{ toastOn }}">
+          <div style="position:absolute;top:16px;right:16px;width:380px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;box-shadow:0 8px 24px rgba(15,27,42,0.12);display:flex;overflow:hidden;z-index:40">
+            <div style="width:4px;background:#C8453B;flex:none"></div>
+            <div style="flex:1;padding:14px 14px 14px 12px;display:flex;gap:12px">
+              <div style="width:32px;height:32px;border-radius:8px;background:#FBEAE8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8453B" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font-size:14px;font-weight:600;color:#A3352C">Авария · <span style="font-family:'JetBrains Mono',monospace;font-weight:500;color:#0F1B2A">Конвейер-03</span></span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">20:15</span></div>
+                <span style="font-size:13px;color:#0F1B2A">Обрыв цепи</span>
+                <div style="display:flex;gap:8px;padding-top:8px"><button onClick="{{ toastGo }}" style="height:32px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#072A45">Перейти</button><button onClick="{{ toastHide }}" style="height:32px;padding:0 12px;border-radius:8px;border:none;background:transparent;color:#0F1B2A;font:500 13px Inter,sans-serif;cursor:pointer" style-hover="background:#F5F7FA">Скрыть</button></div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="position:absolute;left:50%;bottom:20px;transform:translateX(-50%);height:32px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,0.85);border:1px solid #E3E8EF;display:flex;align-items:center;gap:8px;font-size:12px;color:#5B6B7F;white-space:nowrap;pointer-events:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="5" y="2" width="14" height="20" rx="7"></rect><path d="M12 6v4"></path></svg>Перетащите — вращение · Колесо — масштаб · Клик по участку — детали</div>
+      </div>
+
+      <div style="flex:none;padding:0 16px 16px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:flex-end;font-size:12px;color:#5B6B7F"><span><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">186</span> единиц в потоке</span></div>
+        <div style="background:#FFFFFF;border:1px solid #E3E8EF;border-radius:12px;padding:6px;display:flex;align-items:stretch">
+          <sc-for list="{{ flow }}" as="f" hint-placeholder-count="6">
+            <div onMouseEnter="{{ f.enter }}" onMouseLeave="{{ f.leave }}" onClick="{{ f.click }}" style="flex:1;min-width:0;padding:10px 12px;border-radius:8px;display:flex;flex-direction:column;gap:6px;background:{{ f.bg }};cursor:pointer">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none"><path d="{{ f.i1 }}"></path><path d="{{ f.i2 }}"></path><path d="{{ f.i3 }}"></path></svg><span style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.name }}</span></div>
+              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><span style="font-size:30px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">{{ f.big }}</span><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:{{ f.fg }};white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:{{ f.dot }}"></span>{{ f.stText }}</span></div>
+              <span style="font-size:12px;color:#5B6B7F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.cap }}</span>
+            </div>
+            <sc-if value="{{ f.notLast }}"><div style="width:16px;flex:none;display:flex;align-items:center;justify-content:center;color:#B8C2CF"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg></div></sc-if>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <aside style="width:420px;flex:none;background:#FFFFFF;border-left:1px solid #E3E8EF;display:flex;flex-direction:column">
+      <div style="padding:14px 20px 0">
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;background:#F5F7FA;border:1px solid #E3E8EF;border-radius:10px">
+          <button onClick="{{ goOverview }}" style="height:32px;border-radius:7px;border:none;background:{{ tabOv.bg }};color:{{ tabOv.fg }};font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path><circle cx="12" cy="12" r="2"></circle><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"></path></svg>Обзор</button>
+          <button onClick="{{ goSection }}" style="height:32px;border-radius:7px;border:none;background:{{ tabSec.bg }};color:{{ tabSec.fg }};font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg>Участок</button>
+          <button onClick="{{ goAI }}" style="height:32px;border-radius:7px;border:none;background:{{ tabAI.bg }};color:{{ tabAI.fg }};font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>ИИ</button>
+        </div>
+      </div>
+
+      <sc-if value="{{ pOv }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1;min-height:0;overflow:auto;padding:18px 20px 0;display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Центр управления</span>
+          <span style="font-size:26px;font-weight:400;letter-spacing:-0.01em">Обзор завода</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+          <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:13px;color:#5B6B7F">Выпуск за месяц</span>
+            <span style="display:flex;align-items:baseline;gap:6px;white-space:nowrap"><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">2 594</span><span style="font-size:14px;color:#5B6B7F">/ 5 500</span></span>
+            <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="width:47%;height:100%;background:#0088CC;border-radius:999px"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">47 %</span></div>
+            <span style="font-size:12px;color:#A3352C;line-height:1.35">Прогноз на 31.10: <span style="font-family:'JetBrains Mono',monospace">5 190 (−310)</span></span>
+          </div>
+          <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:13px;color:#5B6B7F">Выпуск в час</span>
+            <span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">14,6</span>
+            <span style="margin-top:auto;font-size:12px;color:#5B6B7F">план <span style="font-family:'JetBrains Mono',monospace">15,0</span></span>
+          </div>
+          <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:13px;color:#5B6B7F">OEE завода</span>
+            <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">87,2</span><span style="font-size:16px;color:#5B6B7F">%</span></span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1F7A50"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>цель ≥ 85 %</span>
+          </div>
+          <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:13px;color:#5B6B7F">Брак</span>
+            <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">2,6</span><span style="font-size:16px;color:#5B6B7F">%</span></span>
+            <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#A3352C"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>порог ≤ 2 %</span>
+          </div>
+        </div>
+
+        <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:500">Простои за сутки</span><span style="height:22px;padding:0 8px;border-radius:6px;border:1px solid #E3E8EF;font-size:12px;color:#5B6B7F;display:flex;align-items:center">4 события</span></div>
+          <div style="display:flex;flex-direction:column">
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 52px;gap:10px;height:16px"><span></span><div style="position:relative"><span style="position:absolute;left:80%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;white-space:nowrap">Лимит 60</span></div><span></span></div>
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 52px;gap:10px;height:28px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:12px">Конвейер-03</span><div style="position:relative;height:28px;display:flex;align-items:center"><div style="height:10px;width:73.3%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:80%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right">55 мин</span></div>
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 52px;gap:10px;height:28px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:12px">Камера-02</span><div style="position:relative;height:28px;display:flex;align-items:center"><div style="height:10px;width:53.3%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:80%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right">40 мин</span></div>
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 52px;gap:10px;height:28px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:12px">ABB-04</span><div style="position:relative;height:28px;display:flex;align-items:center"><div style="height:10px;width:40%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:80%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right">30 мин</span></div>
+            <div style="display:grid;grid-template-columns:96px minmax(0,1fr) 52px;gap:10px;height:28px;align-items:center"><span style="font-family:'JetBrains Mono',monospace;font-size:12px">ABB-01</span><div style="position:relative;height:28px;display:flex;align-items:center"><div style="height:10px;width:33.3%;background:#0088CC;border-radius:0 3px 3px 0"></div><div style="position:absolute;left:80%;top:0;bottom:0;border-left:1.5px dashed #94A3B8"></div></div><span style="font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right">25 мин</span></div>
+          </div>
+        </div>
+
+        <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500">Активные инциденты<span style="min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:#0B3B60;color:#FFFFFF;font-family:'JetBrains Mono',monospace;font-size:11px;display:flex;align-items:center;justify-content:center">3</span></span><a href="#" style="font-size:13px;font-weight:500">Все инциденты →</a></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 8px;margin:0 -8px;border-radius:8px;cursor:pointer" style-hover="background:#F5F7FA">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px">20:15</span>
+            <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:13px;font-weight:500">Обрыв цепи</span><span style="display:flex;gap:6px;font-size:12px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">Конвейер-03</span>· <span style="font-family:'JetBrains Mono',monospace">55 мин</span></span></div>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Авария</span>
+          </div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 8px;margin:0 -8px;border-radius:8px;cursor:pointer" style-hover="background:#F5F7FA">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px">20:55</span>
+            <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:13px;font-weight:500">Брак ЛКП выше порога</span><span style="display:flex;gap:6px;font-size:12px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">Окраска-1</span>· <span style="font-family:'JetBrains Mono',monospace">—</span></span></div>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Авария</span>
+          </div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 8px;margin:0 -8px;border-radius:8px;cursor:pointer" style-hover="background:#F5F7FA">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px">17:05</span>
+            <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:13px;font-weight:500">Ошибка датчика</span><span style="display:flex;gap:6px;font-size:12px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">ABB-01</span>· <span style="font-family:'JetBrains Mono',monospace">25 мин</span></span></div>
+            <span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:#FDF3E2;color:#94600F;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+          </div>
+        </div>
+
+        <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:500">Прогноз ИИ</span><a href="#" style="font-size:13px;font-weight:500">Все прогнозы →</a></div>
+          <div style="display:flex;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden;cursor:pointer" style-hover="border-color:#CBD5E1">
+            <div style="width:4px;background:#C8453B;flex:none"></div>
+            <div style="flex:1;padding:12px 14px;display:flex;align-items:center;gap:14px">
+              <span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1;white-space:nowrap">78<span style="font-size:16px;color:#5B6B7F"> %</span></span>
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0">
+                <span style="font-size:13px;line-height:1.4"><span style="font-family:'JetBrains Mono',monospace">ABB-01</span> — риск остановки 78 % в течение 2 ч</span>
+                <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Авария</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:auto;padding:14px 0 16px;display:flex;align-items:center;gap:8px;font-size:12px;color:#5B6B7F;border-top:1px solid #E3E8EF"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>Демо-модель на тестовых данных кейса</div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ pA }}">
+        <div style="flex:1;min-height:0;overflow:auto;padding:18px 20px 20px;display:grid;align-content:start;grid-template-columns:minmax(0,1fr);grid-auto-rows:max-content;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Участок · <span style="font-family:'JetBrains Mono',monospace;letter-spacing:0.06em">PNT-1</span></span>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:26px;font-weight:400;letter-spacing:-0.01em">Окраска-1</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FBEAE8;color:#A3352C;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B"></span>Авария</span></div>
+            </div>
+            <div style="display:flex;gap:2px">
+              <button title="Центрировать на карте" style="width:32px;height:32px;border-radius:7px;border:none;background:transparent;color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA;color:#0F1B2A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M2 12h3M19 12h3M12 2v3M12 19v3"></path><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="3"></circle></svg></button>
+              <button onClick="{{ closePanel }}" title="Закрыть" style="width:32px;height:32px;border-radius:7px;border:none;background:transparent;color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA;color:#0F1B2A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+            </div>
+          </div>
+
+          <button style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;display:flex;align-items:center;gap:8px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg><span style="color:#5B6B7F;font-weight:400">Период</span><span style="flex:1;text-align:left">Текущая смена</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+            <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:13px;color:#5B6B7F">План / факт смены</span>
+              <span style="display:flex;align-items:baseline;gap:6px;white-space:nowrap"><span style="font-size:18px;color:#5B6B7F;font-weight:300">120 /</span><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">116</span></span>
+              <div style="height:6px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="width:96.7%;height:100%;background:#0088CC;border-radius:999px"></div></div>
+              <span style="margin-top:auto;font-size:12px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">96,7 %</span> плана</span>
+            </div>
+            <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:13px;color:#5B6B7F">OEE</span>
+              <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">87,1</span><span style="font-size:16px;color:#5B6B7F">%</span></span>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div style="display:flex;flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between;font-size:11px;color:#5B6B7F"><span>Доступность</span><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">91 %</span></div><div style="height:3px;border-radius:999px;background:#E3E8EF"><div style="width:91%;height:100%;border-radius:999px;background:#0088CC"></div></div></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between;font-size:11px;color:#5B6B7F"><span>Производительность</span><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">97 %</span></div><div style="height:3px;border-radius:999px;background:#E3E8EF"><div style="width:97%;height:100%;border-radius:999px;background:#0088CC"></div></div></div>
+                <div style="display:flex;flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between;font-size:11px;color:#5B6B7F"><span>Качество</span><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">94,8 %</span></div><div style="height:3px;border-radius:999px;background:#E3E8EF"><div style="width:94.8%;height:100%;border-radius:999px;background:#0088CC"></div></div></div>
+              </div>
+              <span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1F7A50"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>цель ≥ 85 %</span>
+            </div>
+            <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:13px;color:#5B6B7F">Брак</span>
+              <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">5,2</span><span style="font-size:16px;color:#5B6B7F">%</span></span>
+              <span style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:#A3352C"><span style="width:6px;height:6px;border-radius:50%;background:#C8453B;flex:none"></span>6 из 116 · порог 2 %</span>
+            </div>
+            <div style="border:1px solid #E3E8EF;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:13px;color:#5B6B7F">Загрузка</span>
+              <span style="display:flex;align-items:baseline;gap:4px;white-space:nowrap"><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">96</span><span style="font-size:16px;color:#5B6B7F">%</span></span>
+              <div style="height:6px;border-radius:999px;background:#E3E8EF;overflow:hidden"><div style="width:96%;height:100%;background:#0088CC;border-radius:999px"></div></div>
+              <span style="margin-top:auto;display:flex;align-items:center;gap:6px;font-size:12px;color:#1F7A50"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>цель ≥ 90 %</span>
+            </div>
+          </div>
+
+          <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:500">Телеметрия</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F">60 мин</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px">Температура в камере</span><span style="font-family:'JetBrains Mono',monospace;font-size:15px">23,4 °C</span></div>
+              <svg viewBox="0 0 300 40" preserveAspectRatio="none" style="width:100%;height:36px;display:block"><rect x="0" y="8" width="300" height="24" fill="#EEF2F6"></rect><polyline points="0,20 25,19.2 50,20.4 75,19.6 100,18.4 125,18.8 150,20 175,19.2 200,18 225,18.8 250,19.6 275,18.8 300,18.4" fill="none" stroke="#0088CC" vector-effect="non-scaling-stroke" style="stroke-width:1.75;stroke-linejoin:round"></polyline></svg>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">норма <span style="font-family:'JetBrains Mono',monospace">20–26</span></span><span style="display:inline-flex;align-items:center;gap:6px;color:#1F7A50"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>Норма</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px">Влажность</span><span style="font-family:'JetBrains Mono',monospace;font-size:15px">61 %</span></div>
+              <svg viewBox="0 0 300 40" preserveAspectRatio="none" style="width:100%;height:36px;display:block"><rect x="0" y="8" width="300" height="24" fill="#EEF2F6"></rect><polyline points="0,22.4 25,20.8 50,21.6 75,19.2 100,18.4 125,17.6 150,17.9 175,16.6 200,15.7 225,16 250,14.7 275,14.1 300,14.4" fill="none" stroke="#0088CC" vector-effect="non-scaling-stroke" style="stroke-width:1.75;stroke-linejoin:round"></polyline></svg>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">норма <span style="font-family:'JetBrains Mono',monospace">50–65</span></span><span style="display:inline-flex;align-items:center;gap:6px;color:#94600F"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>Внимание: у верхней границы</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px">Перепад давления на фильтре</span><span style="font-family:'JetBrains Mono',monospace;font-size:15px">410 Па</span></div>
+              <svg viewBox="0 0 300 40" preserveAspectRatio="none" style="width:100%;height:36px;display:block"><rect x="0" y="6.7" width="300" height="33.3" fill="#EEF2F6"></rect><line x1="0" y1="6.7" x2="300" y2="6.7" stroke="#94A3B8" stroke-dasharray="4 3" vector-effect="non-scaling-stroke" style="stroke-width:1"></line><polyline points="0,31.1 25,30 50,28.4 75,27.6 100,26.2 125,24.4 150,23.3 175,21.8 200,20.4 225,19.1 250,17.8 275,16.7 300,15.6" fill="none" stroke="#0088CC" vector-effect="non-scaling-stroke" style="stroke-width:1.75;stroke-linejoin:round"></polyline></svg>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:#5B6B7F">норма <span style="font-family:'JetBrains Mono',monospace">&lt; 450</span></span><span style="display:inline-flex;align-items:center;gap:6px;color:#94600F"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>Внимание: растёт</span></div>
+            </div>
+          </div>
+
+          <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:15px;font-weight:500">Оборудование</span>
+            <div style="border:1px solid #E3E8EF;border-radius:10px;overflow:hidden;font-size:12px">
+              <div style="display:grid;grid-template-columns:70px minmax(0,1fr) 78px 58px 54px;gap:6px;padding:8px 10px;background:#F5F7FA;border-bottom:1px solid #E3E8EF;font-size:11px;color:#5B6B7F;align-items:end;line-height:1.25"><span>Код</span><span>Название</span><span>Статус</span><span style="text-align:right">Наработка</span><span style="text-align:right">Простой за сутки</span></div>
+              <div style="display:grid;grid-template-columns:70px minmax(0,1fr) 78px 58px 54px;gap:6px;padding:10px;border-bottom:1px solid #E3E8EF;align-items:center;cursor:pointer" style-hover="background:#F5F7FA"><span style="font-family:'JetBrains Mono',monospace">Камера-02</span><span style="line-height:1.3">Окрасочная камера</span><span style="display:inline-flex;align-items:center;gap:5px;color:#94600F"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>Внимание</span><span style="font-family:'JetBrains Mono',monospace;text-align:right">7,1 ч</span><span style="font-family:'JetBrains Mono',monospace;text-align:right">40 мин</span></div>
+              <div style="display:grid;grid-template-columns:70px minmax(0,1fr) 78px 58px 54px;gap:6px;padding:10px;align-items:center;cursor:pointer" style-hover="background:#F5F7FA"><span style="font-family:'JetBrains Mono',monospace">ПС-01</span><span style="line-height:1.3">Печь сушки</span><span style="display:inline-flex;align-items:center;gap:5px;color:#1F7A50"><span style="width:6px;height:6px;border-radius:50%;background:#2E9E6B"></span>Норма</span><span style="font-family:'JetBrains Mono',monospace;text-align:right">7,7 ч</span><span style="font-family:'JetBrains Mono',monospace;text-align:right">0 мин</span></div>
+            </div>
+          </div>
+
+          <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:15px;font-weight:500">Причины брака за смену</span><span style="font-size:12px;color:#5B6B7F"><span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">6</span> шт</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:grid;grid-template-columns:84px minmax(0,1fr) 20px;gap:10px;align-items:center;font-size:13px"><span>Подтёки</span><div style="height:10px;border-radius:0 3px 3px 0;background:#0088CC;width:100%"></div><span style="font-family:'JetBrains Mono',monospace;text-align:right">3</span></div>
+              <div style="display:grid;grid-template-columns:84px minmax(0,1fr) 20px;gap:10px;align-items:center;font-size:13px"><span>Включения</span><div style="height:10px;border-radius:0 3px 3px 0;background:#0088CC;width:66.7%"></div><span style="font-family:'JetBrains Mono',monospace;text-align:right">2</span></div>
+              <div style="display:grid;grid-template-columns:84px minmax(0,1fr) 20px;gap:10px;align-items:center;font-size:13px"><span>Разнотон</span><div style="height:10px;border-radius:0 3px 3px 0;background:#0088CC;width:33.3%"></div><span style="font-family:'JetBrains Mono',monospace;text-align:right">1</span></div>
+            </div>
+          </div>
+
+          <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:15px;font-weight:500">Журнал инцидентов</span>
+            <div style="display:flex;flex-direction:column">
+              <div style="display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:12px">
+                <div style="display:flex;flex-direction:column;align-items:center"><span style="width:10px;height:10px;border-radius:50%;background:#C8453B;box-shadow:0 0 0 3px #FBEAE8;margin-top:4px;flex:none"></span><span style="flex:1;width:1px;background:#E3E8EF;margin-top:6px"></span></div>
+                <div style="display:flex;flex-direction:column;gap:3px;padding-bottom:16px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">20:55</span><span style="font-size:13px;font-weight:500">Брак ЛКП выше порога</span></div>
+                <span style="align-self:flex-start;height:22px;padding:0 9px;border-radius:999px;background:#E6F3FA;color:#0B3B60;font-size:12px;font-weight:500;display:flex;align-items:center">Открыт</span>
+              </div>
+              <div style="display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:12px">
+                <div style="display:flex;flex-direction:column;align-items:center"><span style="width:10px;height:10px;border-radius:50%;background:#FFFFFF;border:2px solid #B8C2CF;margin-top:4px;flex:none"></span></div>
+                <div style="display:flex;flex-direction:column;gap:3px"><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">18:40</span><span style="font-size:13px;font-weight:500"><span style="font-family:'JetBrains Mono',monospace;font-weight:400">Камера-02</span> · Замена фильтра</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B6B7F">40 мин</span></div>
+                <span style="align-self:flex-start;height:22px;padding:0 9px;border-radius:999px;background:#F5F7FA;border:1px solid #E3E8EF;color:#5B6B7F;font-size:12px;font-weight:500;display:flex;align-items:center">Закрыт</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;padding:14px 20px;border-top:1px solid #E3E8EF;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:8px">
+          <button style="height:40px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Создать заявку ТО</button>
+          <button style="height:40px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap" style-hover="background:#072A45"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>Спросить ИИ об участке</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pB }}">
+        <div style="flex:1;min-height:0;overflow:auto;padding:18px 20px 20px;display:grid;align-content:start;grid-template-columns:minmax(0,1fr);grid-auto-rows:max-content;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px;font-size:13px"><a href="#" onClick="{{ goPNTparent }}" style="color:#0077B6">Сварка-1</a><span style="color:#94A3B8">/</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px">ABB-01</span></div>
+              <span style="font-size:22px;font-weight:400;letter-spacing:-0.01em;line-height:1.25"><span style="font-family:'JetBrains Mono',monospace;font-size:20px">ABB-01</span> · Робот точечной сварки</span>
+              <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#FDF3E2;color:#94600F;font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>Внимание</span>
+            </div>
+            <div style="display:flex;gap:2px;flex:none">
+              <button title="Центрировать на карте" style="width:32px;height:32px;border-radius:7px;border:none;background:transparent;color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA;color:#0F1B2A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M2 12h3M19 12h3M12 2v3M12 19v3"></path><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="3"></circle></svg></button>
+              <button onClick="{{ closePanel }}" title="Закрыть" style="width:32px;height:32px;border-radius:7px;border:none;background:transparent;color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA;color:#0F1B2A"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+            </div>
+          </div>
+
+          <div style="display:flex;border:1px solid #E3E8EF;border-radius:12px;overflow:hidden">
+            <div style="width:4px;background:#C8453B;flex:none"></div>
+            <div style="flex:1;padding:14px 16px;display:flex;align-items:center;gap:16px">
+              <div style="position:relative;width:84px;height:84px;flex:none">
+                <svg width="84" height="84" viewBox="0 0 84 84" style="display:block;transform:rotate(-90deg)"><circle cx="42" cy="42" r="34" fill="none" stroke="#E3E8EF" style="stroke-width:8"></circle><circle cx="42" cy="42" r="34" fill="none" stroke="#C8453B" stroke-dasharray="166.6 213.6" style="stroke-width:8;stroke-linecap:round"></circle></svg>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:300;color:#0B3B60;white-space:nowrap">78<span style="font-size:12px;color:#5B6B7F"> %</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                <span style="display:flex;align-items:center;gap:6px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>Прогноз ИИ</span>
+                <span style="font-size:15px;font-weight:500;line-height:1.35">Риск остановки в ближайшие 2 ч</span>
+                <span style="font-size:12px;color:#5B6B7F">Причина: <span style="color:#A3352C">Вибрация <span style="font-family:'JetBrains Mono',monospace">+38 %</span> за 6 ч</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:500">Телеметрия</span>
+              <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden">
+                <sc-for list="{{ teleOpts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.click }}" style="height:28px;min-width:44px;padding:0 8px;white-space:nowrap;border:none;border-right:1px solid #E3E8EF;background:{{ o.bg }};color:{{ o.fg }};font:500 12px 'JetBrains Mono',monospace;cursor:pointer">{{ o.label }}</button></sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px">Вибрация</span><span style="display:flex;gap:8px;align-items:baseline"><span style="font-size:12px;color:#5B6B7F">норма <span style="font-family:'JetBrains Mono',monospace">&lt; 4,5</span></span><span style="font-family:'JetBrains Mono',monospace;font-size:15px">4,1 мм/с</span></span></div>
+              <div style="display:grid;grid-template-columns:22px minmax(0,1fr) 56px;gap:6px">
+                <div style="position:relative;height:110px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span style="position:absolute;right:0;top:0;transform:translateY(-50%)">5</span><span style="position:absolute;right:0;top:33.3%;transform:translateY(-50%)">4</span><span style="position:absolute;right:0;top:66.7%;transform:translateY(-50%)">3</span><span style="position:absolute;right:0;bottom:0;transform:translateY(50%)">2</span></div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div style="position:relative;height:110px">
+                    <div style="position:absolute;left:0;right:0;top:0;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:33.3%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;top:66.7%;height:1px;background:#E3E8EF"></div><div style="position:absolute;left:0;right:0;bottom:0;height:1px;background:#CBD5E1"></div>
+                    <div style="position:absolute;left:0;right:-62px;top:16.7%;border-top:1.5px dashed #94A3B8"></div>
+                    <svg viewBox="0 0 300 100" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%;overflow:visible"><line x1="0" y1="80" x2="300" y2="28" stroke="#7CC4E8" stroke-dasharray="5 4" vector-effect="non-scaling-stroke" style="stroke-width:1.5"></line><polyline points="0,76.7 25,73.3 50,76.7 75,70 100,66.7 125,66.7 150,60 175,56.7 200,50 225,46.7 250,40 275,36.7 300,30" fill="none" stroke="#0088CC" vector-effect="non-scaling-stroke" style="stroke-width:2;stroke-linejoin:round"></polyline></svg>
+                    <span style="position:absolute;left:100%;top:30%;width:9px;height:9px;transform:translate(-50%,-50%);border-radius:50%;background:#0088CC;box-shadow:0 0 0 3px #E6F3FA"></span>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><sc-for list="{{ teleX }}" as="x" hint-placeholder-count="4"><span>{{ x }}</span></sc-for></div>
+                </div>
+                <div style="position:relative;height:110px"><span style="position:absolute;left:8px;top:16.7%;transform:translateY(-130%);font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;white-space:nowrap;background:#FFFFFF">Порог 4,5</span></div>
+              </div>
+              <div style="display:flex;gap:16px;font-size:12px;color:#5B6B7F"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;height:2px;background:#0088CC"></span>значение</span><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:14px;border-top:2px dashed #7CC4E8"></span>тренд</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;border-top:1px solid #E3E8EF">
+              <div style="display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid #E3E8EF">
+                <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px">Температура двигателя оси 2</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px">68 °C</span></div>
+                <div style="display:flex;align-items:center;gap:10px"><div style="flex:1;position:relative;height:4px;border-radius:999px;background:#E3E8EF"><div style="width:85%;height:100%;border-radius:999px;background:#0088CC"></div><div style="position:absolute;left:93.75%;top:-3px;bottom:-3px;border-left:1.5px dashed #94A3B8"></div></div><span style="font-size:12px;color:#5B6B7F;white-space:nowrap">норма <span style="font-family:'JetBrains Mono',monospace">&lt; 75</span></span></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid #E3E8EF"><span style="font-size:13px">Ток двигателя</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px">12,4 А</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:10px 0"><span style="font-size:13px">Циклов сварки за смену</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px">3 840</span></div>
+            </div>
+          </div>
+
+          <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:15px;font-weight:500">История простоев, 7 дней</span>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:end;height:64px;border-bottom:1px solid #CBD5E1">
+              <div style="height:2px;background:#CBD5E1;border-radius:2px"></div>
+              <div style="height:40%;background:#7CC4E8;border-radius:3px 3px 0 0"></div>
+              <div style="height:2px;background:#CBD5E1;border-radius:2px"></div>
+              <div style="height:26.7%;background:#7CC4E8;border-radius:3px 3px 0 0"></div>
+              <div style="height:2px;background:#CBD5E1;border-radius:2px"></div>
+              <div style="height:60%;background:#7CC4E8;border-radius:3px 3px 0 0"></div>
+              <div style="height:83.3%;background:#0088CC;border-radius:3px 3px 0 0"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F;text-align:center"><span>09.10</span><span>10.10</span><span>11.10</span><span>12.10</span><span>13.10</span><span>14.10</span><span style="color:#0F1B2A;font-weight:500">15.10</span></div>
+            <span style="font-size:13px">Сегодня: <span style="font-family:'JetBrains Mono',monospace">25 мин</span> · Ошибка датчика</span>
+          </div>
+
+          <div style="height:1px;background:#E3E8EF;flex:none"></div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:15px;font-weight:500">Обслуживание</span>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">
+              <div style="border:1px solid #E3E8EF;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#5B6B7F">Последнее ТО</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px">28.09.2026</span></div>
+              <div style="border:1px solid #E3E8EF;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;color:#5B6B7F">Следующее плановое</span><span style="font-family:'JetBrains Mono',monospace;font-size:14px">20.10.2026</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;padding:14px 20px;border-top:1px solid #E3E8EF;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+          <button style="height:40px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>Показать на карте</button>
+          <button style="height:40px;padding:0 12px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;white-space:nowrap" style-hover="background:#072A45"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg>Запланировать ТО</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pC }}">
+        <div style="flex:1;min-height:0;overflow:auto;padding:18px 20px 20px;display:grid;align-content:start;grid-template-columns:minmax(0,1fr);grid-auto-rows:max-content;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="display:flex;align-items:center;gap:6px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#0077B6"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M2 12h3M19 12h3M12 2v3M12 19v3"></path><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="3"></circle></svg>Слежение за кузовом</span>
+              <span style="font-size:24px;font-weight:400;letter-spacing:-0.01em">Кузов <span style="font-family:'JetBrains Mono',monospace;font-size:21px">CB-2610-0871</span></span>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="font-size:13px;color:#5B6B7F">Chevrolet Cobalt · Белый</span><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:999px;background:#E6F3FA;color:#0B3B60;font-size:12px;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>Окраска-1</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column">
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:22px;height:22px;border-radius:50%;background:#0B3B60;display:flex;align-items:center;justify-content:center;flex:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;width:2px;background:#0B3B60"></span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:1px 0 18px"><span style="font-size:14px;font-weight:500">Склад комплектующих</span><span style="font-size:12px;color:#5B6B7F">вход <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">21:11</span> · выход <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">21:15</span></span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:22px;height:22px;border-radius:50%;background:#0B3B60;display:flex;align-items:center;justify-content:center;flex:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="flex:1;width:2px;background:#0B3B60"></span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:1px 0 18px"><span style="font-size:14px;font-weight:500">Сварка-1</span><span style="font-size:12px;color:#5B6B7F">вход <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">21:15</span> · выход <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">21:35</span></span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="position:relative;width:22px;height:22px;border-radius:50%;background:#E6F3FA;border:2px solid #0088CC;display:flex;align-items:center;justify-content:center;flex:none"><span style="position:relative;width:8px;height:8px">{{ pulse }}<span style="position:absolute;inset:0;border-radius:50%;background:#0088CC"></span></span></span><span style="flex:1;width:0;border-left:2px dashed #CBD5E1"></span></div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:0 0 18px">
+                <div style="padding:10px 12px;margin:-4px 0 0 -4px;border-radius:10px;background:#E6F3FA;display:flex;flex-direction:column;gap:4px">
+                  <span style="font-size:14px;font-weight:500;color:#0B3B60">Окраска-1</span>
+                  <span style="font-size:12px;color:#5B6B7F">вход <span style="font-family:'JetBrains Mono',monospace;color:#0F1B2A">21:35</span></span>
+                  <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#94600F"><span style="width:6px;height:6px;border-radius:50%;background:#E09A1F"></span>на участке <span style="font-family:'JetBrains Mono',monospace">{{ dwell }}</span> (такт <span style="font-family:'JetBrains Mono',monospace">4:00</span>)</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:14px;height:14px;margin:4px 0;border-radius:50%;background:#FFFFFF;border:2px solid #CBD5E1;flex:none"></span><span style="flex:1;width:0;border-left:2px dashed #CBD5E1"></span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:1px 0 18px"><span style="font-size:14px;color:#5B6B7F">Сборка-1</span><span style="font-size:12px;color:#5B6B7F">ожид. <span style="font-family:'JetBrains Mono',monospace">21:52</span></span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:14px;height:14px;margin:4px 0;border-radius:50%;background:#FFFFFF;border:2px solid #CBD5E1;flex:none"></span><span style="flex:1;width:0;border-left:2px dashed #CBD5E1"></span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:1px 0 18px"><span style="font-size:14px;color:#5B6B7F">Контроль качества</span><span style="font-size:12px;color:#5B6B7F">ожид. <span style="font-family:'JetBrains Mono',monospace">22:18</span></span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px">
+              <div style="display:flex;flex-direction:column;align-items:center"><span style="width:14px;height:14px;margin:4px 0;border-radius:50%;background:#FFFFFF;border:2px solid #CBD5E1;flex:none"></span></div>
+              <div style="display:flex;flex-direction:column;gap:3px;padding:1px 0 0"><span style="font-size:14px;color:#5B6B7F">Склад ГП</span><span style="font-size:12px;color:#5B6B7F">ожид. <span style="font-family:'JetBrains Mono',monospace">22:31</span></span></div>
+            </div>
+          </div>
+
+          <div style="border:1px solid #E3E8EF;border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:13px;color:#5B6B7F">Ожидаемый выпуск</span>
+            <span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1">22:31</span>
+          </div>
+        </div>
+        <div style="flex:none;padding:14px 20px;border-top:1px solid #E3E8EF">
+          <button onClick="{{ stopFollow }}" style="width:100%;height:40px;padding:0 12px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"></path><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"></path><path d="m2 2 20 20"></path></svg>Перестать следить</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pD }}">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;text-align:center">
+          <span style="width:56px;height:56px;border-radius:50%;background:#F5F7FA;border:1px solid #E3E8EF;display:flex;align-items:center;justify-content:center;color:#0088CC"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round"><path d="M14 4.1 12 6"></path><path d="m5.1 8-2.9-.8"></path><path d="m6 12-1.9 2"></path><path d="M7.2 2.2 8 5.1"></path><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"></path></svg></span>
+          <span style="max-width:240px;font-size:15px;line-height:1.5;color:#0F1B2A;text-wrap:pretty">Выберите участок на карте или в списке слева</span>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pAI }}">
+        <div style="flex:1;min-height:0;overflow:auto;padding:18px 20px 20px;display:grid;align-content:start;grid-template-columns:minmax(0,1fr);grid-auto-rows:max-content;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:26px;font-weight:400;letter-spacing:-0.01em">ИИ-диспетчер</span>
+            <span style="font-size:12px;color:#5B6B7F">Обновлено <span style="font-family:'JetBrains Mono',monospace">21:41</span> · анализ 24 датчиков и журнала простоев</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px">
+            <sc-for list="{{ lvlFilters }}" as="f" hint-placeholder-count="3">
+              <div onClick="{{ f.click }}" style="display:flex;align-items:center;gap:7px;font-size:13px;cursor:pointer;white-space:nowrap"><span style="width:16px;height:16px;border-radius:4px;background:{{ f.bg }};border:1.5px solid {{ f.border }};display:flex;align-items:center;justify-content:center"><sc-if value="{{ f.on }}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></span>{{ f.label }}</div>
+            </sc-for>
+            <div style="margin-left:auto;position:relative">
+              <button onClick="{{ toggleHz }}" style="height:32px;padding:0 8px 0 10px;border-radius:8px;border:1px solid {{ hzBorder }};background:#FFFFFF;display:flex;align-items:center;gap:6px;font:500 13px Inter,sans-serif;color:#0F1B2A;cursor:pointer;white-space:nowrap" style-hover="background:#F5F7FA">{{ hz }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+              <sc-if value="{{ hzOpen }}">
+                <div style="position:absolute;top:calc(100% + 4px);right:0;width:140px;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 8px 24px rgba(15,27,42,0.10);display:flex;flex-direction:column;z-index:10">
+                  <sc-for list="{{ hzOpts }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.click }}" style="height:32px;padding:0 10px;border-radius:6px;display:flex;align-items:center;justify-content:space-between;font-size:13px;background:{{ o.bg }};color:{{ o.fg }};cursor:pointer">{{ o.label }}<sc-if value="{{ o.on }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if></div></sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+
+          <sc-for list="{{ aiCards }}" as="c" hint-placeholder-count="4">
+            <div style="position:relative;display:flex;border:1px solid #E3E8EF;border-radius:12px;background:#FFFFFF">
+              <div style="width:4px;background:{{ c.stripe }};border-radius:11px 0 0 11px;flex:none"></div>
+              <div style="flex:1;min-width:0;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:grid;grid-template-columns:30px minmax(0,1fr) 28px;gap:10px;align-items:start">
+                  <span style="width:30px;height:30px;border-radius:8px;background:{{ c.soft }};color:{{ c.dot }};display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="{{ c.i1 }}"></path><path d="{{ c.i2 }}"></path><path d="{{ c.i3 }}"></path></svg></span>
+                  <div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:{{ c.fg }}">{{ c.lvlText }}</span><span style="font-size:14px;font-weight:500;line-height:1.35">{{ c.title }}</span></div>
+                  <button onClick="{{ c.toggleMenu }}" title="Ещё" style="width:28px;height:28px;border-radius:6px;border:none;background:{{ c.menuBg }};color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="5" cy="12" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="19" cy="12" r="1.6"></circle></svg></button>
+                </div>
+                <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span style="font-size:34px;font-weight:300;letter-spacing:-0.02em;color:#0B3B60;line-height:1;white-space:nowrap">{{ c.big }}<span style="font-size:16px;color:#5B6B7F"> {{ c.unit }}</span></span><span style="font-size:13px;color:#5B6B7F">{{ c.bigLabel }}</span></div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Признаки</span>
+                  <sc-for list="{{ c.signs }}" as="g" hint-placeholder-count="2"><span style="display:flex;gap:8px;font-size:13px;line-height:1.4"><span style="width:4px;height:4px;border-radius:50%;background:#94A3B8;margin-top:8px;flex:none"></span>{{ g }}</span></sc-for>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Рекомендация</span>
+                  <span style="font-size:13px;line-height:1.45">{{ c.rec }}</span>
+                </div>
+                <sc-if value="{{ c.hasEffect }}">
+                  <div style="padding:10px 12px;border-radius:8px;background:#E6F3FA;display:flex;flex-direction:column;gap:4px">
+                    <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#0B3B60">Эффект</span>
+                    <span style="font-size:13px;line-height:1.45;color:#0B3B60">{{ c.effect }}</span>
+                  </div>
+                </sc-if>
+                <div style="display:flex;gap:8px">
+                  <button onClick="{{ c.show }}" style="flex:1;height:34px;padding:0 10px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;white-space:nowrap" style-hover="background:#F5F7FA"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>Показать на карте</button>
+                  <button style="flex:1;height:34px;padding:0 10px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 13px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;white-space:nowrap" style-hover="background:#072A45"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>Создать заявку ТО</button>
+                </div>
+              </div>
+              <sc-if value="{{ c.menuOpen }}">
+                <div style="position:absolute;top:46px;right:12px;width:220px;padding:4px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:8px;box-shadow:0 8px 24px rgba(15,27,42,0.10);display:flex;flex-direction:column;z-index:5">
+                  <div onClick="{{ c.why }}" style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer" style-hover="background:#F5F7FA"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B6B7F" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><path d="M12 17h.01"></path></svg>Почему такой прогноз?</div>
+                  <div onClick="{{ c.dismiss }}" style="height:34px;padding:0 10px;border-radius:6px;display:flex;align-items:center;gap:8px;font-size:13px;color:#A3352C;cursor:pointer" style-hover="background:#FBEAE8"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>Отклонить</div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="flex:none;border-top:1px solid #E3E8EF;background:#FFFFFF;padding:12px 20px 14px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>Спросить двойника</span>
+            <button onClick="{{ toggleChat }}" title="Свернуть" style="width:28px;height:28px;border-radius:6px;border:none;background:transparent;color:#5B6B7F;display:flex;align-items:center;justify-content:center;cursor:pointer;transform:{{ chatRot }}" style-hover="background:#F5F7FA"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="m6 9 6 6 6-6"></path></svg></button>
+          </div>
+          <sc-if value="{{ chatOpen }}" hint-placeholder-val="{{ true }}">
+            <div style="max-height:220px;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:2px 0">
+              <div style="align-self:flex-end;max-width:85%;padding:8px 12px;border-radius:10px 10px 2px 10px;background:#E6F3FA;color:#0B3B60;font-size:13px;line-height:1.4">Почему просела Окраска?</div>
+              <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px">
+                <span style="width:24px;height:24px;border-radius:50%;background:#0B3B60;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" style="stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg></span>
+                <div style="font-size:13px;line-height:1.75;color:#0F1B2A">Брак на <span onClick="{{ focusPNT }}" style="display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:6px;background:#E6F3FA;border:1px solid #CFE6F3;color:#0B3B60;font-family:'JetBrains Mono',monospace;font-size:12px;vertical-align:1px;cursor:pointer" style-hover="border-color:#0088CC"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>Окраска-1</span> вырос до 5,2 % при пороге 2 %: за смену 3 подтёка и 2 включения. Перепад давления на фильтре <span onClick="{{ focusPNT }}" style="display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:6px;background:#E6F3FA;border:1px solid #CFE6F3;color:#0B3B60;font-family:'JetBrains Mono',monospace;font-size:12px;vertical-align:1px;cursor:pointer" style-hover="border-color:#0088CC"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>Камера-02</span> растёт с 18:40 и сейчас 410 Па. Замену фильтра лучше совместить с осмотром <span onClick="{{ focusABB }}" style="display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:6px;background:#E6F3FA;border:1px solid #CFE6F3;color:#0B3B60;font-family:'JetBrains Mono',monospace;font-size:12px;vertical-align:1px;cursor:pointer" style-hover="border-color:#0088CC"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#0088CC" style="stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>ABB-01</span> в перерыв 22:00.</div>
+              </div>
+            </div>
+          </sc-if>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <sc-for list="{{ askChips }}" as="q" hint-placeholder-count="3"><button onClick="{{ q.click }}" style="height:28px;padding:0 10px;border-radius:999px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;font:400 12px Inter,sans-serif;cursor:pointer;white-space:nowrap" style-hover="border-color:#0088CC;background:#E6F3FA">{{ q.label }}</button></sc-for>
+          </div>
+          <div style="display:flex;gap:8px">
+            <input value="{{ q }}" onChange="{{ setQ }}" placeholder="Спросите о линии, участке или оборудовании" style="flex:1;min-width:0;height:40px;padding:0 12px;border:1px solid #E3E8EF;border-radius:8px;font:400 13px Inter,sans-serif;color:#0F1B2A;outline:none;background:#FFFFFF">
+            <button onClick="{{ sendQ }}" title="Отправить" style="width:40px;height:40px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none" style-hover="background:#072A45"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"></path><path d="m21.854 2.147-10.94 10.939"></path></svg></button>
+          </div>
+        </div>
+      </sc-if>
+    </aside>
+  </div>
+
+  <footer style="height:72px;flex:none;background:#FFFFFF;border-top:1px solid #E3E8EF;display:flex;align-items:center;gap:20px;padding:0 24px;position:relative;z-index:30">
+    <div style="display:flex;gap:8px">
+      <button onClick="{{ togglePlay }}" style="height:40px;width:112px;padding:0 14px;border-radius:8px;border:none;background:#0B3B60;color:#FFFFFF;font:500 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer" style-hover="background:#072A45">
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg></sc-if>
+        <sc-if value="{{ paused }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></sc-if>
+        {{ playLabel }}
+      </button>
+      <button onClick="{{ reset }}" title="Сброс" style="width:40px;height:40px;border-radius:8px;border:1px solid #E3E8EF;background:#FFFFFF;color:#0F1B2A;display:flex;align-items:center;justify-content:center;cursor:pointer" style-hover="background:#F5F7FA"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+    </div>
+    <div style="width:1px;height:36px;background:#E3E8EF"></div>
+    <div style="display:flex;flex-direction:column;gap:4px;flex:none;width:186px">
+      <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;font-weight:500;color:#5B6B7F">Время симуляции</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:15px;white-space:nowrap">15.10.2026 · {{ clock }}</span>
+    </div>
+    <div style="flex:1;min-width:0;position:relative;height:48px">
+      <div style="position:absolute;left:0;right:0;top:22px;height:6px;border-radius:999px;background:#E3E8EF"></div>
+      <div style="position:absolute;left:0;width:{{ pos }};top:22px;height:6px;border-radius:999px;background:#0088CC"></div>
+      <sc-for list="{{ markers }}" as="m" hint-placeholder-count="3">
+        <div onMouseEnter="{{ m.enter }}" onMouseLeave="{{ m.leave }}" style="position:absolute;left:{{ m.left }};top:2px;width:16px;height:20px;margin-left:-8px;display:flex;justify-content:center;cursor:pointer;z-index:2">
+          <span style="width:4px;height:13px;border-radius:2px;background:{{ m.color }}"></span>
+          <sc-if value="{{ m.show }}">
+            <div style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:220px;background:#FFFFFF;border:1px solid #E3E8EF;border-radius:10px;box-shadow:0 8px 24px rgba(15,27,42,0.10);padding:10px 12px;display:flex;flex-direction:column;gap:6px;cursor:default">
+              <div style="display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12px"><span>{{ m.time }} · {{ m.code }}</span><span style="color:#5B6B7F">{{ m.dur }}</span></div>
+              <span style="font-size:13px;font-weight:500">{{ m.text }}</span>
+              <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:{{ m.soft }};color:{{ m.fg }};font-size:12px;font-weight:500"><span style="width:6px;height:6px;border-radius:50%;background:{{ m.color }}"></span>{{ m.stText }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="position:absolute;left:{{ pos }};top:16px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#FFFFFF;border:2px solid #0B3B60;z-index:3"></div>
+      <div style="position:absolute;left:0;right:0;top:34px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5B6B7F"><span>16:00</span><span>18:00</span><span>20:00</span><span>22:00</span><span>00:00</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex:none">
+      <span style="font-size:12px;color:#5B6B7F">Скорость</span>
+      <div style="display:flex;border:1px solid #E3E8EF;border-radius:8px;overflow:hidden">
+        <sc-for list="{{ speeds }}" as="s" hint-placeholder-count="5">
+          <button onClick="{{ s.click }}" style="height:34px;min-width:44px;padding:0 10px;border:none;border-right:1px solid #E3E8EF;background:{{ s.bg }};color:{{ s.fg }};font:500 12px 'JetBrains Mono',monospace;cursor:pointer">{{ s.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;flex:none;font-size:12px;color:#5B6B7F"><span style="height:24px;padding:0 8px;border:1px solid #E3E8EF;border-bottom-width:2px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#0F1B2A;display:flex;align-items:center">Space</span>пауза</div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;panel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Обзор&quot;,&quot;A · Окраска-1&quot;,&quot;B · ABB-01&quot;,&quot;C · Кузов&quot;,&quot;D · Пусто&quot;,&quot;ИИ&quot;],&quot;default&quot;:&quot;Обзор&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Демо-состояния&quot;},&quot;showAlarm&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Демо-состояния&quot;},&quot;showBell&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Демо-состояния&quot;},&quot;showHoverCard&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Демо-состояния&quot;},&quot;showLayersPopover&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Демо-состояния&quot;}}">
+const ST = {
+  ok: { dot: '#2E9E6B', soft: '#E7F5EE', fg: '#1F7A50', text: 'Норма' },
+  warn: { dot: '#E09A1F', soft: '#FDF3E2', fg: '#94600F', text: 'Внимание' },
+  alarm: { dot: '#C8453B', soft: '#FBEAE8', fg: '#A3352C', text: 'Авария' },
+};
+const IC = {
+  pkg: ['M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z', 'M12 22V12', 'm3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7'],
+  flame: ['M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z', '', ''],
+  roller: ['M4 2h12a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z', 'M10 16v-2a2 2 0 0 1 2-2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2', 'M9 16h2a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z'],
+  wrench: ['M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z', '', ''],
+  shield: ['M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z', 'm9 12 2 2 4-4', ''],
+  car: ['M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2', 'M5 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0M15 17a2 2 0 1 0 4 0a2 2 0 1 0-4 0', 'M9 17h6'],
+};
+const SECS = [
+  { id: 'WH-IN', lbl: 'Склад комплектующих', list: 'Склад комплектующих', flow: 'Склад комплектующих', st: 'ok', fst: 'ok', metric: 'запас 5,8 ч', inc: 0, oee: '—', pf: '120 / 126', big: '46', cap: 'комплектов, запас 5,8 ч', icon: IC.pkg, heat: { OEE: null, 'Брак': null, 'Риск': 'ok' } },
+  { id: 'WLD-1', lbl: 'Сварка', list: 'Сварка-1', flow: 'Сварка', st: 'warn', fst: 'warn', metric: 'OEE 84,6 %', inc: 2, oee: '84,6 %', pf: '120 / 124', big: '4', cap: 'кузова в работе', icon: IC.flame, heat: { OEE: 'warn', 'Брак': 'ok', 'Риск': 'alarm' } },
+  { id: 'PNT-1', lbl: 'Окраска', list: 'Окраска-1', flow: 'Окраска', st: 'alarm', fst: 'warn', metric: 'брак 5,2 %', inc: 1, oee: '79,3 %', pf: '120 / 122', big: '6', cap: 'кузовов, очередь 2', icon: IC.roller, heat: { OEE: 'alarm', 'Брак': 'alarm', 'Риск': 'warn' } },
+  { id: 'ASM-1', lbl: 'Сборка', list: 'Сборка-1', flow: 'Сборка', st: 'warn', fst: 'warn', metric: 'OEE 88,1 %', inc: 1, oee: '88,1 %', pf: '120 / 121', big: '9', cap: 'автомобилей на линии', icon: IC.wrench, heat: { OEE: 'ok', 'Брак': 'warn', 'Риск': 'warn' } },
+  { id: 'QC-1', lbl: 'ОТК', list: 'Контроль качества', flow: 'ОТК', st: 'ok', fst: 'ok', metric: 'FPY 97,4 %', inc: 0, oee: '91,0 %', pf: '120 / 119', big: '3', cap: 'на проверке', icon: IC.shield, heat: { OEE: 'ok', 'Брак': 'ok', 'Риск': 'ok' } },
+  { id: 'WH-OUT', lbl: 'Склад ГП', list: 'Склад ГП', flow: 'Склад ГП', st: 'ok', fst: 'ok', metric: '118 шт', inc: 0, oee: '—', pf: '120 / 118', big: '118', cap: 'готово за смену', icon: IC.car, heat: { OEE: null, 'Брак': null, 'Риск': 'ok' } },
+];
+const LBL_X = [-318, -191, -64, 64, 191, 318];
+const LBL_Y = [-159, -95, -32, 32, 95, 159];
+const T0 = 78130, START = 57600, SPAN = 28800;
+const TOOLS = [
+  { id: 'layers', name: 'Слои', p: ['m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z', 'm22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65', 'm22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65'] },
+  { id: 'follow', name: 'Следить за кузовом', p: ['M2 12h3M19 12h3M12 2v3M12 19v3', 'M5 12a7 7 0 1 0 14 0a7 7 0 1 0-14 0', 'M9 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0'] },
+  { id: 'fit', name: 'Показать всё', p: ['M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2', '', ''] },
+  { id: 'zin', name: 'Приблизить', sep: true, p: ['M5 12h14M12 5v14', '', ''] },
+  { id: 'zout', name: 'Отдалить', p: ['M5 12h14', '', ''] },
+  { id: 'full', name: 'Полный экран', sep: true, p: ['M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3', '', ''] },
+];
+const MARKERS = [
+  { time: '17:05', code: 'ABB-01', text: 'Ошибка датчика', dur: '25 мин', st: 'warn', left: '13.54%' },
+  { time: '18:40', code: 'Камера-02', text: 'Замена фильтра', dur: '40 мин', st: 'warn', left: '33.33%' },
+  { time: '20:15', code: 'Конвейер-03', text: 'Обрыв цепи', dur: '55 мин', st: 'alarm', left: '53.13%' },
+];
+
+const LV = {
+  crit: { dot: '#C8453B', soft: '#FBEAE8', fg: '#A3352C', text: 'Критично', i: ['m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3', 'M12 9v4', 'M12 17h.01'] },
+  warn: { dot: '#E09A1F', soft: '#FDF3E2', fg: '#94600F', text: 'Внимание', i: ['M2 12a10 10 0 1 0 20 0a10 10 0 1 0-20 0', 'M12 8v4', 'M12 16h.01'] },
+  info: { dot: '#0088CC', soft: '#E6F3FA', fg: '#0077B6', text: 'Инфо', i: ['M2 12a10 10 0 1 0 20 0a10 10 0 1 0-20 0', 'M12 16v-4', 'M12 8h.01'] },
+};
+const AI_CARDS = [
+  { lvl: 'crit', title: 'ABB-01 — риск остановки', big: '78', unit: '%', bigLabel: 'в течение 2 ч', focus: 'ABB-01',
+    signs: ['вибрация +38 % за 6 ч', 'температура оси 2 +9 °C'],
+    rec: 'Осмотреть подшипник оси 2 в технологический перерыв 22:00, подготовить запасной датчик', effect: '≈ 45 мин простоя предотвращено ≈ 11 автомобилей' },
+  { lvl: 'crit', title: 'Окраска-1 — брак выше порога 2-е сутки', big: '5,2', unit: '%', bigLabel: 'брак · порог 2 %', focus: 'PNT-1',
+    signs: ['брак 5,2 % при пороге 2 %', 'перепад давления на фильтре растёт'], rec: 'Заменить фильтр Камеры-02 до конца смены' },
+  { lvl: 'warn', title: 'Узкое место: Окраска', big: '2', unit: 'кузова', bigLabel: 'в очереди перед окраской', focus: 'PNT-1',
+    signs: ['очередь перед окраской 2 кузова', 'Сборка простаивает 6 % времени'], rec: 'Сократить цикл сушки на ПС-01 в пределах техкарты или вывести резервного маляра' },
+  { lvl: 'warn', title: 'Риск невыполнения месячного плана', big: '5 190', unit: '/ 5 500', bigLabel: 'прогноз выпуска на 31.10', focus: null,
+    signs: ['прогноз 5 190 из 5 500', 'мощность линии при 22 рабочих днях — 5 280'], rec: 'Нужно +14 авто в сутки или 2 дополнительные субботние смены' },
+];
+const NOTIFS = [
+  { lvl: 'crit', obj: 'ABB-01', text: 'ИИ: риск остановки 78 % в течение 2 ч', time: '21:41', focus: 'ABB-01' },
+  { lvl: 'crit', obj: 'Окраска-1', text: 'Брак ЛКП выше порога', time: '20:55', focus: 'PNT-1' },
+  { lvl: 'crit', obj: 'Конвейер-03', text: 'Обрыв цепи', time: '20:15', focus: 'ASM-1' },
+  { lvl: 'warn', obj: 'План', text: 'Риск невыполнения месячного плана', time: '19:30', focus: null },
+  { lvl: 'warn', obj: 'Камера-02', text: 'Замена фильтра', time: '18:40', focus: 'PNT-1' },
+  { lvl: 'warn', obj: 'ABB-01', text: 'Ошибка датчика', time: '17:05', focus: 'ABB-01' },
+];
+const FOCUS_XY = { 'PNT-1': { x: -64, y: -32 }, 'ASM-1': { x: 64, y: 32 }, 'ABB-01': { x: -192, y: -119 }, CAR: { x: -83, y: -41 } };
+
+class Component extends DCLogic {
+  sceneRef = React.createRef();
+  state = { vw: typeof window !== 'undefined' ? window.innerWidth : 1920, k: 1, playing: true, t: T0, speed: '8×', hoverSec: null, selSec: null, hm: null, tip: null, layersOpen: false, layers: { flow: true, labels: true, equip: true, cars: true }, heat: 'Выкл', panel: 'overview', tele: '1 ч',
+    aiFocus: null, lv: { crit: true, warn: true, info: true }, menuIdx: null, dismissed: [], q: '', chatOpen: true,
+    bellOpen: false, bellTab: 'all', unread: [0, 1, 2], toast: false, alarm: false };
+  focusKey() {
+    const p = this.state.panel;
+    return p === 'A' ? 'PNT-1' : p === 'B' ? 'ABB-01' : p === 'C' ? 'CAR' : p === 'AI' ? this.state.aiFocus : this.state.alarm && p === 'overview' && this.state.selSec === 'ASM-1' ? 'ASM-1' : null;
+  }
+  applyFlags() {
+    const a = !!this.props.showAlarm;
+    this.setState({ alarm: a, toast: a, bellOpen: !!this.props.showBell });
+  }
+  applyPanel() {
+    const map = { 'A · Окраска-1': ['A', 'PNT-1'], 'B · ABB-01': ['B', 'WLD-1'], 'C · Кузов': ['C', null], 'D · Пусто': ['D', null], 'ИИ': ['AI', null], 'Обзор': ['overview', null] };
+    const m = map[this.props.panel];
+    if (m) this.setState({ panel: m[0], selSec: m[1] });
+  }
+  componentDidUpdate(prev) {
+    if (prev.panel !== this.props.panel) this.applyPanel();
+    if (prev.showAlarm !== this.props.showAlarm || prev.showBell !== this.props.showBell) this.applyFlags();
+  }
+
+  componentDidMount() {
+    if (this.props.showLayersPopover) this.setState({ layersOpen: true });
+    this.applyPanel();
+    this.applyFlags();
+    this.iv = setInterval(() => {
+      if (!this.state.playing) return;
+      const k = parseInt(this.state.speed, 10) || 1;
+      this.setState(s => { let t = s.t + k; if (t >= START + SPAN) t = START; return { t }; });
+    }, 1000);
+    this.onKey = e => { if (e.code === 'Space' && !/input|textarea/i.test(e.target.tagName)) { e.preventDefault(); this.setState(s => ({ playing: !s.playing })); } };
+    window.addEventListener('keydown', this.onKey);
+    this.onResize = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this.onResize);
+    const el = this.sceneRef.current && this.sceneRef.current.parentElement;
+    if (el && window.ResizeObserver) {
+      this.ro = new ResizeObserver(() => { const r = el.getBoundingClientRect(); this.setState({ k: Math.max(0.5, Math.min(1, r.width / 1240, (r.height - 40) / 760)) }); });
+      this.ro.observe(el);
+    }
+  }
+  componentWillUnmount() { clearInterval(this.iv); window.removeEventListener('keydown', this.onKey); window.removeEventListener('resize', this.onResize); this.ro && this.ro.disconnect(); }
+
+  buildScene() {
+    const h = React.createElement, P = 'preserve-3d';
+    const { layers, heat, hoverSec, selSec, alarm } = this.state;
+    const fk = this.focusKey();
+    const ring = (x, y, w, d) => box(x, y, 0, w, d, 1, ['rgba(0,136,204,0.16)', '#0088CC', '#0088CC'], '2px solid #0088CC');
+    let k = 0;
+    const box = (x, y, z, w, d, ht, c, bd) => h('div', { key: k++, style: { position: 'absolute', left: x, top: y, width: w, height: d, transform: `translateZ(${z}px)`, transformStyle: P } },
+      h('div', { style: { position: 'absolute', inset: 0, background: c[0], transform: `translateZ(${ht}px)`, boxSizing: 'border-box', border: bd || 'none' } }),
+      h('div', { style: { position: 'absolute', left: 0, top: d - ht, width: w, height: ht, background: c[1], transformOrigin: '50% 100%', transform: 'rotateX(-90deg)' } }),
+      h('div', { style: { position: 'absolute', left: w, top: 0, width: ht, height: d, background: c[2], transformOrigin: '0 50%', transform: 'rotateY(-90deg)' } }));
+    const wallX = (x, y, len, ht, bg, bd) => h('div', { key: k++, style: { position: 'absolute', left: x, top: y - ht, width: len, height: ht, background: bg, border: `1px solid ${bd}`, boxSizing: 'border-box', transformOrigin: '50% 100%', transform: 'rotateX(-90deg)' } });
+    const wallY = (x, y, len, ht, bg, bd) => h('div', { key: k++, style: { position: 'absolute', left: x, top: y, width: ht, height: len, background: bg, border: `1px solid ${bd}`, boxSizing: 'border-box', transformOrigin: '0 50%', transform: 'rotateY(-90deg)' } });
+    const C = { raw: ['#C9D1DA', '#A9B4C0', '#97A3B0'], white: ['#FFFFFF', '#DCE3EA', '#C9D2DC'], silver: ['#E3E8EE', '#BFC9D4', '#AAB6C3'], navy: ['#2A5F8C', '#0B3B60', '#072A45'] };
+    const car = (x, y, col) => layers.cars ? [box(x, y, 3, 46, 20, 8, C[col]), box(x + 12, y + 2, 11, 22, 16, 7, [C[col][0], '#5B6B7F', '#4A5A6D'])] : [];
+    const robot = (x, y, dir) => layers.equip ? [
+      box(x, y, 0, 16, 16, 6, ['#5B6B7F', '#46566A', '#3C4A5C']),
+      box(x + 5, y + 5, 6, 6, 6, 24, ['#F2F4F7', '#D5DCE5', '#C3CCD7']),
+      box(x + 5, dir > 0 ? y + 5 : y - 15, 30, 6, 26, 5, ['#0088CC', '#0077B6', '#0B3B60']),
+    ] : [];
+    const out = [];
+    if (layers.flow) out.push(box(0, 180, 0, 1100, 20, 3, ['repeating-linear-gradient(90deg,#D9DFE7 0 7px,#BFC9D4 7px 9px)', '#B8C2CF', '#A9B4C0']));
+    SECS.forEach((s, i) => {
+      const x0 = 30 + 180 * i, y0 = 70, w = 140, d = 240;
+      const isAl = s.st === 'alarm' || (alarm && s.id === 'ASM-1');
+      const act = !isAl && (hoverSec === s.id || selSec === s.id || fk === s.id), alarm2 = isAl;
+      const edge = act ? '#0088CC' : alarm2 ? '#C8453B' : '#B8C2CF';
+      const hv = heat !== 'Выкл' ? (s.heat[heat] ? ST[s.heat[heat]].soft : '#F5F7FA') : null;
+      const slab = hv || (act ? '#E6F3FA' : alarm2 ? '#FDF1EF' : '#FFFFFF');
+      if (alarm && s.id === 'ASM-1') out.push(h('div', { key: 'blink', style: { position: 'absolute', left: x0 - 6, top: y0 - 6, width: w + 12, height: d + 12, border: '3px solid #C8453B', borderRadius: 4, boxShadow: '0 0 0 6px rgba(200,69,59,0.18)', transform: 'translateZ(6px)', animation: 'dcBlink 1.2s ease-in-out infinite', boxSizing: 'border-box' } }));
+      out.push(box(x0, y0, 0, w, d, 4, [slab, '#DDE3EA', '#CBD3DD'], `1.5px solid ${edge}`));
+      const wb = 'rgba(255,255,255,0.5)', wf = 'rgba(255,255,255,0.16)';
+      out.push(wallX(x0, y0, w, 56, wb, edge), wallY(x0, y0, d, 56, wb, edge), wallX(x0, y0 + d, w, 56, wf, edge), wallY(x0 + w, y0, d, 56, wf, edge));
+      if (i === 0 && layers.equip) {
+        const hs = [18, 26, 12, 22, 30, 16, 24, 14, 28, 20, 10, 26];
+        [95, 135, 215, 255].forEach((yy, r) => [14, 54, 94].forEach((xx, c) => out.push(box(x0 + xx, yy, 4, 30, 30, hs[r * 3 + c], ['#ECE6DA', '#D6CDBB', '#C5BAA4']))));
+      }
+      if (i === 1 && fk === 'ABB-01') out.push(ring(x0 + 22, 144, 28, 28));
+      if (i === 2 && fk === 'CAR') out.push(ring(x0 + 14, 175, 58, 30));
+      if (i === 1) { out.push(...car(x0 + 47, 180, 'raw'), ...robot(x0 + 28, 150, 1), ...robot(x0 + 92, 150, 1), ...robot(x0 + 28, 214, -1), ...robot(x0 + 92, 214, -1)); }
+      if (i === 2) {
+        out.push(...car(x0 + 20, 180, 'white'));
+        if (layers.equip) out.push(
+          box(x0 + 8, 166, 0, 72, 48, 36, ['rgba(0,136,204,0.14)', 'rgba(0,136,204,0.10)', 'rgba(0,136,204,0.20)'], '1px solid rgba(0,136,204,0.55)'),
+          box(x0 + 86, 166, 0, 46, 48, 30, ['rgba(91,107,127,0.20)', 'rgba(91,107,127,0.14)', 'rgba(91,107,127,0.28)'], '1px solid rgba(91,107,127,0.5)'));
+      }
+      if (i === 3) { out.push(...car(x0 + 8, 180, 'white'), ...car(x0 + 80, 180, 'silver')); if (layers.equip) out.push(box(x0 + 60, 140, 4, 22, 22, 16, ['#F2F4F7', '#D5DCE5', '#C3CCD7']), box(x0 + 60, 220, 4, 22, 22, 16, ['#F2F4F7', '#D5DCE5', '#C3CCD7'])); }
+      if (i === 4) {
+        out.push(...car(x0 + 50, 180, 'white'));
+        if (layers.equip) out.push(box(x0 + 66, 168, 0, 5, 5, 40, ['#5B6B7F', '#46566A', '#3C4A5C']), box(x0 + 66, 207, 0, 5, 5, 40, ['#5B6B7F', '#46566A', '#3C4A5C']), box(x0 + 66, 168, 40, 5, 44, 4, ['#0088CC', '#0077B6', '#0B3B60']), box(x0 + 18, 232, 4, 30, 30, 8, ['#F2F4F7', '#D5DCE5', '#C3CCD7']));
+      }
+      if (i === 5) {
+        const cols = ['white', 'silver', 'navy', 'white', 'silver', 'white'];
+        [92, 122, 150, 212, 242, 272].forEach((yy, r) => { out.push(...car(x0 + 16, yy, cols[r]), ...car(x0 + 78, yy, cols[(r + 2) % 6])); });
+      }
+    });
+    out.push(...car(166, 180, 'raw'), ...car(704, 180, 'white'));
+    return h('div', { style: { position: 'absolute', left: '50%', top: 'calc(50% + 20px)', width: 1100, height: 380, marginLeft: -550, marginTop: -190, transform: 'rotateX(60deg) rotateZ(45deg)', transformStyle: P, background: '#FAFBFC', backgroundImage: 'linear-gradient(#E6EBF0 1px, transparent 1px), linear-gradient(90deg, #E6EBF0 1px, transparent 1px)', backgroundSize: '40px 40px', border: '1px solid #CBD3DD', boxShadow: '0 0 0 28px rgba(255,255,255,0.45)' } }, ...out);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const demo = this.props.showHoverCard ?? true;
+    const ov = s.panel === 'overview';
+    const hov = s.hoverSec || (demo && ov && !s.selSec && !s.alarm ? 'ASM-1' : null);
+    const stOf = x => (s.alarm && x.id === 'ASM-1') ? 'alarm' : x.st;
+    const fk = this.focusKey();
+    const setFocus = f => () => this.setState({ aiFocus: f });
+    const unreadSet = s.unread;
+    const setHover = id => () => this.setState({ hoverSec: id });
+    const clearHover = () => this.setState({ hoverSec: null });
+    const select = id => () => this.setState(st => {
+      if (st.selSec === id) return { selSec: null, panel: st.panel === 'overview' ? 'overview' : 'D' };
+      return { selSec: id, panel: id === 'PNT-1' ? 'A' : id === 'WLD-1' ? 'B' : 'overview' };
+    });
+    const Z = 1.7;
+    const focus = fk ? FOCUS_XY[fk] : null;
+    const fz = focus ? Z : 1, fx = focus ? focus.x : 0, fy = focus ? focus.y : 0;
+    const dw = Math.max(0, s.t - 77758);
+    if (!this.pulseEl) this.pulseEl = React.createElement('span', { style: { position: 'absolute', inset: 0, borderRadius: '50%', background: '#0088CC', animation: 'dcPulse 1.6s ease-out infinite' } });
+    const act = (on) => on ? { bg: '#0B3B60', fg: '#FFFFFF' } : { bg: 'transparent', fg: '#5B6B7F' };
+    const fmt = t => [Math.floor(t / 3600) % 24, Math.floor(t / 60) % 60, t % 60].map(n => String(n).padStart(2, '0')).join(':');
+    const tog = key => () => this.setState(st => ({ layers: { ...st.layers, [key]: !st.layers[key] } }));
+    return {
+      scene: this.buildScene(),
+      sceneRef: this.sceneRef, k: s.k, wide: s.vw >= 1600,
+      camT: `scale(${s.k})` + (focus ? ` scale(${Z}) translate(${-fx}px, ${-fy}px)` : ''),
+      pOv: ov, pA: s.panel === 'A', pB: s.panel === 'B', pC: s.panel === 'C', pD: s.panel === 'D',
+      tabOv: act(ov), tabSec: act(['A', 'B', 'C', 'D'].includes(s.panel)), tabAI: act(s.panel === 'AI'),
+      pAI: s.panel === 'AI', showEq: fk === 'ABB-01', showCar: fk === 'CAR',
+      goAI: () => this.setState({ panel: 'AI', bellOpen: false }),
+      goSummary: () => { window.location.href = 'Сводка.dc.html'; },
+      goScenarios: () => { window.location.href = 'Сценарии.dc.html'; },
+      hz: s.hz || '2 ч', hzOpen: !!s.hzOpen, hzBorder: s.hzOpen ? '#0088CC' : '#E3E8EF',
+      toggleHz: () => this.setState(st => ({ hzOpen: !st.hzOpen })),
+      hzOpts: ['2 ч', 'Смена', 'Сутки'].map(l => { const on = (s.hz || '2 ч') === l; return { label: l, on, bg: on ? '#E6F3FA' : 'transparent', fg: on ? '#0B3B60' : '#0F1B2A', click: () => this.setState({ hz: l, hzOpen: false }) }; }),
+      lvlFilters: ['crit', 'warn', 'info'].map(l => ({ label: LV[l].text, on: s.lv[l], bg: s.lv[l] ? '#0B3B60' : '#FFFFFF', border: s.lv[l] ? '#0B3B60' : '#CBD5E1', click: () => this.setState(st => ({ lv: { ...st.lv, [l]: !st.lv[l] } })) })),
+      aiCards: AI_CARDS.map((c, i) => ({ ...c, i }))
+        .filter(c => s.lv[c.lvl] && !s.dismissed.includes(c.i))
+        .map(c => { const L = LV[c.lvl]; return { ...c, stripe: L.dot, soft: L.soft, dot: L.dot, fg: L.fg, lvlText: L.text, i1: L.i[0], i2: L.i[1], i3: L.i[2], hasEffect: !!c.effect,
+          menuOpen: s.menuIdx === c.i, menuBg: s.menuIdx === c.i ? '#F5F7FA' : 'transparent',
+          toggleMenu: () => this.setState(st => ({ menuIdx: st.menuIdx === c.i ? null : c.i })),
+          dismiss: () => this.setState(st => ({ dismissed: [...st.dismissed, c.i], menuIdx: null })),
+          why: () => this.setState({ menuIdx: null, chatOpen: true, q: 'Почему такой прогноз: ' + c.title + '?' }),
+          show: setFocus(c.focus) }; }),
+      chatOpen: s.chatOpen, chatRot: s.chatOpen ? 'none' : 'rotate(180deg)',
+      toggleChat: () => this.setState(st => ({ chatOpen: !st.chatOpen })),
+      askChips: ['Почему просела Окраска?', 'Что будет, если Конвейер-03 встанет на час?', 'Сводка смены для директора'].map(l => ({ label: l, click: () => this.setState({ q: l }) })),
+      q: s.q, setQ: e => this.setState({ q: e.target.value }), sendQ: () => this.setState({ q: '' }),
+      focusPNT: setFocus('PNT-1'), focusABB: setFocus('ABB-01'),
+      toastOn: s.toast,
+      toastGo: () => this.setState({ toast: false, panel: 'overview', selSec: 'ASM-1' }),
+      toastHide: () => this.setState({ toast: false }),
+      bellOpen: s.bellOpen, hasUnread: unreadSet.length > 0,
+      toggleBell: () => this.setState(st => ({ bellOpen: !st.bellOpen })),
+      markAll: e => { e && e.preventDefault(); this.setState({ unread: [] }); },
+      bellTabs: [['all', 'Все', NOTIFS.length], ['unread', 'Непрочитанные', unreadSet.length]].map(([id, label, count]) => ({ label, count,
+        bg: s.bellTab === id ? '#FFFFFF' : 'transparent', fg: s.bellTab === id ? '#0F1B2A' : '#5B6B7F', sh: s.bellTab === id ? '0 1px 2px rgba(15,27,42,0.08)' : 'none',
+        click: () => this.setState({ bellTab: id }) })),
+      notifs: NOTIFS.map((n, i) => ({ ...n, i })).filter(n => s.bellTab === 'all' || unreadSet.includes(n.i)).map(n => { const L = LV[n.lvl], un = unreadSet.includes(n.i);
+        return { ...n, unread: un, bg: un ? '#F7FBFE' : '#FFFFFF', soft: L.soft, dot: L.dot, fg: L.fg, lvlText: L.text, i1: L.i[0], i2: L.i[1], i3: L.i[2],
+          click: () => this.setState(st => ({ unread: st.unread.filter(x => x !== n.i), bellOpen: false, panel: n.focus ? 'AI' : st.panel, aiFocus: n.focus })) }; }),
+      noNotifs: s.bellTab === 'unread' && unreadSet.length === 0,
+      goOverview: () => this.setState({ panel: 'overview' }),
+      goSection: () => this.setState(st => ({ panel: st.selSec === 'PNT-1' ? 'A' : st.selSec === 'WLD-1' ? 'B' : 'D' })),
+      closePanel: () => this.setState({ panel: 'D', selSec: null }),
+      stopFollow: () => this.setState({ panel: 'overview' }),
+      goPNTparent: e => { e && e.preventDefault(); },
+      teleOpts: ['1 ч', '8 ч', '24 ч'].map(l => ({ label: l, bg: s.tele === l ? '#E6F3FA' : '#FFFFFF', fg: s.tele === l ? '#0B3B60' : '#5B6B7F', click: () => this.setState({ tele: l }) })),
+      teleX: { '1 ч': ['20:42', '21:02', '21:22', '21:42'], '8 ч': ['13:42', '16:22', '19:02', '21:42'], '24 ч': ['21:42', '05:42', '13:42', '21:42'] }[s.tele],
+      dwell: `${Math.floor(dw / 60)}:${String(dw % 60).padStart(2, '0')}`,
+      pulse: this.pulseEl,
+      showLabels: s.layers.labels,
+      rows: SECS.map(x => {
+        const st = ST[stOf(x)], on = s.selSec === x.id, hv = s.hoverSec === x.id;
+        return { list: x.list, i1: x.icon[0], i2: x.icon[1], i3: x.icon[2], dot: st.dot, fg: st.fg, stText: st.text, metric: x.metric, inc: x.inc,
+          incBg: x.inc ? '#0B3B60' : '#FFFFFF', incFg: x.inc ? '#FFFFFF' : '#5B6B7F', incBorder: x.inc ? '#0B3B60' : '#E3E8EF',
+          bg: on ? '#E6F3FA' : hv ? '#F5F7FA' : '#FFFFFF', bar: on ? 'inset 3px 0 0 #0088CC' : 'none',
+          click: select(x.id), enter: setHover(x.id), leave: clearHover };
+      }),
+      labels: SECS.map((x, i) => {
+        const st = ST[stOf(x)], alarm = stOf(x) === 'alarm', on = s.selSec === x.id && !alarm, isH = hov === x.id;
+        return { id: x.id, lbl: x.lbl, list: x.list, oee: x.oee, pf: x.pf, inc: x.inc, dot: st.dot, fg: st.fg, soft: st.soft, stText: st.text,
+          left: `calc(50% + ${(LBL_X[i] - fx) * fz}px)`, top: `calc(50% + ${20 + (LBL_Y[i] - fy) * fz}px)`,
+          alarm, notAlarm: !alarm, hover: isH, z: isH ? 20 : 10 + i,
+          border: on ? '#0088CC' : alarm ? '#C8453B' : '#E3E8EF', ring: on ? '0 0 0 3px #E6F3FA' : alarm ? '0 0 0 3px #FBEAE8' : 'none',
+          stem: on ? '#0088CC' : alarm ? '#C8453B' : '#94A3B8',
+          enter: setHover(x.id), leave: clearHover, click: select(x.id) };
+      }).filter(l => !((fk === 'ABB-01' && l.id === 'WLD-1') || (fk === 'CAR' && l.id === 'PNT-1'))),
+      flow: SECS.map((x, i) => {
+        const st = ST[x.fst], hv = s.hoverSec === x.id || s.selSec === x.id;
+        return { name: x.flow, big: x.big, cap: x.cap, i1: x.icon[0], i2: x.icon[1], i3: x.icon[2], dot: st.dot, fg: st.fg, stText: st.text, notLast: i < SECS.length - 1,
+          bg: hv ? '#E6F3FA' : 'transparent', enter: setHover(x.id), leave: clearHover, click: select(x.id) };
+      }),
+      tools: TOOLS.map(t => {
+        const act = (t.id === 'layers' && s.layersOpen) || (t.id === 'follow' && s.panel === 'C');
+        return { name: t.name, sep: !!t.sep, p1: t.p[0], p2: t.p[1], p3: t.p[2], tip: s.tip === t.id && !act,
+          bg: act ? '#E6F3FA' : 'transparent', fg: act ? '#0077B6' : '#0F1B2A',
+          enter: () => this.setState({ tip: t.id }), leave: () => this.setState({ tip: null }),
+          click: t.id === 'layers' ? () => this.setState(st => ({ layersOpen: !st.layersOpen }))
+            : t.id === 'follow' ? () => this.setState(st => ({ panel: st.panel === 'C' ? 'overview' : 'C', selSec: null }))
+            : t.id === 'fit' ? () => this.setState({ panel: 'overview', selSec: null }) : () => {} };
+      }),
+      layersOpen: s.layersOpen,
+      closeLayers: () => this.setState({ layersOpen: false }),
+      layerList: [['flow', 'Потоки материалов'], ['labels', 'Подписи участков'], ['equip', 'Оборудование'], ['cars', 'Кузова']].map(([key, label]) => {
+        const on = s.layers[key];
+        return { label, on, bg: on ? '#0B3B60' : '#FFFFFF', border: on ? '#0B3B60' : '#CBD5E1', click: tog(key) };
+      }),
+      heatOpts: ['Выкл', 'OEE', 'Брак', 'Риск'].map(l => ({ label: l, bg: s.heat === l ? '#E6F3FA' : '#FFFFFF', fg: s.heat === l ? '#0B3B60' : '#5B6B7F', click: () => this.setState({ heat: l }) })),
+      playing: s.playing, paused: !s.playing, playLabel: s.playing ? 'Пауза' : 'Пуск',
+      togglePlay: () => this.setState(st => ({ playing: !st.playing })),
+      reset: () => this.setState({ t: T0 }),
+      clock: fmt(s.t),
+      pos: ((s.t - START) / SPAN * 100).toFixed(2) + '%',
+      markers: MARKERS.map((m, i) => ({ ...m, color: ST[m.st].dot, soft: ST[m.st].soft, fg: ST[m.st].fg, stText: ST[m.st].text, show: s.hm === i,
+        enter: () => this.setState({ hm: i }), leave: () => this.setState({ hm: null }) })),
+      speeds: ['1×', '4×', '8×', '16×', '32×'].map(l => ({ label: l, bg: s.speed === l ? '#E6F3FA' : '#FFFFFF', fg: s.speed === l ? '#0B3B60' : '#5B6B7F', click: () => this.setState({ speed: l }) })),
+    };
+  }
+}
+</script>
+</body>
+</html>
