@@ -20,6 +20,12 @@ export interface RunParams {
   downtimes: DowntimeEvent[]
   /** Множитель брака окраски (сценарии «что если»). */
   paintDefectFactor: number
+  /** Такт запуска, с (по умолчанию 240 — 120 авто за смену). */
+  takt?: number
+  /** Постоянный брак окраски (доля) вместо сценарного роста; undefined — как в базовой смене. */
+  paintDefectRate?: number
+  /** Микс моделей в потоке; undefined — по месячному плану. */
+  mix?: [CarModelId, number][]
 }
 
 export const DEFAULT_PARAMS: RunParams = {
@@ -108,6 +114,7 @@ function defectRate(station: number, t: number, params: RunParams): number {
     case 1: {
       // 16:00–18:00 ≈ 2,5 %, затем рост до ≈ 8 % к 21:30 — вместе с засором фильтра Камеры-02.
       const ramp = Math.min(1, Math.max(0, (t - 2 * 3600) / (3.5 * 3600)))
+      if (params.paintDefectRate !== undefined) return params.paintDefectRate
       return (0.025 + 0.055 * ramp) * params.paintDefectFactor
     }
     case 2:
@@ -117,10 +124,10 @@ function defectRate(station: number, t: number, params: RunParams): number {
   }
 }
 
-function pickModel(id: number): CarModelId {
+function pickModel(id: number, mix: [CarModelId, number][]): CarModelId {
   const r = rand01('model', id)
   let acc = 0
-  for (const [m, share] of MODEL_MIX) {
+  for (const [m, share] of mix) {
     acc += share
     if (r < acc) return m
   }
@@ -134,7 +141,7 @@ export function runShift(params: RunParams = DEFAULT_PARAMS): ShiftRun {
 
   const newCar = (): CarInfo => {
     const id = ++seq
-    const model = pickModel(id)
+    const model = pickModel(id, params.mix ?? MODEL_MIX)
     const info: CarInfo = {
       id,
       code: `${CAR_MODELS[model].prefix}-2610-${String(id).padStart(4, '0')}`,
@@ -221,7 +228,7 @@ export function runShift(params: RunParams = DEFAULT_PARAMS): ShiftRun {
     // Подвоз комплектов каждые 2 часа.
     if (t > 0 && t % 7200 === 0) kits += 60
     // Запуск кузова в такт.
-    if (t % TAKT === 0) launchDue++
+    if (t % (params.takt ?? TAKT) === 0) launchDue++
     const weldBuffer = live.filter((c) => c.loc === 0).length
     if (launchDue > 0 && kits > 0 && weldBuffer < STATIONS[0].bufferCap) {
       const info = newCar()
