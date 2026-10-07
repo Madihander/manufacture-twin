@@ -55,8 +55,9 @@ export function buildParams(input: ScenarioInput): RunParams {
     planned: input.type === 'Плановое ТО',
     severity: input.type === 'Обрыв цепи' ? 'alarm' : 'warn',
   }
-  // Событие этого оборудования из базовой смены заменяем сценарным; остальные остановки остаются.
-  const downtimes = SHIFT_DOWNTIMES.filter((d) => d.equipmentId !== input.equipmentId)
+  // Событие того же оборудования в то же время (±30 мин) сценарий заменяет — так задаётся «что если бы его не было»;
+  // остановка в другое время добавляется к остальным событиям смены.
+  const downtimes = SHIFT_DOWNTIMES.filter((d) => !(d.equipmentId === input.equipmentId && Math.abs(d.start - input.start) <= 30 * 60))
   if (input.duration > 0) downtimes.push(event)
   const mix: [CarModelId, number][] | undefined =
     input.mixMode === 'plan'

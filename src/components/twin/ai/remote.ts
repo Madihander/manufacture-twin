@@ -2,23 +2,59 @@
 // и только пересказывает их; если сервер недоступен — вызывающий код берёт локальный шаблон.
 import { CAR_MODELS, EQUIPMENT, SECTIONS } from '@/data/plant'
 import { clockText } from '@/sim/clock'
-import { SHIFT_START_SEC } from '@/sim/model'
+import { SHIFT_LEN, SHIFT_START_SEC } from '@/sim/model'
+import { baseline, bottleneckText, DEFAULT_INPUT, MARGIN_KZT, runScenario } from '@/sim/scenario'
 import { METRICS, metricState } from '@/sim/telemetry'
 import type { Twin } from '@/sim/useTwin'
-import { useSim } from '@/store/sim'
+import { BASE_RUN, useSim } from '@/store/sim'
 import type { AnswerPart } from './chat'
 
 const r1 = (v: number) => Math.round(v * 10) / 10
+const STATUS_RU = { ok: 'Норма', warn: 'Внимание', alarm: 'Авария' } as const
+const LEVEL_RU = { crit: 'Критично', warn: 'Внимание', info: 'Инфо' } as const
+
+/**
+ * «Что будет, если X встанет на N минут» — не гадаем, а прогоняем смену в симуляции
+ * с такой остановкой и отдаём модели готовое сравнение с реальной сменой.
+ */
+function whatIf(question: string) {
+  const q = question.toLowerCase()
+  if (!/если|встан|останов|сломает|выйдет из строя/.test(q)) return undefined
+  const eq = EQUIPMENT.find((e) => e.critical && q.includes(e.id.toLowerCase()))
+  if (!eq) return undefined
+  const m = q.match(/(\d+(?:[.,]\d+)?)\s*(мин|ч)/)
+  const minutes = m ? Math.round(parseFloat(m[1].replace(',', '.')) * (m[2] === 'ч' ? 60 : 1)) : /час/.test(q) ? 60 : 30
+  const now = useSim.getState().t
+  const start = Math.min(Math.max(0, now), SHIFT_LEN - 15 * 60)
+  const base = baseline(BASE_RUN)
+  const scen = runScenario({ ...DEFAULT_INPUT, equipmentId: eq.id, type: 'Обрыв цепи', duration: Math.min(180, minutes), start })
+  return {
+    note: 'Расчёт симуляцией смены: остановка с текущего момента, остальные события смены — как в реальной смене',
+    equipment: eq.id,
+    section: SECTIONS.find((s) => s.id === eq.section)!.name,
+    stop_minutes: Math.min(180, minutes),
+    stop_from: clockText(start, false),
+    shift_output_real: base.shiftOutput,
+    shift_output_with_stop: scen.shiftOutput,
+    lost_cars: base.shiftOutput - scen.shiftOutput,
+    lost_margin_mln_kzt: r1(((base.shiftOutput - scen.shiftOutput) * MARGIN_KZT) / 1e6),
+    max_queue_with_stop: scen.maxQueue,
+    bottleneck: bottleneckText(scen),
+    line_oee_with_stop_pct: pct(scen.oee),
+    month_forecast_real: base.monthForecast,
+    month_forecast_with_stop: scen.monthForecast,
+  }
+}
 const pct = (v: number) => (Number.isNaN(v) ? null : r1(v * 100))
 
 /** Компактный снимок данных для модели: только то, что видно в интерфейсе. */
-export function buildContext(twin: Twin) {
+export function buildContext(twin: Twin, question = '') {
   const { snap, plant, sections, predictions, incidents, downtime, thresholds } = twin
   const tAbs = SHIFT_START_SEC + snap.t
   const sim = useSim.getState()
   const sensors = METRICS.map((m) => ({ m, s: metricState(m, tAbs) }))
     .filter(({ s }) => s.level !== 'ok')
-    .map(({ m, s }) => ({ equipment: m.equipmentId, sensor: m.label, value: `${r1(s.value)} ${m.unit}`, norm: m.norm, level: s.level, note: s.note }))
+    .map(({ m, s }) => ({ equipment: m.equipmentId, sensor: m.label, value: `${r1(s.value)} ${m.unit}`, norm: m.norm, level: STATUS_RU[s.level], note: s.note }))
   return {
     plant: 'СарыаркаАвтоПром, линия 1 (сварка → окраска → сборка → ОТК)',
     now: `15.10.2026 ${clockText(snap.t, false)}, смена 2 (16:00–00:00)`,
@@ -44,7 +80,7 @@ export function buildContext(twin: Twin) {
     },
     sections: sections.map((k) => ({
       name: SECTIONS.find((s) => s.id === k.id)!.name,
-      status: k.status,
+      status: STATUS_RU[k.status],
       reasons: k.reasons,
       fact: k.fact,
       oee_pct: pct(k.oee),
@@ -59,11 +95,11 @@ export function buildContext(twin: Twin) {
       title: i.title,
       downtime_min: i.downtime ? Math.round(i.downtime / 60) : null,
       ongoing: i.ongoing,
-      level: i.level,
+      level: STATUS_RU[i.level],
     })),
     downtime_today_min: downtime.map((d) => ({ equipment: d.equipmentId, minutes: d.minutes })),
     ai_forecasts: predictions.map((p) => ({
-      level: p.level,
+      level: LEVEL_RU[p.level],
       title: p.title,
       value: `${p.big} ${p.unit}`,
       horizon: p.bigLabel,
@@ -73,6 +109,7 @@ export function buildContext(twin: Twin) {
     })),
     sensors_out_of_norm: sensors,
     equipment: EQUIPMENT.map((e) => `${e.id} — ${e.name} (${SECTIONS.find((s) => s.id === e.section)!.name})`),
+    what_if: whatIf(question),
   }
 }
 
@@ -103,7 +140,7 @@ export async function askRemote(question: string, twin: Twin, history: { role: '
     const res = await fetch('/api/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, context: buildContext(twin), history }),
+      body: JSON.stringify({ question, context: buildContext(twin, question), history }),
       signal: ctrl.signal,
     })
     const data = (await res.json().catch(() => ({}))) as { answer?: string; model?: string; error?: string }
