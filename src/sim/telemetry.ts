@@ -1,7 +1,7 @@
 // Телеметрия оборудования: 24 датчика. Значение — детерминированная функция времени,
 // поэтому графики за 1 ч / 8 ч / 24 ч строятся мгновенно и одинаково при каждом запуске.
 // tAbs — секунды от 00:00 15.10 (отрицательные — предыдущие сутки).
-import { SHIFT_DOWNTIMES, SHIFT_START_SEC } from './model'
+import { type DowntimeEvent, SHIFT_DOWNTIMES, SHIFT_START_SEC } from './model'
 import { smoothNoise } from './rng'
 
 export interface MetricSpec {
@@ -21,10 +21,17 @@ export interface MetricSpec {
 const H = 3600
 const hours = (tAbs: number) => tAbs / H
 
-/** Оборудование стоит в момент tAbs (по сценарию смены). */
+/** Остановки смены, показанной на карте: реальной или сценария «что если». */
+let activeDowntimes: DowntimeEvent[] = SHIFT_DOWNTIMES
+
+export function setActiveDowntimes(d: DowntimeEvent[]) {
+  activeDowntimes = d
+}
+
+/** Оборудование стоит в момент tAbs (по расписанию остановок текущей смены). */
 export function isDown(equipmentId: string, tAbs: number): boolean {
   const t = tAbs - SHIFT_START_SEC
-  return SHIFT_DOWNTIMES.some((d) => d.equipmentId === equipmentId && t >= d.start && t < d.start + d.duration)
+  return activeDowntimes.some((d) => d.equipmentId === equipmentId && t >= d.start && t < d.start + d.duration)
 }
 
 const n = (key: string, tAbs: number, amp: number, step = 300) => amp * smoothNoise(key, tAbs, step)

@@ -14,13 +14,17 @@ export default function TwinScene() {
     <>
       <Canvas
         shadows
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true }}
         onPointerMissed={() => useSim.getState().setHoverSection(null)}
+        onCreated={({ gl, scene }) => {
+          // Для замеров производительности из консоли: __twin.gl.info
+          if (import.meta.env.DEV) (window as unknown as { __twin: unknown }).__twin = { gl, scene }
+        }}
         className="!absolute inset-0"
       >
         <OrthographicCamera makeDefault position={[40, 40, 40]} near={0.1} far={400} zoom={30} />
-        <SoftShadows size={18} samples={12} focus={0.6} />
+        <SoftShadows size={18} samples={8} focus={0.6} />
         <ambientLight intensity={1.15} />
         <hemisphereLight args={['#ffffff', '#dfe6ee', 0.6]} />
         <directionalLight

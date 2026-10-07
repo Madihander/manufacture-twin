@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { CartesianGrid, Line, LineChart, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { PlayIcon, RotateCcwIcon, SaveIcon, SquareIcon, TrashIcon, TriangleAlertIcon } from 'lucide-react'
+import { MapIcon, PlayIcon, RotateCcwIcon, SaveIcon, SquareIcon, TrashIcon, TriangleAlertIcon } from 'lucide-react'
 import { notify } from '@/components/notify'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -12,7 +12,7 @@ import { formatNumber } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { clockText } from '@/sim/clock'
 import { LOC_WH_OUT } from '@/sim/engine'
-import { SHIFT_LEN, STATIONS } from '@/sim/model'
+import { DEMO_START_T, SHIFT_LEN, STATIONS } from '@/sim/model'
 import {
   baseline,
   bottleneckText,
@@ -27,14 +27,13 @@ import {
   type ScenarioInput,
 } from '@/sim/scenario'
 import { useScenarios } from '@/store/scenarios'
-import { useSim } from '@/store/sim'
+import { BASE_RUN, useSim } from '@/store/sim'
 
 const AXIS = { fontSize: 11, fontFamily: 'JetBrains Mono Variable, monospace', fill: '#5b6b7f' }
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`
 
 export function ScenariosScreen() {
-  const baseRun = useSim((s) => s.run)
-  const base = useMemo(() => baseline(baseRun), [baseRun])
+  const base = useMemo(() => baseline(BASE_RUN), [])
   const [input, setInput] = useState<ScenarioInput>(DEFAULT_INPUT)
   const [result, setResult] = useState<Outcome | null>(null)
   const [running, setRunning] = useState(false)
@@ -84,7 +83,7 @@ export function ScenariosScreen() {
     <div className="grid min-h-0 flex-1 grid-cols-[360px_minmax(0,1fr)_440px]">
       <Params input={input} set={set} onRun={() => run()} running={running} savedId={savedId} onLoad={(id, inp) => { setInput(inp); setSavedId(id); run(inp) }} />
       <FlowPanel input={input} result={result} running={running} progress={progress} onStop={stop} />
-      <Results base={base} result={running ? null : result} input={input} />
+      <Results base={base} result={running ? null : result} input={input} name={useScenarios.getState().saved.find((x) => x.id === savedId)?.name} />
     </div>
   )
 }
@@ -483,7 +482,8 @@ function FlowPanel({ input, result, running, progress, onStop }: { input: Scenar
   )
 }
 
-function Results({ base, result, input }: { base: Outcome; result: Outcome | null; input: ScenarioInput }) {
+function Results({ base, result, input, name }: { base: Outcome; result: Outcome | null; input: ScenarioInput; name?: string }) {
+  const applyScenario = useSim((s) => s.applyScenario)
   const curve = useMemo(() => (result ? outputCurve(base.run, result.run) : []), [base, result])
   if (!result) {
     return (
@@ -549,6 +549,19 @@ function Results({ base, result, input }: { base: Outcome; result: Outcome | nul
           </>
         )}
       </div>
+      <Button
+        onClick={() =>
+          applyScenario(
+            result.run,
+            name ?? `${input.type} · ${input.equipmentId} · ${input.duration} мин`,
+            // Показываем с момента за 5 минут до инцидента, чтобы было видно, как он развивается.
+            input.duration > 0 ? input.start - 300 : DEMO_START_T,
+          )
+        }
+      >
+        <MapIcon />
+        Показать сценарий на карте
+      </Button>
       <div className="flex flex-col gap-2">
         <div className="flex items-baseline justify-between">
           <span className="text-[15px] font-medium">Накопленный выпуск за смену</span>

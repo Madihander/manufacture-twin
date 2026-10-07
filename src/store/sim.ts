@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { ModelFilter, SectionId } from '@/data/plant'
 import { DEFAULT_PARAMS, runShift, type ShiftRun } from '@/sim/engine'
 import { DEMO_START_T, SHIFT_LEN } from '@/sim/model'
+import { setActiveDowntimes } from '@/sim/telemetry'
 
 export const SPEEDS = [1, 4, 8, 16, 32] as const
 export type Speed = (typeof SPEEDS)[number]
@@ -29,6 +30,8 @@ export type CameraCommand =
 
 interface SimState {
   run: ShiftRun
+  /** Если на карте показан сценарий «что если» — его название; null — реальная смена. */
+  scenario: string | null
   /** Время внутри смены, с от 16:00. */
   t: number
   playing: boolean
@@ -55,6 +58,10 @@ interface SimState {
   setHeat: (h: HeatMode) => void
   setModelFilter: (m: ModelFilter) => void
   cameraCmd: (cmd: CameraCommandInput) => void
+  /** Показать на карте прогон сценария с момента t. */
+  applyScenario: (run: ShiftRun, name: string, t: number) => void
+  /** Вернуть реальную смену. */
+  resetScenario: () => void
 }
 
 type DistributiveOmit<T, K extends keyof T> = T extends unknown ? Omit<T, K> : never
@@ -62,8 +69,12 @@ export type CameraCommandInput = DistributiveOmit<CameraCommand, 'nonce'>
 
 let nonce = 0
 
+/** Реальная (базовая) смена — считается один раз. */
+export const BASE_RUN = runShift(DEFAULT_PARAMS)
+
 export const useSim = create<SimState>()((set, get) => ({
-  run: runShift(DEFAULT_PARAMS),
+  run: BASE_RUN,
+  scenario: null,
   t: DEMO_START_T,
   playing: true,
   speed: 8,
@@ -99,4 +110,12 @@ export const useSim = create<SimState>()((set, get) => ({
   setHeat: (heat) => set({ heat }),
   setModelFilter: (modelFilter) => set({ modelFilter }),
   cameraCmd: (cmd) => set({ camera: { ...cmd, nonce: ++nonce } as CameraCommand }),
+  applyScenario: (run, name, t) => {
+    setActiveDowntimes(run.params.downtimes)
+    set({ run, scenario: name, t: Math.max(0, Math.min(SHIFT_LEN, t)), playing: true, screen: 'topology', tab: 'overview', selection: null, hoverSection: null })
+  },
+  resetScenario: () => {
+    setActiveDowntimes(BASE_RUN.params.downtimes)
+    set({ run: BASE_RUN, scenario: null, t: DEMO_START_T, playing: true, selection: null })
+  },
 }))

@@ -11,6 +11,8 @@ export const BELT_Y = 0.3
 export const CAR_Y = BELT_Y + 0.09
 /** Разрыв между корпусами — там же буферные площадки. */
 export const GAP = 1.5
+/** Толщина асфальта буферной площадки. */
+export const ROAD_H = 0.03
 
 /** Габариты кузова: пропорции седана ≈ 4,5 × 1,8 × 1,5 м. */
 export const CAR_L = 0.6
@@ -27,7 +29,7 @@ export const SECTION_ORDER: SectionId[] = ['wh-in', 'welding', 'painting', 'asse
  */
 const WIDTHS: Record<SectionId, number> = {
   'wh-in': 3.2,
-  welding: 3.6,
+  welding: 4.6,
   painting: 4.8,
   assembly: 7.0,
   qc: 3.2,
@@ -55,6 +57,8 @@ export const LINE_LENGTH = LINE_X1 - LINE_X0
 
 export interface Pose {
   x: number
+  /** Высота днища: лента, асфальт буфера или пол склада. */
+  y: number
   z: number
   /** Поворот вокруг Y: 0 — вдоль линии, π/2 — поперёк (стоянка в буфере). */
   rot: number
@@ -74,30 +78,31 @@ export function carPose(loc: number, p: number): Pose {
     // Площадка готовой продукции: 3 ряда по 4 машины поперёк корпуса, лента посередине свободна.
     const col = p % 4
     const row = Math.floor(p / 4)
-    return { x: blockX(5) - 1.2 + col * 0.8, z: [-2.3, -1.3, 1.4][row] ?? 2.4, rot: Math.PI / 2 }
+    return { x: blockX(5) - 1.2 + col * 0.8, y: SLAB_H, z: [-2.3, -1.3, 1.4][row] ?? 2.4, rot: Math.PI / 2 }
   }
-  if (loc < 0) return { x: blockX(0), z: 0, rot: 0 }
+  if (loc < 0) return { x: blockX(0), y: BELT_Y, z: 0, rot: 0 }
   const station = Math.floor(loc / 2)
   const block = station + 1
   if (loc % 2 === 1) {
     const left = blockX(block) - blockW(block) / 2 + MARGIN
     const right = blockX(block) + blockW(block) / 2 - MARGIN
-    return { x: left + Math.min(1, Math.max(0, p)) * (right - left), z: 0, rot: 0 }
+    return { x: left + Math.min(1, Math.max(0, p)) * (right - left), y: BELT_Y, z: 0, rot: 0 }
   }
   // Буфер: размеченная площадка в разрыве перед участком, ровные ряды по две машины.
   const zone = bufferZone(station)
   const q = Math.max(0, Math.round(p))
   const col = q % 2
   const row = Math.floor(q / 2)
-  return { x: zone.x - 0.2 + col * 0.4, z: zone.z0 + row * zone.rowStep, rot: Math.PI / 2 }
+  return { x: zone.x - 0.2 + col * 0.4, y: ROAD_H, z: zone.z0 + row * zone.rowStep, rot: Math.PI / 2 }
 }
 
 /** Где стоит оборудование — для подсветки, подписей и наведения камеры. */
 export const EQUIPMENT_POS: Record<string, [number, number, number]> = {
-  'ABB-01': [blockX(1) - 0.85, 0, -1.0],
-  'ABB-02': [blockX(1) + 0.85, 0, -1.0],
-  'ABB-03': [blockX(1) - 0.85, 0, 1.0],
-  'ABB-04': [blockX(1) + 0.85, 0, 1.0],
+  // Роботы попарно по обе стороны ленты, с интервалом между парами.
+  'ABB-01': [blockX(1) - 1.3, 0, -1.05],
+  'ABB-02': [blockX(1) + 1.3, 0, -1.05],
+  'ABB-03': [blockX(1) - 1.3, 0, 1.05],
+  'ABB-04': [blockX(1) + 1.3, 0, 1.05],
   'Камера-02': [blockX(2) - 1.0, 0, 0],
   'ПС-01': [blockX(2) + 1.3, 0, 0],
   'Конвейер-03': [blockX(3), 0, 0],

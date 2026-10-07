@@ -1,16 +1,16 @@
 import { useMemo, useRef, type ReactNode } from 'react'
 import { Edges } from '@react-three/drei'
 import { type ThreeEvent, useFrame } from '@react-three/fiber'
-import { EdgesGeometry, PlaneGeometry } from 'three'
-import type { Group, Mesh, MeshBasicMaterial } from 'three'
+import { CanvasTexture, Object3D, SRGBColorSpace } from 'three'
+import type { InstancedMesh, Mesh, MeshBasicMaterial } from 'three'
 import { focusObject } from '@/components/twin/focus'
 import { EQUIPMENT_BY_ID, type SectionId } from '@/data/plant'
 import type { Status } from '@/sim/metrics'
 import { useTwin } from '@/sim/useTwin'
 import { type HeatMode, useSim } from '@/store/sim'
-import { BELT_Y, BLOCK_D, blockW, blockX, bufferZone, CAR_L, EQUIPMENT_POS, LINE_X0, LINE_X1, SECTION_ORDER, sectionW, SLAB_H, WALL_H } from './layout'
+import { BELT_Y, BLOCK_D, blockW, blockX, bufferZone, EQUIPMENT_POS, LINE_X0, LINE_X1, ROAD_H, SECTION_ORDER, sectionW, SLAB_H, WALL_H } from './layout'
 import { STATIONS } from '@/sim/model'
-import { Model, MODEL, Robot } from './models'
+import { InstancedModel, Model, MODEL, Robot } from './models'
 import { C } from './palette'
 
 const STATUS_SOFT: Record<Status, string> = { ok: C.okSoft, warn: C.warnSoft, alarm: C.alarmSoft }
@@ -199,46 +199,83 @@ function SelectionRing({ pos }: { pos: [number, number, number] }) {
   )
 }
 
-/** Размеченная площадка буфера перед участком: сюда встают кузова, если участок не успевает. */
+/** Асфальт с разметкой парковочных мест: края, ось между рядами, поперечные линии мест. */
+function roadTexture(rows: number): CanvasTexture {
+  const W = 128
+  const H = 128 * rows
+  const cv = document.createElement('canvas')
+  cv.width = W
+  cv.height = H
+  const g = cv.getContext('2d')!
+  g.fillStyle = '#56606b'
+  g.fillRect(0, 0, W, H)
+  // Зерно асфальта.
+  for (let i = 0; i < W * H * 0.04; i++) {
+    const v = 70 + Math.floor(Math.random() * 40)
+    g.fillStyle = `rgba(${v},${v + 6},${v + 14},0.35)`
+    g.fillRect(Math.random() * W, Math.random() * H, 1.5, 1.5)
+  }
+  g.fillStyle = '#f2c94c'
+  g.fillRect(3, 0, 4, H)
+  g.fillRect(W - 7, 0, 4, H)
+  g.fillStyle = '#f4f6f8'
+  for (let y = 6; y < H; y += 20) g.fillRect(W / 2 - 1.5, y, 3, 11)
+  for (let r = 1; r < rows; r++) g.fillRect(10, r * 128 - 1.5, W - 20, 3)
+  const tex = new CanvasTexture(cv)
+  tex.colorSpace = SRGBColorSpace
+  tex.anisotropy = 4
+  return tex
+}
+
+/** Буферная площадка перед участком — асфальт с местами: сюда встают кузова, если участок не успевает. */
 function BufferZone({ station }: { station: number }) {
   const z = bufferZone(station)
-  const depth = (z.rows - 1) * z.rowStep + CAR_L + 0.2
-  const cz = z.z0 - CAR_L / 2 - 0.1 + depth / 2
-  const outline = useMemo(() => new EdgesGeometry(new PlaneGeometry(0.92, depth)), [depth])
+  const depth = z.rows * z.rowStep + 0.12
+  const cz = z.z0 - z.rowStep / 2 - 0.06 + depth / 2
+  const map = useMemo(() => roadTexture(z.rows), [z.rows])
   return (
-    <group position={[z.x, 0.006, cz]} rotation-x={-Math.PI / 2}>
-      <mesh>
-        <planeGeometry args={[0.92, depth]} />
-        <meshBasicMaterial color={C.brandSoft} />
+    <group>
+      <mesh position={[z.x, ROAD_H / 2, cz]} receiveShadow>
+        <boxGeometry args={[0.96, ROAD_H, depth]} />
+        <meshStandardMaterial attach="material-0" color="#4a525c" />
+        <meshStandardMaterial attach="material-1" color="#4a525c" />
+        <meshStandardMaterial attach="material-2" map={map} roughness={0.95} />
+        <meshStandardMaterial attach="material-3" color="#4a525c" />
+        <meshStandardMaterial attach="material-4" color="#4a525c" />
+        <meshStandardMaterial attach="material-5" color="#4a525c" />
       </mesh>
-      <lineSegments geometry={outline} onUpdate={(l) => l.computeLineDistances()}>
-        <lineDashedMaterial color={C.brand} dashSize={0.08} gapSize={0.06} />
-      </lineSegments>
+      {/* Подъезд от ленты к площадке. */}
+      <mesh position={[z.x, ROAD_H / 2, (z.z0 - z.rowStep / 2 - 0.06) / 2]} receiveShadow>
+        <boxGeometry args={[0.96, ROAD_H, z.z0 - z.rowStep / 2 - 0.06]} />
+        <meshStandardMaterial color="#5c6670" roughness={0.95} />
+      </mesh>
     </group>
   )
 }
 
-/** Шевроны направления потока на ленте. */
+/** Шевроны направления потока на ленте — один InstancedMesh. */
 function FlowArrows() {
-  const group = useRef<Group>(null)
+  const ref = useRef<InstancedMesh>(null)
   const count = 28
+  const o = useMemo(() => new Object3D(), [])
   useFrame(() => {
-    if (!group.current) return
+    const mesh = ref.current
+    if (!mesh) return
     const t = useSim.getState().t
     const span = LINE_X1 - LINE_X0
-    group.current.children.forEach((c, i) => {
-      c.position.x = LINE_X0 + ((i / count) * span + t * 0.004) % span
-    })
+    for (let i = 0; i < count; i++) {
+      o.position.set(LINE_X0 + (((i / count) * span + t * 0.004) % span), BELT_Y + 0.003, 0)
+      o.rotation.set(-Math.PI / 2, 0, 0)
+      o.updateMatrix()
+      mesh.setMatrixAt(i, o.matrix)
+    }
+    mesh.instanceMatrix.needsUpdate = true
   })
   return (
-    <group ref={group}>
-      {Array.from({ length: count }, (_, i) => (
-        <mesh key={i} position={[0, BELT_Y + 0.003, 0]} rotation-x={-Math.PI / 2}>
-          <circleGeometry args={[0.09, 3]} />
-          <meshBasicMaterial color={C.rail} />
-        </mesh>
-      ))}
-    </group>
+    <instancedMesh ref={ref} args={[undefined, undefined, count]} frustumCulled={false}>
+      <circleGeometry args={[0.09, 3]} />
+      <meshBasicMaterial color={C.rail} />
+    </instancedMesh>
   )
 }
 
@@ -327,34 +364,38 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
   }
 }
 
-/** Склад комплектов: штабеля коробок, их число зависит от запаса. */
+/** Склад комплектов: штабеля коробок, их число зависит от запаса. Все коробки — два InstancedMesh. */
 function Crates({ kits }: { kits: number }) {
   const fill = Math.min(1, kits / 180)
-  const cells: { x: number; z: number; levels: number; url: string }[] = []
-  for (let r = 0; r < 4; r++)
-    for (let c = 0; c < 3; c++) {
-      const idx = r * 3 + c
-      const levels = idx / 12 < fill ? 1 + ((idx * 7) % 3) : 0
-      cells.push({ x: -1.0 + c * 1.0, z: -2.4 + r * 1.2 + (r >= 2 ? 0.6 : 0), levels, url: idx % 4 === 1 ? MODEL.boxWide : MODEL.boxLarge })
-    }
+  const { large, wide } = useMemo(() => {
+    const large: { position: [number, number, number]; scale: number }[] = []
+    const wide: { position: [number, number, number]; scale: number }[] = []
+    for (let r = 0; r < 4; r++)
+      for (let c = 0; c < 3; c++) {
+        const idx = r * 3 + c
+        const levels = idx / 12 < fill ? 1 + ((idx * 7) % 3) : 0
+        for (let l = 0; l < levels; l++)
+          (idx % 4 === 1 ? wide : large).push({ position: [-1.0 + c * 1.0, SLAB_H + l * 0.39, -2.4 + r * 1.2 + (r >= 2 ? 0.6 : 0)], scale: 0.7 })
+      }
+    return { large, wide }
+  }, [fill])
   return (
-    <group>
-      {cells.flatMap((c, i) =>
-        Array.from({ length: c.levels }, (_, l) => <Model key={`${i}-${l}`} url={c.url} position={[c.x, SLAB_H + l * 0.39, c.z]} scale={0.7} />),
-      )}
-    </group>
+    <>
+      <InstancedModel url={MODEL.boxLarge} transforms={large} />
+      <InstancedModel url={MODEL.boxWide} transforms={wide} />
+    </>
   )
 }
 
-/** Лента: плитки конвейера Kenney вдоль всей линии. */
+/** Лента: плитки конвейера Kenney вдоль всей линии — один InstancedMesh. */
 function ConveyorLine() {
-  const tile = 1.0
-  const n = Math.ceil((LINE_X1 - LINE_X0) / tile)
-  return (
-    <group>
-      {Array.from({ length: n }, (_, i) => (
-        <Model key={i} url={MODEL.conveyor} position={[LINE_X0 + tile / 2 + i * tile, 0, 0]} scale={[tile / 2, BELT_Y / 0.4, 0.62]} />
-      ))}
-    </group>
-  )
+  const transforms = useMemo(() => {
+    const tile = 1.0
+    const n = Math.ceil((LINE_X1 - LINE_X0) / tile)
+    return Array.from({ length: n }, (_, i) => ({
+      position: [LINE_X0 + tile / 2 + i * tile, 0, 0] as [number, number, number],
+      scale: [tile / 2, BELT_Y / 0.4, 0.62] as [number, number, number],
+    }))
+  }, [])
+  return <InstancedModel url={MODEL.conveyor} transforms={transforms} />
 }

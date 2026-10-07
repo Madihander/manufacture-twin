@@ -81,12 +81,15 @@ type Sec = keyof typeof SERIES
 
 /** План/факт по линиям: сгруппированные столбцы + пунктир плана. */
 export function PlanFactChart({ data, sections, plan }: { data: Record<string, number | string>[]; sections: Sec[]; plan: number }) {
+  // Верхнюю границу считаем сами: функция в domain в Recharts 3 получает другие аргументы.
+  const maxFact = Math.max(0, ...data.flatMap((d) => sections.map((s) => Number(d[s]) || 0)))
+  const top = Math.max(10, Math.ceil(Math.max(plan * 1.15, maxFact * 1.05) / 10) * 10)
   return (
     <ResponsiveContainer width="100%" height={240}>
       <BarChart data={data} barGap={2} barCategoryGap="22%" margin={{ top: 8, right: 56, left: -8, bottom: 0 }}>
         <CartesianGrid {...GRID} />
         <XAxis dataKey="label" tick={AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} interval={0} />
-        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[0, (max: number) => Math.max(plan * 1.15, Math.ceil(max / 10) * 10)]} />
+        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[0, top]} allowDataOverflow />
         <Tooltip
           cursor={{ fill: '#f5f7fa' }}
           content={({ active, payload, label }) =>
@@ -226,12 +229,15 @@ export function ParetoChart({ data }: { data: { reason: string; minutes: number;
 
 /** Прогноз накопленного выпуска до конца месяца. */
 export function ForecastChart({ data, target }: { data: { day: number; actual?: number; forecast?: number; band?: [number, number] }[]; target: number }) {
+  const peak = Math.max(target, ...data.map((d) => d.band?.[1] ?? d.forecast ?? d.actual ?? 0))
+  const step = peak > 3000 ? 1500 : peak > 1200 ? 500 : 250
+  const yTop = Math.ceil((peak * 1.05) / (step * 4)) * step * 4
   return (
     <ResponsiveContainer width="100%" height={240}>
       <ComposedChart data={data} margin={{ top: 8, right: 70, left: -2, bottom: 0 }}>
         <CartesianGrid {...GRID} />
         <XAxis dataKey="day" tick={AXIS} tickLine={false} axisLine={{ stroke: '#cbd5e1' }} tickFormatter={(d) => `${String(d).padStart(2, '0')}.10`} interval={1} />
-        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[0, Math.ceil((target * 1.05) / 1000) * 1000]} ticks={[0, 1500, 3000, 4500, 6000]} tickFormatter={(v) => formatNumber(v)} width={52} />
+        <YAxis tick={AXIS} tickLine={false} axisLine={false} domain={[0, yTop]} ticks={[0, 1, 2, 3, 4].map((k) => (yTop / 4) * k)} tickFormatter={(v) => formatNumber(v)} width={52} />
         <Tooltip
           cursor={{ stroke: '#cbd5e1' }}
           content={({ active, payload, label }) => {

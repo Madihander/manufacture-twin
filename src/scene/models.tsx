@@ -1,8 +1,8 @@
 // Модели Kenney (CC0), перекрашенные под дизайн-систему скриптом scripts/prepare-models.py.
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { type ThreeElements, useFrame } from '@react-three/fiber'
-import type { BufferGeometry, Group, Material, Mesh, Object3D } from 'three'
+import { type BufferGeometry, type Group, type InstancedMesh, type Material, type Mesh, Object3D } from 'three'
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { SHIFT_START_SEC } from '@/sim/model'
 import { isDown } from '@/sim/telemetry'
@@ -108,3 +108,42 @@ export function useCarMeshes(url: string): CarMeshes {
 
 /** Ссылка на группу — для подсветки выбранного. */
 export type GroupRef = React.RefObject<Group | null>
+
+/**
+ * Много копий одной простой модели (плитки конвейера, ящики) — одним InstancedMesh:
+ * один вызов отрисовки вместо десятков.
+ */
+export function InstancedModel({ url, transforms }: { url: string; transforms: { position: [number, number, number]; scale: [number, number, number] | number }[] }) {
+  const { scene } = useGLTF(url)
+  const { geometry, material } = useMemo(() => {
+    scene.updateMatrixWorld(true)
+    const parts: BufferGeometry[] = []
+    let mat: Material | null = null
+    scene.traverse((o) => {
+      const m = o as Mesh
+      if (!m.isMesh) return
+      parts.push(m.geometry.clone().applyMatrix4(m.matrixWorld))
+      mat ??= m.material as Material
+    })
+    return { geometry: mergeGeometries(parts)!, material: mat! }
+  }, [scene])
+  const ref = useCallback(
+    (mesh: InstancedMesh | null) => {
+      if (!mesh) return
+      const o = new Object3D()
+      transforms.forEach((t, i) => {
+        o.position.set(...t.position)
+        if (typeof t.scale === 'number') o.scale.setScalar(t.scale)
+        else o.scale.set(...t.scale)
+        o.updateMatrix()
+        mesh.setMatrixAt(i, o.matrix)
+      })
+      mesh.count = transforms.length
+      mesh.instanceMatrix.needsUpdate = true
+      mesh.computeBoundingSphere()
+    },
+    [transforms],
+  )
+  if (transforms.length === 0) return null
+  return <instancedMesh key={transforms.length} ref={ref} args={[geometry, material, transforms.length]} castShadow receiveShadow />
+}

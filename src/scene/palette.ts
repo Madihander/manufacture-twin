@@ -33,5 +33,5 @@ export const BODY_COLOR: Record<string, string> = {
   Красный: '#c8453b',
 }
 
-/** Кузов до окраски — серый металл. */
-export const RAW_BODY = '#aeb8c4'
+/** Кузов до окраски — светлый голый металл, без цвета. */
+export const RAW_BODY = '#c9ced4'

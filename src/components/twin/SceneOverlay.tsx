@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { CrosshairIcon, ExpandIcon, LayersIcon, MinusIcon, MouseIcon, PlusIcon, ScanIcon, XIcon } from 'lucide-react'
+import { CrosshairIcon, ExpandIcon, GitBranchIcon, LayersIcon, MinusIcon, MouseIcon, PlusIcon, ScanIcon, XIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
@@ -43,6 +44,7 @@ export function SceneOverlay({ onFullscreen }: { onFullscreen: () => void }) {
           {model} · такт <span className="font-mono text-foreground">{Math.floor(TAKT / 60)}:{String(TAKT % 60).padStart(2, '0')}</span> мин
         </div>
       </div>
+      <ScenarioBanner />
       <Toolbar onFullscreen={onFullscreen} />
       <MiniMap />
       <div className="pointer-events-none absolute bottom-5 left-1/2 z-10 flex h-8 -translate-x-1/2 items-center gap-2 rounded-full border bg-white/85 px-3.5 text-xs whitespace-nowrap text-muted-foreground">
@@ -50,6 +52,28 @@ export function SceneOverlay({ onFullscreen }: { onFullscreen: () => void }) {
         Перетащите — вращение · Колесо — масштаб · Клик по участку — детали
       </div>
     </>
+  )
+}
+
+/** Плашка «на карте сценарий, а не реальная смена». */
+function ScenarioBanner() {
+  const scenario = useSim((s) => s.scenario)
+  const reset = useSim((s) => s.resetScenario)
+  const setScreen = useSim((s) => s.setScreen)
+  if (!scenario) return null
+  return (
+    <div className="absolute top-5 right-5 z-20 flex items-center gap-3 rounded-full border border-warn bg-warn-soft py-1.5 pr-1.5 pl-4 text-[13px] shadow-toast">
+      <GitBranchIcon className="size-4 text-warn" />
+      <span>
+        <span className="font-medium text-warn-fg">Сценарий «что если»:</span> {scenario}
+      </span>
+      <Button size="sm" variant="ghost" className="h-7" onClick={() => setScreen('scenarios')}>
+        Изменить
+      </Button>
+      <Button size="sm" className="h-7" onClick={reset}>
+        Вернуться к реальной смене
+      </Button>
+    </div>
   )
 }
 

@@ -1,6 +1,6 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import { type ThreeEvent, useFrame } from '@react-three/fiber'
-import { Color, type InstancedMesh, type Mesh, type MeshStandardMaterial, Object3D, Vector3 } from 'three'
+import { Color, type InstancedMesh, type Mesh, MeshStandardMaterial, Object3D, Vector3 } from 'three'
 import type { CarModelId } from '@/data/plant'
 import { SNAPSHOT_STEP } from '@/sim/model'
 import { useSim } from '@/store/sim'
@@ -34,6 +34,47 @@ export function carWorldPosition(id: number, t: number, out: Vector3): boolean {
   return true
 }
 
+interface FramePose {
+  id: number
+  x: number
+  y: number
+  z: number
+  rot: number
+  painted: boolean
+}
+
+let cache: { run: unknown; t: number; poses: FramePose[] } | null = null
+
+/** Положения всех кузовов на момент t — считаются один раз за кадр для всех моделей авто. */
+function framePoses(run: ReturnType<typeof useSim.getState>['run'], t: number): FramePose[] {
+  if (cache && cache.run === run && cache.t === t) return cache.poses
+  const i = Math.min(run.snapshots.length - 1, Math.floor(t / SNAPSHOT_STEP))
+  const sa = run.snapshots[i]
+  const sb = run.snapshots[Math.min(run.snapshots.length - 1, i + 1)]
+  const f = Math.min(1, (t - sa.t) / SNAPSHOT_STEP)
+  const next = new Map<number, Pose>()
+  for (let k = 0; k < sb.carIds.length; k++) next.set(sb.carIds[k], carPose(sb.carLoc[k], sb.carP[k]))
+  const poses: FramePose[] = []
+  for (let k = 0; k < sa.carIds.length; k++) {
+    const id = sa.carIds[k]
+    const pa = carPose(sa.carLoc[k], sa.carP[k])
+    const pb = next.get(id) ?? pa
+    // Переход буфер ↔ станция не интерполируем по диагонали — переставляем в середине шага.
+    const jump = Math.abs(pb.rot - pa.rot) > 0.1
+    poses.push({
+      id,
+      x: jump ? (f < 0.5 ? pa.x : pb.x) : pa.x + (pb.x - pa.x) * f,
+      y: jump ? (f < 0.5 ? pa.y : pb.y) : pa.y + (pb.y - pa.y) * f,
+      z: jump ? (f < 0.5 ? pa.z : pb.z) : pa.z + (pb.z - pa.z) * f,
+      rot: jump ? (f < 0.5 ? pa.rot : pb.rot) : pa.rot,
+      // Окрашен — после выхода из камеры окраски (loc ≥ 4 — дальше по линии).
+      painted: sa.carLoc[k] >= 4 || (sa.carLoc[k] === 3 && sa.carP[k] > 0.6),
+    })
+  }
+  cache = { run, t, poses }
+  return poses
+}
+
 export function Cars() {
   const visible = useSim((s) => s.layers.cars)
   const ring = useRef<Mesh>(null)
@@ -58,102 +99,104 @@ export function Cars() {
   )
 }
 
-/** Все кузова одной модели — два InstancedMesh (кузов с тонировкой и колёса). */
+/**
+ * Все кузова одной модели: окрашенные (текстура Kenney + цвет кузова), «сырые» до окраски
+ * (однотонный металл без текстуры) и колёса.
+ */
 function CarModelInstances({ model }: { model: CarModelId }) {
   const { body, wheels, material } = useCarMeshes(CAR_URL[model])
-  const bodyRef = useRef<InstancedMesh>(null)
+  const paintedRef = useRef<InstancedMesh>(null)
+  const rawRef = useRef<InstancedMesh>(null)
   const wheelRef = useRef<InstancedMesh>(null)
-  const ids = useRef<number[]>([])
+  // Для клика: индекс экземпляра → id кузова, отдельно для окрашенных и «сырых».
+  const ids = useRef<{ painted: number[]; raw: number[] }>({ painted: [], raw: [] })
   const scale = CAR_L / CAR_LENGTH[model]
-  // Кузов: та же палитра, краска в ней почти белая — цвет задаёт instanceColor.
-  const bodyMaterial = useMemo(() => {
+  // Окрашенный кузов: та же палитра, краска в ней почти белая — цвет задаёт instanceColor.
+  const paintedMaterial = useMemo(() => {
     const m = (material as MeshStandardMaterial).clone()
     m.roughness = 0.45
     m.metalness = 0.15
     return m
   }, [material])
+  // До окраски — голый металл без деталей и цвета.
+  const rawMaterial = useMemo(() => new MeshStandardMaterial({ color: RAW_BODY, roughness: 0.55, metalness: 0.35 }), [])
 
   // instanceColor должен существовать до первой компиляции шейдера, иначе тонировка не появится.
   useLayoutEffect(() => {
-    const b = bodyRef.current
-    if (!b) return
-    for (let k = 0; k < MAX; k++) b.setColorAt(k, col.set('#ffffff'))
-    bodyMaterial.needsUpdate = true
-  }, [bodyMaterial])
+    for (const mesh of [paintedRef.current, rawRef.current]) {
+      if (!mesh) continue
+      for (let k = 0; k < MAX; k++) mesh.setColorAt(k, col.set('#ffffff'))
+    }
+    paintedMaterial.needsUpdate = true
+    rawMaterial.needsUpdate = true
+  }, [paintedMaterial, rawMaterial])
 
   useFrame(() => {
-    const b = bodyRef.current
+    const p = paintedRef.current
+    const r = rawRef.current
     const w = wheelRef.current
-    if (!b || !w) return
+    if (!p || !r || !w) return
     const { run, t, modelFilter } = useSim.getState()
-    const i = Math.min(run.snapshots.length - 1, Math.floor(t / SNAPSHOT_STEP))
-    const sa = run.snapshots[i]
-    const sb = run.snapshots[Math.min(run.snapshots.length - 1, i + 1)]
-    const f = Math.min(1, (t - sa.t) / SNAPSHOT_STEP)
-    const next = new Map<number, Pose>()
-    for (let k = 0; k < sb.carIds.length; k++) next.set(sb.carIds[k], carPose(sb.carLoc[k], sb.carP[k]))
-
-    let n = 0
-    for (let k = 0; k < sa.carIds.length && n < MAX; k++) {
-      const id = sa.carIds[k]
-      const info = run.cars.get(id)!
+    const frame = framePoses(run, t)
+    let np = 0
+    let nr = 0
+    let nw = 0
+    for (const c of frame) {
+      if (nw >= MAX) break
+      const info = run.cars.get(c.id)!
       if (info.model !== model) continue
-      const pa = carPose(sa.carLoc[k], sa.carP[k])
-      const pb = next.get(id) ?? pa
-      // Переход буфер ↔ станция не интерполируем по диагонали — переставляем в середине шага.
-      const jump = Math.abs(pb.rot - pa.rot) > 0.1
-      const x = jump ? (f < 0.5 ? pa.x : pb.x) : pa.x + (pb.x - pa.x) * f
-      const z = jump ? (f < 0.5 ? pa.z : pb.z) : pa.z + (pb.z - pa.z) * f
-      const rot = jump ? (f < 0.5 ? pa.rot : pb.rot) : pa.rot
-      ids.current[n] = id
-
       // Модель Kenney смотрит вдоль +Z; поворачиваем носом по ходу линии (+X).
-      tmp.position.set(x, BELT_Y, z)
-      tmp.rotation.set(0, rot + Math.PI / 2, 0)
+      tmp.position.set(c.x, c.y, c.z)
+      tmp.rotation.set(0, c.rot + Math.PI / 2, 0)
       tmp.scale.setScalar(scale)
       tmp.updateMatrix()
-      b.setMatrixAt(n, tmp.matrix)
-      w.setMatrixAt(n, tmp.matrix)
-
-      // До выхода из окраски кузов «сырой», после — в цвете.
-      const painted = sa.carLoc[k] >= 4 || (sa.carLoc[k] === 3 && sa.carP[k] > 0.6)
-      col.set(painted ? BODY_COLOR[info.color] : RAW_BODY)
-      if (modelFilter !== 'all' && info.model !== modelFilter) col.lerp(fade, 0.75)
-      b.setColorAt(n, col)
-      n++
+      w.setMatrixAt(nw++, tmp.matrix)
+      const dim = modelFilter !== 'all' && info.model !== modelFilter
+      if (c.painted) {
+        col.set(BODY_COLOR[info.color])
+        if (dim) col.lerp(fade, 0.75)
+        p.setMatrixAt(np, tmp.matrix)
+        p.setColorAt(np, col)
+        ids.current.painted[np++] = c.id
+      } else {
+        col.set('#ffffff')
+        if (dim) col.lerp(fade, 0.6)
+        r.setMatrixAt(nr, tmp.matrix)
+        r.setColorAt(nr, col)
+        ids.current.raw[nr++] = c.id
+      }
     }
-    ids.current.length = n
-    b.count = n
-    w.count = n
-    b.instanceMatrix.needsUpdate = true
-    w.instanceMatrix.needsUpdate = true
-    if (b.instanceColor) b.instanceColor.needsUpdate = true
-    // Кузова двигаются — сбрасываем ограничивающую сферу, иначе клики перестанут попадать.
-    b.boundingSphere = null
+    ids.current.painted.length = np
+    ids.current.raw.length = nr
+    p.count = np
+    r.count = nr
+    w.count = nw
+    for (const m of [p, r, w]) {
+      m.instanceMatrix.needsUpdate = true
+      if (m.instanceColor) m.instanceColor.needsUpdate = true
+      // Кузова двигаются — сбрасываем ограничивающую сферу, иначе клики перестанут попадать.
+      m.boundingSphere = null
+    }
   })
 
-  const onClick = (e: ThreeEvent<MouseEvent>) => {
+  const clickHandler = (kind: 'painted' | 'raw') => (e: ThreeEvent<MouseEvent>) => {
     e.stopPropagation()
     if (e.instanceId === undefined) return
-    const id = ids.current[e.instanceId]
+    const id = ids.current[kind][e.instanceId]
     if (id !== undefined) useSim.getState().select({ kind: 'car', id })
+  }
+  const hover = {
+    onPointerOver: (e: ThreeEvent<PointerEvent>) => {
+      e.stopPropagation()
+      document.body.style.cursor = 'pointer'
+    },
+    onPointerOut: () => (document.body.style.cursor = ''),
   }
 
   return (
     <>
-      <instancedMesh
-        ref={bodyRef}
-        args={[body, bodyMaterial, MAX]}
-        castShadow
-        receiveShadow
-        frustumCulled={false}
-        onClick={onClick}
-        onPointerOver={(e) => {
-          e.stopPropagation()
-          document.body.style.cursor = 'pointer'
-        }}
-        onPointerOut={() => (document.body.style.cursor = '')}
-      />
+      <instancedMesh ref={paintedRef} args={[body, paintedMaterial, MAX]} castShadow receiveShadow frustumCulled={false} onClick={clickHandler('painted')} {...hover} />
+      <instancedMesh ref={rawRef} args={[body, rawMaterial, MAX]} castShadow receiveShadow frustumCulled={false} onClick={clickHandler('raw')} {...hover} />
       <instancedMesh ref={wheelRef} args={[wheels, material, MAX]} castShadow frustumCulled={false} />
     </>
   )
