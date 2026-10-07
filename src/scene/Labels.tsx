@@ -10,7 +10,7 @@ import { SECTION_BY_ID, type SectionId } from '@/data/plant'
 import { formatNumber } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Status } from '@/sim/metrics'
-import { SHIFT_START_SEC } from '@/sim/model'
+import { displayCar, SHIFT_START_SEC } from '@/sim/model'
 import { isDown } from '@/sim/telemetry'
 import { useTwin } from '@/sim/useTwin'
 import { useSim } from '@/store/sim'
@@ -172,11 +172,13 @@ function EquipmentPill({ id }: { id: string }) {
 
 function CarPill({ id }: { id: number }) {
   const run = useSim((s) => s.run)
+  const modelFilter = useSim((s) => s.modelFilter)
+  const car = run.cars.get(id)
   return (
     <div className="absolute flex -translate-x-1/2 -translate-y-full flex-col items-center">
       <div className="flex h-[30px] items-center gap-2 rounded-sm border-[1.5px] border-brand bg-card px-2.5 font-mono text-xs whitespace-nowrap shadow-[0_0_0_4px_var(--brand-soft)]">
         <CarIcon className="size-3.5 text-brand" />
-        {run.cars.get(id)?.code}
+        {car ? displayCar(car, modelFilter).code : ''}
       </div>
       <div className="h-11 w-px bg-brand" />
       <div className="-mb-[3px] size-[7px] rounded-full bg-brand" />

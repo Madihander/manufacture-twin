@@ -30,13 +30,12 @@ export default function App() {
     <TooltipProvider delayDuration={300}>
       <div className="flex h-screen min-h-[860px] min-w-[1440px] flex-col">
         <AppHeader />
-        {screen === 'topology' ? (
+        {/* «Топология» остаётся смонтированной: 3D-сцена не перезагружается при переключении экранов. */}
+        <div className={screen === 'topology' ? 'flex min-h-0 flex-1' : 'hidden'}>
           <TopologyScreen />
-        ) : screen === 'summary' ? (
-          <SummaryScreen />
-        ) : (
-          <ScenariosScreen />
-        )}
+        </div>
+        {screen === 'summary' && <SummaryScreen />}
+        {screen === 'scenarios' && <ScenariosScreen />}
         <SimBar />
       </div>
       <SettingsSheet />

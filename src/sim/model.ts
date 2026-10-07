@@ -1,5 +1,5 @@
 // Модель линии и сценарий демо-смены. Время внутри смены — секунды от её начала (16:00).
-import type { CarModelId, SectionId } from '@/data/plant'
+import { CAR_MODELS, type CarModelId, type SectionId } from '@/data/plant'
 
 export const SHIFT_START_SEC = 16 * 3600
 export const SHIFT_LEN = 8 * 3600
@@ -61,4 +61,18 @@ export const MODEL_MIX: [CarModelId, number][] = [
   ['j7', 500 / 4800],
 ]
 
-export const BODY_COLORS = ['Белый', 'Серебристый', 'Чёрный', 'Синий', 'Красный'] as const
+/** Две фирменные расцветки каждой модели. */
+export const MODEL_COLORS: Record<CarModelId, [string, string]> = {
+  cobalt: ['Белый', 'Серебристый'],
+  onix: ['Синий', 'Чёрный'],
+  j7: ['Красный', 'Белый'],
+}
+
+/** Как показывать кузов: при фильтре по модели вся линия показывается этой моделью в её двух расцветках. */
+export function displayCar(
+  car: { id: number; model: CarModelId; color: string; code: string },
+  filter: CarModelId | 'all',
+): { model: CarModelId; color: string; code: string } {
+  if (filter === 'all' || filter === car.model) return { model: car.model, color: car.color, code: car.code }
+  return { model: filter, color: MODEL_COLORS[filter][car.id % 2], code: car.code.replace(/^[A-Z0-9]{2}-/, `${CAR_MODELS[filter].prefix}-`) }
+}

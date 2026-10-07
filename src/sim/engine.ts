@@ -2,7 +2,7 @@
 // Так перемотка по таймлайну мгновенная, а «Что если» — это просто новый прогон с другими параметрами.
 import { CAR_MODELS, type CarModelId, type SectionId } from '@/data/plant'
 import {
-  BODY_COLORS,
+  MODEL_COLORS,
   type DowntimeEvent,
   INCIDENT_CLOSE_DELAY,
   MODEL_MIX,
@@ -146,7 +146,7 @@ export function runShift(params: RunParams = DEFAULT_PARAMS): ShiftRun {
       id,
       code: `${CAR_MODELS[model].prefix}-2610-${String(id).padStart(4, '0')}`,
       model,
-      color: BODY_COLORS[Math.floor(rand01('color', id) * BODY_COLORS.length)],
+      color: MODEL_COLORS[model][rand01('color', id) < 0.6 ? 0 : 1],
       enter: Array(6).fill(Number.NaN),
       exit: Array(6).fill(Number.NaN),
       defectAt: null,

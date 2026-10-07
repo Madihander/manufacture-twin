@@ -4,7 +4,7 @@ import { CAR_MODELS, SECTIONS } from '@/data/plant'
 import { cn } from '@/lib/utils'
 import { clockText } from '@/sim/clock'
 import { LOC_WH_OUT } from '@/sim/engine'
-import { STATIONS, TAKT } from '@/sim/model'
+import { displayCar, STATIONS, TAKT } from '@/sim/model'
 import { useTwin } from '@/sim/useTwin'
 import { useSim } from '@/store/sim'
 import { BigNumber } from '../primitives'
@@ -24,6 +24,7 @@ export function CarPanel({ id }: { id: number }) {
   const t = useSim((s) => Math.floor(s.t))
   const select = useSim((s) => s.select)
   const cameraCmd = useSim((s) => s.cameraCmd)
+  const modelFilter = useSim((s) => s.modelFilter)
   const car = run.cars.get(id)
   const k = snap.carIds.indexOf(id)
   if (!car || k < 0) {
@@ -33,6 +34,7 @@ export function CarPanel({ id }: { id: number }) {
       </PanelBody>
     )
   }
+  const shown = displayCar(car, modelFilter)
   const { index: cur, queued } = sectionIndexOf(snap.carLoc[k])
   // Ожидаемые времена: норматив прохождения участка = мест × такт.
   const stationTime = (section: number) => (section >= 1 && section <= 4 ? STATIONS[section - 1].slots * TAKT : 0)
@@ -57,11 +59,11 @@ export function CarPanel({ id }: { id: number }) {
             Слежение за кузовом
           </span>
           <span className="text-2xl tracking-[-0.01em]">
-            Кузов <span className="font-mono text-[21px]">{car.code}</span>
+            Кузов <span className="font-mono text-[21px]">{shown.code}</span>
           </span>
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="text-[13px] text-muted-foreground">
-              {CAR_MODELS[car.model].name} · {car.color}
+              {CAR_MODELS[shown.model].name} · {shown.color}
             </span>
             <span className="inline-flex h-6 items-center gap-1.5 rounded-full bg-brand-soft px-2.5 text-xs font-medium text-primary">
               <MapPinIcon className="size-3 text-brand" strokeWidth={2.25} />

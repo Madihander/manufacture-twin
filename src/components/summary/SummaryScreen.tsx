@@ -732,9 +732,46 @@ function BusinessEffect({ history }: { history: ReturnType<typeof downtimeRecord
           <span className="text-xs text-muted-foreground">млн ₸ в месяц</span>
         </div>
       </div>
-      <span className="text-xs text-muted-foreground">
-        расчёт: незапланированные простои ≈ {formatNumber(perDay, 0)} мин/день × 22 рабочих дня, такт 4 мин; маржа — допущение
-      </span>
+      <details className="group rounded-md border bg-muted px-3 py-2.5 text-[13px] open:pb-3">
+        <summary className="cursor-pointer list-none font-medium marker:hidden">
+          <span className="inline-flex items-center gap-1.5">
+            <ChevronDownIcon className="size-3.5 -rotate-90 transition-transform group-open:rotate-0" />
+            Как считается и как применять
+          </span>
+        </summary>
+        <ol className="mt-2.5 flex list-decimal flex-col gap-2 pl-5 text-xs leading-normal text-muted-foreground">
+          <li>
+            <span className="text-foreground">Незапланированные простои</span> по журналу октября (без планового ТО):{' '}
+            <span className="font-mono text-foreground">{formatNumber(perDay, 0)} мин</span> в рабочий день →{' '}
+            <span className="font-mono text-foreground">{formatNumber(monthMinutes, 0)} мин</span> за 22 рабочих дня.
+          </li>
+          <li>
+            <span className="text-foreground">Что делает двойник.</span> ИИ видит тренд датчика и предупреждает до отказа: в этой смене — рост натяжения цепи{' '}
+            <span className="font-mono text-foreground">Конвейер-03</span> за 30 мин до обрыва. Ремонт переносится в технологический перерыв, авария на 55 мин не случается.
+          </li>
+          <li>
+            <span className="text-foreground">Доля предотвращённых</span> — какую часть аварий удаётся так перехватить. Консервативно — 20–30 %: не у всех отказов есть
+            заметные предвестники и не все предупреждения успевают отработать.
+          </li>
+          <li>
+            <span className="text-foreground">Минуты → автомобили:</span> линия выпускает 1 авто за такт 4 мин, поэтому{' '}
+            <span className="font-mono text-foreground">
+              {formatNumber(monthMinutes * (share / 100), 0)} мин ÷ 4 = {cars} авто
+            </span>
+            .
+          </li>
+          <li>
+            <span className="text-foreground">Автомобили → деньги:</span> × маржа на автомобиль. Маржа — допущение: подставьте фактическую из финансовой модели завода.
+          </li>
+        </ol>
+        <p className="mt-2.5 text-xs leading-normal text-muted-foreground">
+          Как применять: начать с 1–2 критичных единиц (Конвейер-03, роботы сварки), сравнить простои за месяц до и после внедрения — разница и есть фактическая доля
+          предотвращённых. Её вводят в ползунок вместо оценки.
+        </p>
+        <Button variant="secondary" size="sm" className="mt-2.5" onClick={() => useSim.getState().setScreen('scenarios')}>
+          Проверить на сценарии этой смены
+        </Button>
+      </details>
     </div>
   )
 }

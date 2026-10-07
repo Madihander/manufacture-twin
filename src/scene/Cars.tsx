@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react'
 import { type ThreeEvent, useFrame } from '@react-three/fiber'
 import { Color, type InstancedMesh, type Mesh, MeshStandardMaterial, Object3D, Vector3 } from 'three'
 import type { CarModelId } from '@/data/plant'
-import { SNAPSHOT_STEP } from '@/sim/model'
+import { displayCar, SNAPSHOT_STEP } from '@/sim/model'
 import { useSim } from '@/store/sim'
 import { BELT_Y, CAR_L, CAR_Y, carPose, type Pose } from './layout'
 import { MODEL, useCarMeshes } from './models'
@@ -11,7 +11,6 @@ import { BODY_COLOR, C, RAW_BODY } from './palette'
 const MAX = 120
 const tmp = new Object3D()
 const col = new Color()
-const fade = new Color(C.ground)
 
 /** Модель Kenney для каждой модели авто: Cobalt — седан, Onix — хэтчбек, JAC J7 — лифтбек. */
 const CAR_URL: Record<CarModelId, string> = { cobalt: MODEL.sedan, onix: MODEL.hatchback, j7: MODEL.sedanSports }
@@ -143,24 +142,22 @@ function CarModelInstances({ model }: { model: CarModelId }) {
     let nw = 0
     for (const c of frame) {
       if (nw >= MAX) break
-      const info = run.cars.get(c.id)!
-      if (info.model !== model) continue
+      // При фильтре по модели вся линия показывается выбранной моделью в её двух расцветках.
+      const shown = displayCar(run.cars.get(c.id)!, modelFilter)
+      if (shown.model !== model) continue
       // Модель Kenney смотрит вдоль +Z; поворачиваем носом по ходу линии (+X).
       tmp.position.set(c.x, c.y, c.z)
       tmp.rotation.set(0, c.rot + Math.PI / 2, 0)
       tmp.scale.setScalar(scale)
       tmp.updateMatrix()
       w.setMatrixAt(nw++, tmp.matrix)
-      const dim = modelFilter !== 'all' && info.model !== modelFilter
       if (c.painted) {
-        col.set(BODY_COLOR[info.color])
-        if (dim) col.lerp(fade, 0.75)
+        col.set(BODY_COLOR[shown.color])
         p.setMatrixAt(np, tmp.matrix)
         p.setColorAt(np, col)
         ids.current.painted[np++] = c.id
       } else {
         col.set('#ffffff')
-        if (dim) col.lerp(fade, 0.6)
         r.setMatrixAt(nr, tmp.matrix)
         r.setColorAt(nr, col)
         ids.current.raw[nr++] = c.id
