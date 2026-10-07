@@ -17,7 +17,7 @@ const FIT_TARGET = new Vector3(-1.2, 0, -1.2)
 
 /** Масштаб, при котором весь цех помещается в окно. */
 function fitZoom(width: number, height: number) {
-  return Math.min(width / 32, height / 24)
+  return Math.min(width / 28, height / 21)
 }
 
 export function CameraRig() {

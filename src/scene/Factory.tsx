@@ -2,16 +2,15 @@ import { useMemo, useRef, type ReactNode } from 'react'
 import { Edges } from '@react-three/drei'
 import { type ThreeEvent, useFrame } from '@react-three/fiber'
 import { EdgesGeometry, PlaneGeometry } from 'three'
-import type { Group, Mesh, MeshBasicMaterial, MeshStandardMaterial } from 'three'
+import type { Group, Mesh, MeshBasicMaterial } from 'three'
 import { focusObject } from '@/components/twin/focus'
 import { EQUIPMENT_BY_ID, type SectionId } from '@/data/plant'
-import { SHIFT_START_SEC } from '@/sim/model'
 import type { Status } from '@/sim/metrics'
-import { isDown } from '@/sim/telemetry'
 import { useTwin } from '@/sim/useTwin'
 import { type HeatMode, useSim } from '@/store/sim'
 import { BELT_Y, BLOCK_D, blockW, blockX, bufferZone, CAR_L, EQUIPMENT_POS, LINE_X0, LINE_X1, SECTION_ORDER, sectionW, SLAB_H, WALL_H } from './layout'
 import { STATIONS } from '@/sim/model'
+import { Model, MODEL, Robot } from './models'
 import { C } from './palette'
 
 const STATUS_SOFT: Record<Status, string> = { ok: C.okSoft, warn: C.warnSoft, alarm: C.alarmSoft }
@@ -46,10 +45,7 @@ export function Factory() {
 
       {layers.flow && (
         <group>
-          <mesh position={[(LINE_X0 + LINE_X1) / 2, BELT_Y / 2, 0]} castShadow receiveShadow>
-            <boxGeometry args={[LINE_X1 - LINE_X0, BELT_Y, 0.62]} />
-            <meshStandardMaterial color={C.belt} roughness={0.9} />
-          </mesh>
+          <ConveyorLine />
           <FlowArrows />
           {STATIONS.map((_, i) => (
             <BufferZone key={i} station={i} />
@@ -274,25 +270,26 @@ function blockXOf(equipmentId: string): number {
 function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
   switch (id) {
     case 'wh-in':
-      return <Racks kits={kits} />
+      return <Crates kits={kits} />
     case 'welding':
       return (
         <>
           {(['ABB-01', 'ABB-02', 'ABB-03', 'ABB-04'] as const).map((r) => (
             <Equip key={r} id={r}>
-              <Robot id={r} flip={EQUIPMENT_POS[r][2] > 0} />
+              <Robot equipmentId={r} position-y={SLAB_H} rotation-y={EQUIPMENT_POS[r][2] > 0 ? Math.PI : 0} scale={0.56} />
             </Equip>
           ))}
         </>
       )
     case 'painting':
+      // Камера и печь стоят над лентой — кузова проходят сквозь них.
       return (
         <>
           <Equip id="Камера-02">
-            <Tunnel length={2.1} color="#dbeef8" />
+            <Model url={MODEL.machineWindow} position-y={SLAB_H} scale={[1.75, 0.75, 0.82]} />
           </Equip>
           <Equip id="ПС-01">
-            <Tunnel length={1.7} color="#eef1f4" oven />
+            <Model url={MODEL.machineFortified} position-y={SLAB_H} scale={[1.4, 0.72, 0.78]} />
           </Equip>
         </>
       )
@@ -300,26 +297,15 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
       return (
         <>
           <Equip id="Конвейер-03">
-            <mesh position-y={BELT_Y + 0.01} receiveShadow>
-              <boxGeometry args={[sectionW('assembly') - 0.3, 0.04, 0.74]} />
+            <mesh position-y={BELT_Y + 0.006} receiveShadow>
+              <boxGeometry args={[sectionW('assembly') - 0.3, 0.02, 0.5]} />
               <meshStandardMaterial color={C.beltDark} roughness={0.8} />
             </mesh>
-            {[-2.8, -2.1, -1.4, -0.7, 0, 0.7, 1.4, 2.1, 2.8].map((x) => (
-              <mesh key={x} position={[x, 0.65, -0.55]} castShadow>
-                <boxGeometry args={[0.06, 1.1, 0.06]} />
-                <meshStandardMaterial color={C.steel} />
-              </mesh>
-            ))}
+            <Model url={MODEL.crane} position={[-1.6, SLAB_H, -1.15]} scale={0.42} />
+            <Model url={MODEL.crane} position={[1.4, SLAB_H, -1.15]} scale={0.42} />
           </Equip>
           <Equip id="СЗ-01">
-            <mesh position-y={0.4} castShadow>
-              <boxGeometry args={[0.6, 0.65, 0.45]} />
-              <meshStandardMaterial color={C.steel} />
-            </mesh>
-            <mesh position={[0, 0.78, 0]} castShadow>
-              <boxGeometry args={[0.5, 0.08, 0.35]} />
-              <meshStandardMaterial color={C.brand} />
-            </mesh>
+            <Model url={MODEL.machine} position-y={SLAB_H} scale={0.5} />
           </Equip>
         </>
       )
@@ -327,131 +313,48 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
       return (
         <>
           <Equip id="СГ-01">
-            <Arch />
+            <Model url={MODEL.scanner} position-y={SLAB_H} scale={0.72} />
           </Equip>
           <Equip id="КЛ-01">
-            <Tunnel length={1.0} color="#f7f2df" light />
+            <Model url={MODEL.scanner} position-y={SLAB_H} scale={0.72} />
           </Equip>
         </>
       )
+    case 'wh-out':
+      return <Model url={MODEL.warning} position={[1.2, SLAB_H, 2.6]} scale={0.5} />
     default:
       return null
   }
 }
 
-function Racks({ kits }: { kits: number }) {
+/** Склад комплектов: штабеля коробок, их число зависит от запаса. */
+function Crates({ kits }: { kits: number }) {
   const fill = Math.min(1, kits / 180)
-  const cells: { x: number; z: number; h: number }[] = []
+  const cells: { x: number; z: number; levels: number; url: string }[] = []
   for (let r = 0; r < 4; r++)
     for (let c = 0; c < 3; c++) {
       const idx = r * 3 + c
-      const h = idx / 12 < fill ? 0.35 + ((idx * 7) % 5) * 0.08 : 0.06
-      cells.push({ x: -1.0 + c * 1.0, z: -2.4 + r * 1.2 + (r >= 2 ? 0.6 : 0), h })
+      const levels = idx / 12 < fill ? 1 + ((idx * 7) % 3) : 0
+      cells.push({ x: -1.0 + c * 1.0, z: -2.4 + r * 1.2 + (r >= 2 ? 0.6 : 0), levels, url: idx % 4 === 1 ? MODEL.boxWide : MODEL.boxLarge })
     }
   return (
     <group>
-      {cells.map((c, i) => (
-        <mesh key={i} position={[c.x, SLAB_H + c.h / 2, c.z]} castShadow>
-          <boxGeometry args={[0.75, c.h, 0.85]} />
-          <meshStandardMaterial color={C.crate} roughness={0.9} />
-        </mesh>
-      ))}
-    </group>
-  )
-}
-
-/** Робот-манипулятор: основание, плечо, предплечье, сварочные клещи. Двигается, пока участок работает. */
-function Robot({ id, flip }: { id: string; flip: boolean }) {
-  const shoulder = useRef<Group>(null)
-  const elbow = useRef<Group>(null)
-  const head = useRef<Mesh>(null)
-  const phase = (id.charCodeAt(id.length - 1) % 4) * 1.3
-  useFrame(() => {
-    const t = useSim.getState().t
-    const down = isDown(id, SHIFT_START_SEC + t)
-    const a = down ? 0 : Math.sin(t * 0.09 + phase)
-    if (shoulder.current) shoulder.current.rotation.y = (flip ? Math.PI : 0) + a * 0.6
-    if (elbow.current) elbow.current.rotation.z = -0.9 + (down ? 0.6 : Math.sin(t * 0.13 + phase) * 0.35)
-    if (head.current) (head.current.material as MeshStandardMaterial).color.set(down ? C.alarm : C.brand)
-  })
-  return (
-    <group position-y={SLAB_H}>
-      <mesh position-y={0.09} castShadow>
-        <cylinderGeometry args={[0.28, 0.32, 0.18, 16]} />
-        <meshStandardMaterial color={C.steelDark} />
-      </mesh>
-      <group ref={shoulder} position-y={0.18}>
-        <mesh position-y={0.32} castShadow>
-          <boxGeometry args={[0.16, 0.64, 0.16]} />
-          <meshStandardMaterial color="#f2f4f7" />
-        </mesh>
-        <group ref={elbow} position-y={0.62} rotation-z={-0.9}>
-          <mesh position-x={0.3} castShadow>
-            <boxGeometry args={[0.6, 0.12, 0.12]} />
-            <meshStandardMaterial color="#f2f4f7" />
-          </mesh>
-          <mesh ref={head} position-x={0.64} castShadow>
-            <boxGeometry args={[0.14, 0.2, 0.14]} />
-            <meshStandardMaterial color={C.brand} />
-          </mesh>
-        </group>
-      </group>
-    </group>
-  )
-}
-
-/** Туннель над лентой: окрасочная камера, печь, световой туннель ОТК. */
-function Tunnel({ length, color, oven, light }: { length: number; color: string; oven?: boolean; light?: boolean }) {
-  const h = 0.95
-  const w = 1.15
-  return (
-    <group position-y={SLAB_H}>
-      {[-1, 1].map((s) => (
-        <mesh key={s} position={[0, h / 2, (s * w) / 2]} castShadow>
-          <boxGeometry args={[length, h, 0.06]} />
-          <meshStandardMaterial color={color} transparent opacity={0.85} />
-        </mesh>
-      ))}
-      <mesh position={[0, h, 0]} castShadow>
-        <boxGeometry args={[length, 0.08, w + 0.06]} />
-        <meshStandardMaterial color={oven ? '#cfd6de' : color} />
-      </mesh>
-      {oven &&
-        [-0.45, 0, 0.45].map((x) => (
-          <mesh key={x} position={[x, h + 0.16, 0]} castShadow>
-            <cylinderGeometry args={[0.07, 0.07, 0.24, 10]} />
-            <meshStandardMaterial color={C.steelDark} />
-          </mesh>
-        ))}
-      {light && (
-        <mesh position={[0, h - 0.06, 0]}>
-          <boxGeometry args={[length * 0.9, 0.03, w * 0.8]} />
-          <meshBasicMaterial color="#fff6c8" />
-        </mesh>
+      {cells.flatMap((c, i) =>
+        Array.from({ length: c.levels }, (_, l) => <Model key={`${i}-${l}`} url={c.url} position={[c.x, SLAB_H + l * 0.39, c.z]} scale={0.7} />),
       )}
     </group>
   )
 }
 
-/** Рамка стенда геометрии. */
-function Arch() {
+/** Лента: плитки конвейера Kenney вдоль всей линии. */
+function ConveyorLine() {
+  const tile = 1.0
+  const n = Math.ceil((LINE_X1 - LINE_X0) / tile)
   return (
-    <group position-y={SLAB_H}>
-      {[-0.6, 0.6].map((z) => (
-        <mesh key={z} position={[0, 0.5, z]} castShadow>
-          <boxGeometry args={[0.1, 1, 0.1]} />
-          <meshStandardMaterial color={C.navy} />
-        </mesh>
+    <group>
+      {Array.from({ length: n }, (_, i) => (
+        <Model key={i} url={MODEL.conveyor} position={[LINE_X0 + tile / 2 + i * tile, 0, 0]} scale={[tile / 2, BELT_Y / 0.4, 0.62]} />
       ))}
-      <mesh position={[0, 1, 0]} castShadow>
-        <boxGeometry args={[0.1, 0.1, 1.3]} />
-        <meshStandardMaterial color={C.navy} />
-      </mesh>
-      <mesh position={[0, 0.94, 0]}>
-        <boxGeometry args={[0.16, 0.06, 0.3]} />
-        <meshStandardMaterial color={C.brand} />
-      </mesh>
     </group>
   )
 }
-
