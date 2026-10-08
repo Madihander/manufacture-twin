@@ -86,7 +86,8 @@ export function EquipmentPanel({ id }: { id: string }) {
                   Прогноз ИИ
                 </span>
                 <span className="text-[15px] leading-snug font-medium">
-                  Риск остановки {prediction.bigLabel.replace('в течение', 'в ближайшие')}
+                  {/* Неразрывный пробел: «2 ч» не разрывается переносом. */}
+                  Риск остановки {prediction.bigLabel.replace('в течение', 'в ближайшие').replace(/(\d) ч/, '$1 ч')}
                 </span>
                 <span className="text-xs text-muted-foreground">
                   Причина: <span className="text-alarm-fg">{prediction.signs[0]}</span>
