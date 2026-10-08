@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { CalendarIcon, CrosshairIcon, MapPinIcon, SparklesIcon, XIcon } from 'lucide-react'
+import { CalendarIcon, ChevronRightIcon, CrosshairIcon, MapPinIcon, SparklesIcon, WrenchIcon, XIcon } from 'lucide-react'
+import { useJournal } from '@/components/service/useJournal'
 import { Button } from '@/components/ui/button'
 import { EQUIPMENT_BY_ID, SECTION_BY_ID } from '@/data/plant'
 import { formatDate, formatNumber } from '@/lib/format'
@@ -8,8 +9,9 @@ import { downtimeLast7Days } from '@/sim/metrics'
 import { SHIFT_START_SEC } from '@/sim/model'
 import { isDown, METRICS_BY_EQUIPMENT, type MetricSpec, metricState, series } from '@/sim/telemetry'
 import { useTwin } from '@/sim/useTwin'
-import { useMaintenance } from '@/store/maintenance'
+import { isOpen, ticketWindow, useMaintenance } from '@/store/maintenance'
 import { useSim } from '@/store/sim'
+import { useUi } from '@/store/ui'
 import { focusObject } from '../focus'
 import { Divider, PanelSection, StatusBadge } from '../primitives'
 import { PanelBody, PanelFooter } from './common'
@@ -32,6 +34,8 @@ export function EquipmentPanel({ id }: { id: string }) {
   const status = down ? 'alarm' : prediction?.level === 'crit' || metricsWarn ? 'warn' : 'ok'
   const [win, setWin] = useState<(typeof WINDOWS)[number]>(WINDOWS[0])
   const openDraft = useMaintenance((s) => s.openDraft)
+  const openTickets = useJournal().filter((t) => t.equipmentId === id && isOpen(t))
+  const openLog = useUi((s) => s.setMaintenanceLogOpen)
   const select = useSim((s) => s.select)
   const cameraCmd = useSim((s) => s.cameraCmd)
   const history = downtimeLast7Days(twin.run, twin.snap.t, id)
@@ -190,6 +194,29 @@ export function EquipmentPanel({ id }: { id: string }) {
               <span className="font-mono text-sm">{formatDate(eq.nextService)}</span>
             </div>
           </div>
+          {openTickets.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => openLog(true)}
+              title="Открыть журнал заявок"
+              className="flex items-center gap-2.5 rounded-[10px] border border-brand/30 bg-brand-soft px-3 py-2.5 text-left text-[13px] hover:border-brand"
+            >
+              <WrenchIcon className="size-4 flex-none text-brand" />
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span>
+                  Заявка <span className="font-mono">{t.id}</span> · <span className="font-medium">{t.status.toLowerCase()}</span>
+                </span>
+                <span className="truncate text-xs text-muted-foreground">
+                  <span className="font-mono">
+                    {formatDate(t.date).slice(0, 5)} {ticketWindow(t)}
+                  </span>{' '}
+                  · {t.workType} · {t.crew}
+                </span>
+              </span>
+              <ChevronRightIcon className="size-4 flex-none text-muted-foreground" />
+            </button>
+          ))}
         </PanelSection>
       </PanelBody>
       <PanelFooter>

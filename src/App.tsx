@@ -1,4 +1,5 @@
 import { MaintenanceDialog } from '@/components/service/MaintenanceDialog'
+import { MaintenanceLog } from '@/components/service/MaintenanceLog'
 import { SettingsSheet } from '@/components/service/SettingsSheet'
 import { ScenariosScreen } from '@/components/scenarios/ScenariosScreen'
 import { SummaryScreen } from '@/components/summary/SummaryScreen'
@@ -22,6 +23,7 @@ export default function App() {
         <ServiceShowcase />
         <SettingsSheet />
         <MaintenanceDialog />
+        <MaintenanceLog />
         <Toaster position="top-right" />
       </TooltipProvider>
     )
@@ -40,6 +42,7 @@ export default function App() {
       </div>
       <SettingsSheet />
       <MaintenanceDialog />
+      <MaintenanceLog />
       <IncidentWatcher />
       <Toaster position="top-right" offset={{ top: 80, right: 440 }} />
     </TooltipProvider>

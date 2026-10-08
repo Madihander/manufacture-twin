@@ -12,6 +12,7 @@ import { BELT_Y, BLOCK_D, blockW, blockX, bufferZone, EQUIPMENT_POS, LINE_X0, LI
 import { STATIONS } from '@/sim/model'
 import { InstancedModel, Model, MODEL, Robot } from './models'
 import { C } from './palette'
+import { AssemblyRig, QcScanner } from './Workcells'
 
 const STATUS_SOFT: Record<Status, string> = { ok: C.okSoft, warn: C.warnSoft, alarm: C.alarmSoft }
 
@@ -344,6 +345,7 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
           <Equip id="СЗ-01">
             <Model url={MODEL.machine} position-y={SLAB_H} scale={0.5} />
           </Equip>
+          <AssemblyRig />
         </>
       )
     case 'qc':
@@ -355,6 +357,7 @@ function SectionEquipment({ id, kits }: { id: SectionId; kits: number }) {
           <Equip id="КЛ-01">
             <Model url={MODEL.scanner} position-y={SLAB_H} scale={0.72} />
           </Equip>
+          <QcScanner />
         </>
       )
     case 'wh-out':

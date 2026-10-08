@@ -4,8 +4,9 @@ import { Color, type InstancedMesh, type Mesh, MeshStandardMaterial, Object3D, V
 import type { CarModelId } from '@/data/plant'
 import { displayCar, SNAPSHOT_STEP } from '@/sim/model'
 import { useSim } from '@/store/sim'
-import { BELT_Y, CAR_L, CAR_Y, carPose, type Pose } from './layout'
+import { BELT_Y, CAR_L, CAR_Y, carPose } from './layout'
 import { MODEL, useCarMeshes } from './models'
+import { framePoses } from './poses'
 import { BODY_COLOR, C, RAW_BODY } from './palette'
 
 const MAX = 120
@@ -31,47 +32,6 @@ export function carWorldPosition(id: number, t: number, out: Vector3): boolean {
   const f = (t - a.t) / SNAPSHOT_STEP
   out.set(pa.x + (pb.x - pa.x) * f, CAR_Y, pa.z + (pb.z - pa.z) * f)
   return true
-}
-
-interface FramePose {
-  id: number
-  x: number
-  y: number
-  z: number
-  rot: number
-  painted: boolean
-}
-
-let cache: { run: unknown; t: number; poses: FramePose[] } | null = null
-
-/** Положения всех кузовов на момент t — считаются один раз за кадр для всех моделей авто. */
-function framePoses(run: ReturnType<typeof useSim.getState>['run'], t: number): FramePose[] {
-  if (cache && cache.run === run && cache.t === t) return cache.poses
-  const i = Math.min(run.snapshots.length - 1, Math.floor(t / SNAPSHOT_STEP))
-  const sa = run.snapshots[i]
-  const sb = run.snapshots[Math.min(run.snapshots.length - 1, i + 1)]
-  const f = Math.min(1, (t - sa.t) / SNAPSHOT_STEP)
-  const next = new Map<number, Pose>()
-  for (let k = 0; k < sb.carIds.length; k++) next.set(sb.carIds[k], carPose(sb.carLoc[k], sb.carP[k]))
-  const poses: FramePose[] = []
-  for (let k = 0; k < sa.carIds.length; k++) {
-    const id = sa.carIds[k]
-    const pa = carPose(sa.carLoc[k], sa.carP[k])
-    const pb = next.get(id) ?? pa
-    // Переход буфер ↔ станция не интерполируем по диагонали — переставляем в середине шага.
-    const jump = Math.abs(pb.rot - pa.rot) > 0.1
-    poses.push({
-      id,
-      x: jump ? (f < 0.5 ? pa.x : pb.x) : pa.x + (pb.x - pa.x) * f,
-      y: jump ? (f < 0.5 ? pa.y : pb.y) : pa.y + (pb.y - pa.y) * f,
-      z: jump ? (f < 0.5 ? pa.z : pb.z) : pa.z + (pb.z - pa.z) * f,
-      rot: jump ? (f < 0.5 ? pa.rot : pb.rot) : pa.rot,
-      // Окрашен — после выхода из камеры окраски (loc ≥ 4 — дальше по линии).
-      painted: sa.carLoc[k] >= 4 || (sa.carLoc[k] === 3 && sa.carP[k] > 0.6),
-    })
-  }
-  cache = { run, t, poses }
-  return poses
 }
 
 export function Cars() {

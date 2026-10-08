@@ -6,6 +6,7 @@ import { formatDate, formatNumber } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Prediction } from '@/sim/predict'
 import type { downtimeRecords, Filters } from '@/sim/summary'
+import type { ChartId } from './export/common'
 import { type ChartSize, DefectChart, ForecastChart, OeeChart, ParetoChart, PlanFactChart, SECTION_NAME, SERIES } from './charts'
 
 export interface ReportKpi {
@@ -80,10 +81,10 @@ export function PrintReport(p: PrintReportProps) {
           ))}
         </div>
         <div className="grid flex-1 grid-cols-2 gap-3">
-          <Card title="План / факт по линиям" subtitle={`Авто за смену, среднее по ${p.filters.detail === 'day' ? 'рабочему дню' : 'смене'} · план ${p.plan}`} legend={<SectionsLegend sections={p.filters.sections} plan />}>
+          <Card chart="planFact" title="План / факт по линиям" subtitle={`Авто за смену, среднее по ${p.filters.detail === 'day' ? 'рабочему дню' : 'смене'} · план ${p.plan}`} legend={<SectionsLegend sections={p.filters.sections} plan />}>
             <PlanFactChart data={p.planFact} sections={p.filters.sections} plan={p.plan} size={HALF} />
           </Card>
-          <Card title="OEE по участкам" subtitle={`%, по рабочим дням · цель ${p.oeeTarget} %`} legend={<SectionsLegend sections={p.filters.sections} line />}>
+          <Card chart="oee" title="OEE по участкам" subtitle={`%, по рабочим дням · цель ${p.oeeTarget} %`} legend={<SectionsLegend sections={p.filters.sections} line />}>
             <OeeChart data={p.oeeData} sections={p.filters.sections} target={p.oeeTarget} size={HALF} />
           </Card>
         </div>
@@ -92,10 +93,10 @@ export function PrintReport(p: PrintReportProps) {
       {/* Страница 2 — качество, простои, модели, прогноз */}
       <Page n={2} title="Качество, простои и прогноз" generatedAt={p.generatedAt}>
         <div className="grid flex-1 grid-cols-2 grid-rows-2 gap-3">
-          <Card title="Брак по участкам, %" subtitle={`За период · порог ${formatNumber(p.defectMax, 0)} % · выше порога — красным`}>
+          <Card chart="defects" title="Брак по участкам, %" subtitle={`За период · порог ${formatNumber(p.defectMax, 0)} % · выше порога — красным`}>
             <DefectChart data={p.defectData} threshold={p.defectMax} size={QUARTER} />
           </Card>
-          <Card title="Парето простоев" subtitle="Минуты по причинам и накопленная доля">
+          <Card chart="pareto" title="Парето простоев" subtitle="Минуты по причинам и накопленная доля">
             {p.pareto.length ? <ParetoChart data={p.pareto} size={QUARTER} /> : <Empty text="Простоев за период нет" />}
           </Card>
           <Card title="Выпуск по моделям" subtitle="Факт с начала месяца против плана месяца">
@@ -116,7 +117,7 @@ export function PrintReport(p: PrintReportProps) {
               </span>
             </div>
           </Card>
-          <Card title="Прогноз выпуска до конца месяца" subtitle={`Накопительно · прогноз ${formatNumber(p.forecast)} из ${formatNumber(p.monthPlan)}`}>
+          <Card chart="forecast" title="Прогноз выпуска до конца месяца" subtitle={`Накопительно · прогноз ${formatNumber(p.forecast)} из ${formatNumber(p.monthPlan)}`}>
             <ForecastChart data={p.forecastPoints} target={p.monthPlan} size={QUARTER} />
           </Card>
         </div>
@@ -257,9 +258,10 @@ function PageFooter({ generatedAt }: { generatedAt: string }) {
   )
 }
 
-function Card({ title, subtitle, legend, children }: { title: string; subtitle: string; legend?: ReactNode; children: ReactNode }) {
+/** chart — метка графика: по ней экспорт в Word находит SVG и делает картинку. */
+function Card({ chart, title, subtitle, legend, children }: { chart?: ChartId; title: string; subtitle: string; legend?: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex min-h-0 flex-col gap-1.5 rounded-[8px] border border-[#e3e8ef] px-3.5 pt-2.5 pb-2">
+    <div data-chart={chart} className="flex min-h-0 flex-col gap-1.5 rounded-[8px] border border-[#e3e8ef] px-3.5 pt-2.5 pb-2">
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col">
           <span className="text-[12px] font-medium">{title}</span>

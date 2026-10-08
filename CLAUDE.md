@@ -27,11 +27,12 @@ zustand, three.js через @react-three/fiber + drei, Recharts (для «Св�
 - `src/sim/` — `engine.ts` (дискретная симуляция смены), `model.ts` (такт, станции, сценарий остановок),
   `telemetry.ts` (24 датчика — детерминированные функции времени), `metrics.ts` (KPI, статусы),
   `predict.ts` (прогнозы ИИ кодом), `useTwin.ts` (производные данные на снимок), `clock.ts`.
-- `src/store/` — `sim.ts` (время, скорость, выбор, вкладки, слои, камера), `settings.ts` (пороги, persist), `maintenance.ts` (заявки ТО), `ui.ts`.
+- `src/store/` — `sim.ts` (время, скорость, выбор, вкладки, слои, камера), `settings.ts` (пороги, persist), `maintenance.ts` (заявки ТО: статусы, persist; история — по заявке на каждый простой журнала, ТО-0120…0146), `ui.ts`.
 - `src/components/twin/` — экран «Топология»: шапка, список участков, полоса потока, оверлей сцены, `panel/*` (Обзор/Участок/Оборудование/Кузов/ИИ), `ai/*` (чат + локальные ответы).
-- `src/components/service/` — служебные окна. `src/scene/` — 3D: `layout.ts` (геометрия), `Factory`, `Cars`, `Labels`, `CameraRig`, `TwinScene`.
+- `src/components/service/` — служебные окна, `MaintenanceLog` (журнал заявок ТО, значок в шапке; `useJournal` — история + созданные). `src/scene/` — 3D: `layout.ts` (геометрия), `Factory`, `Cars`, `Labels`, `CameraRig`, `TwinScene`,
+  `poses.ts` (позы кузовов за кадр, состояние станции), `Workcells.tsx` (анимация постов сборки и сканера ОТК).
 - `assets/kenney/` — исходники Kenney (CC0). В сцене используются копии из `public/models/{factory,crates,cars}`, палитры перекрашены `python scripts/prepare-models.py`.
-- `src/components/summary/` — «Сводка» (`SummaryScreen`, `charts.tsx`, печатный отчёт `PrintReport.tsx`); `src/components/scenarios/` — «Сценарии»; `src/sim/summary.ts`, `src/sim/scenario.ts` — их расчёты.
+- `src/components/summary/` — «Сводка» (`SummaryScreen`, `charts.tsx`, печатный отчёт `PrintReport.tsx`, `export/` — Excel и Word, грузятся динамически по клику); `src/components/scenarios/` — «Сценарии»; `src/sim/summary.ts`, `src/sim/scenario.ts` — их расчёты.
 - `api/ask.ts` — серверная функция ИИ (Vercel + dev-middleware в `vite.config.ts`).
 
 ## Ключевые решения
@@ -59,6 +60,8 @@ primary #0B3B60, бренд-голубой `brand` #0088CC / `brand-strong` #007
 - PDF-отчёт: печатается не экран, а `PrintReport` (портал в body, `@media print` в `index.css`), графики фиксированного размера через `size`.
 - drei `<Html>`: не монтировать/размонтировать на лету (React 19 ругается «synchronously unmount a root») — держать смонтированным и скрывать содержимое.
 - Окно браузера в превью часто скрыто → rAF троттлится, анимации/время стоят; проверять через JS, скриншоты уменьшены.
+- Анимации постов (`Workcells`) идут по своему времени, пока симуляция играет, а работают/стоят по приросту счётчиков станции между снимками (`stationActivity`).
+- Заявки ТО хранятся в localStorage (`twin-maintenance`); перед показом можно очистить кнопкой «Очистить созданные» в журнале.
 - Python на Windows пишет CRLF — git нормализует в LF (`.gitattributes`), это ок.
 
 ## Статус и что дальше
@@ -68,9 +71,7 @@ primary #0B3B60, бренд-голубой `brand` #0088CC / `brand-strong` #007
 - ИИ: `api/ask.ts` (Vercel-функция + dev-middleware в `vite.config.ts`). Ключ пользователя — OpenRouter (`sk-or-…`) →
   `deepseek/deepseek-v4.1-flash`; ключ DeepSeek шёл бы напрямую (`deepseek-flash`). Контекст собирает `src/components/twin/ai/remote.ts`;
   вопросы «что если X встанет» считаются симуляцией (`whatIf`). Без ключа/сети — офлайн-шаблоны `ai/localAnswer.ts`.
-- Готово: все три экрана, модели Kenney, служебные окна, сценарии на карте, ИИ-чат, PDF-отчёт A4, README для жюри.
+- Готово: все три экрана, модели Kenney, служебные окна, сценарии на карте, ИИ-чат, PDF-отчёт A4, README для жюри,
+  экспорт «Сводки» в Excel (8 листов, формулы) и Word (графики — картинки из `PrintReport` по `data-chart`), анимация сборки/ОТК, журнал заявок ТО.
 
-Идеи следующих доработок (обсуждены с пользователем 08.10):
-1. Экспорт «Сводки» в Excel (.xlsx, несколько листов: KPI, по сменам, простои, брак) и Word (.docx — тот же отчёт, что PDF). Генерировать в браузере (библиотеки exceljs / docx), без сервера.
-2. Лёгкая анимация сборки и ОТК: подъёмники/гайковёрты на постах сборки, свет сканера ОТК, проходящий по кузову, мигание ламп — несколько мешей в useFrame, без новых тяжёлых моделей.
-3. Журнал заявок ТО, презентация. Демо-автопилот пользователь решил НЕ делать (риск сломать показ) — не предлагать.
+Дальше: презентация. Демо-автопилот пользователь решил НЕ делать (риск сломать показ) — не предлагать.

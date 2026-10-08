@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { ru } from 'react-day-picker/locale'
-import { ArrowDownIcon, ArrowUpIcon, CalendarCheckIcon, CalendarIcon, ChevronDownIcon, DownloadIcon, FileSpreadsheetIcon, FileTextIcon, RotateCcwIcon, TriangleAlertIcon } from 'lucide-react'
+import { ArrowDownIcon, ArrowUpIcon, CalendarCheckIcon, CalendarIcon, ChevronDownIcon, DownloadIcon, FileSpreadsheetIcon, FileTextIcon, FileTypeIcon, LoaderCircleIcon, RotateCcwIcon, TriangleAlertIcon } from 'lucide-react'
+import { notify } from '@/components/notify'
 import { EmptyState } from '@/components/service/States'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -31,6 +32,7 @@ import {
 } from '@/sim/summary'
 import { useTwin } from '@/sim/useTwin'
 import { useSim } from '@/store/sim'
+import type { ReportData } from './export/common'
 import { PrintReport } from './PrintReport'
 import { ChartCard, DefectChart, ForecastChart, LegendItem, MiniSpark, OeeChart, ParetoChart, PlanFactChart, SECTION_NAME, SERIES } from './charts'
 
@@ -63,9 +65,15 @@ export function SummaryScreen() {
   const monthOutput = scale(monthRows.reduce((a, r) => a + r.fact, 0))
   const monthPlan = filters.model === 'all' ? 5500 : CAR_MODELS[filters.model].monthPlan
   const liveRemaining = ((SHIFT_LEN - twin.snap.t) / 3600) * Math.min(twin.plant.perHour || 15, 15)
-  const fc = forecastSeries(rows, liveRemaining)
+  const fc = forecastSeries(rows, liveRemaining, twin.plant.forecast)
   // Тот же прогноз, что на «Топологии» и в карточке ИИ — одно число на всех экранах.
   const forecast = scale(twin.plant.forecast)
+  const forecastPoints = fc.points.map((p) => ({
+    ...p,
+    actual: p.actual !== undefined ? scale(p.actual) : undefined,
+    forecast: p.forecast !== undefined ? scale(p.forecast) : undefined,
+    band: p.band ? ([scale(p.band[0]), scale(p.band[1])] as [number, number]) : undefined,
+  }))
 
   const oee = oeeOf(view)
   const lastWeek = oeeOf(view.filter((r) => r.date >= '2026-10-09'))
@@ -110,8 +118,10 @@ export function SummaryScreen() {
   const pareto = (() => {
     const byReason = new Map<string, number>()
     for (const d of downtimes) byReason.set(d.reason, (byReason.get(d.reason) ?? 0) + d.minutes)
-    const sorted = [...byReason.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6)
-    const total = sorted.reduce((a, [, m]) => a + m, 0)
+    // На графике — 6 главных причин, но накопленная доля — от всех минут простоя.
+    const all = [...byReason.entries()].sort((a, b) => b[1] - a[1])
+    const sorted = all.slice(0, 6)
+    const total = all.reduce((a, [, m]) => a + m, 0)
     let cum = 0
     return sorted.map(([reason, minutes]) => {
       cum += minutes
@@ -140,11 +150,52 @@ export function SummaryScreen() {
     return { share: effectShare, margin, perDay, monthMinutes, cars, money: (cars * margin) / 1e6 }
   })()
 
+  // Данные отчёта — одни для PDF, Excel и Word.
+  const report: ReportData = {
+    filters,
+    modelName: filters.model === 'all' ? 'все модели' : CAR_MODELS[filters.model].name,
+    generatedAt: `15.10.2026 ${clockText(twin.snap.t, false)}`,
+    kpis: [
+      {
+        label: 'Выполнение плана месяца',
+        value: formatNumber(monthOutput),
+        unit: `/ ${formatNumber(monthPlan)} · ${Math.round((monthOutput / monthPlan) * 100)} %`,
+        note: `прогноз на 31.10: ${formatNumber(forecast)}`,
+        ok: forecast >= monthPlan,
+      },
+      { label: 'OEE выбранных участков', value: formatNumber(oee.oee * 100, 1), unit: '%', note: `цель ≥ ${th.oeeMin} %`, ok: oee.oee * 100 >= th.oeeMin },
+      { label: 'Уровень брака', value: formatNumber(defectRate, 1), unit: '%', note: `порог ≤ ${formatNumber(th.defectMax, 0)} %`, ok: defectRate <= th.defectMax },
+      {
+        label: 'Простои за сутки 15.10',
+        value: String(todayMinutes),
+        unit: 'мин',
+        note: `${todayEvents} ${plural(todayEvents, ['событие', 'события', 'событий'])} · лимит ${th.downtimeMax} мин/ед.`,
+        ok: today.every((d) => d.minutes <= th.downtimeMax),
+      },
+      { label: 'Средняя загрузка линий', value: formatNumber(loadAvg, 0), unit: '%', note: filters.sections.map((s) => SECTION_NAME[s]).join(', '), ok: null },
+    ],
+    planFact,
+    plan: Math.round(120 * share),
+    oeeData,
+    oeeTarget: th.oeeMin,
+    defectData,
+    defectMax: th.defectMax,
+    pareto,
+    models: modelOutputs(monthRows.reduce((a, r) => a + r.fact, 0)),
+    forecastPoints,
+    monthPlan,
+    forecast,
+    predictions: twin.predictions,
+    effect,
+    downtimes,
+    rows: view,
+  }
+
   const isDefault = JSON.stringify({ ...filters, model: 'all' }) === JSON.stringify({ ...DEFAULT_FILTERS, model: 'all' }) && filters.model === headerModel
 
   return (
     <div className="min-h-0 flex-1 overflow-auto print:overflow-visible">
-      <FilterBar filters={filters} set={set} reset={() => setFilters({ ...DEFAULT_FILTERS, model: headerModel })} isDefault={isDefault} rows={view} downtimes={downtimes} />
+      <FilterBar filters={filters} set={set} reset={() => setFilters({ ...DEFAULT_FILTERS, model: headerModel })} isDefault={isDefault} report={report} />
 
       <main className="flex flex-col gap-4 px-7 pt-5 pb-7">
         <div className="grid grid-cols-5 gap-3">
@@ -266,12 +317,7 @@ export function SummaryScreen() {
               }
             >
               <ForecastChart
-                data={fc.points.map((p) => ({
-                  ...p,
-                  actual: p.actual !== undefined ? scale(p.actual) : undefined,
-                  forecast: p.forecast !== undefined ? scale(p.forecast) : undefined,
-                  band: p.band ? [scale(p.band[0]), scale(p.band[1])] : undefined,
-                }))}
+                data={forecastPoints}
                 target={monthPlan}
               />
               <span className={cn('text-[13px]', forecast < monthPlan ? 'text-alarm-fg' : 'text-ok-fg')}>
@@ -288,49 +334,7 @@ export function SummaryScreen() {
       </main>
       {/* Печатная версия для «PDF-отчёт»: на экране скрыта, вне #root — печатается только она. */}
       {createPortal(
-        <PrintReport
-          filters={filters}
-          modelName={filters.model === 'all' ? 'все модели' : CAR_MODELS[filters.model].name}
-          generatedAt={`15.10.2026 ${clockText(twin.snap.t, false)}`}
-          kpis={[
-            {
-              label: 'Выполнение плана месяца',
-              value: formatNumber(monthOutput),
-              unit: `/ ${formatNumber(monthPlan)} · ${Math.round((monthOutput / monthPlan) * 100)} %`,
-              note: `прогноз на 31.10: ${formatNumber(forecast)}`,
-              ok: forecast >= monthPlan,
-            },
-            { label: 'OEE выбранных участков', value: formatNumber(oee.oee * 100, 1), unit: '%', note: `цель ≥ ${th.oeeMin} %`, ok: oee.oee * 100 >= th.oeeMin },
-            { label: 'Уровень брака', value: formatNumber(defectRate, 1), unit: '%', note: `порог ≤ ${formatNumber(th.defectMax, 0)} %`, ok: defectRate <= th.defectMax },
-            {
-              label: 'Простои за сутки 15.10',
-              value: String(todayMinutes),
-              unit: 'мин',
-              note: `${todayEvents} ${plural(todayEvents, ['событие', 'события', 'событий'])} · лимит ${th.downtimeMax} мин/ед.`,
-              ok: today.every((d) => d.minutes <= th.downtimeMax),
-            },
-            { label: 'Средняя загрузка линий', value: formatNumber(loadAvg, 0), unit: '%', note: 'Сварка, Окраска, Сборка', ok: null },
-          ]}
-          planFact={planFact}
-          plan={Math.round(120 * share)}
-          oeeData={oeeData}
-          oeeTarget={th.oeeMin}
-          defectData={defectData}
-          defectMax={th.defectMax}
-          pareto={pareto}
-          models={modelOutputs(monthRows.reduce((a, r) => a + r.fact, 0))}
-          forecastPoints={fc.points.map((pt) => ({
-            ...pt,
-            actual: pt.actual !== undefined ? scale(pt.actual) : undefined,
-            forecast: pt.forecast !== undefined ? scale(pt.forecast) : undefined,
-            band: pt.band ? [scale(pt.band[0]), scale(pt.band[1])] : undefined,
-          }))}
-          monthPlan={monthPlan}
-          forecast={forecast}
-          predictions={twin.predictions}
-          effect={effect}
-          downtimes={downtimes}
-        />,
+        <PrintReport {...report} />,
         document.body,
       )}
     </div>
@@ -407,17 +411,29 @@ function FilterBar({
   set,
   reset,
   isDefault,
-  rows,
-  downtimes,
+  report,
 }: {
   filters: Filters
   set: (p: Partial<Filters>) => void
   reset: () => void
   isDefault: boolean
-  rows: Row[]
-  downtimes: ReturnType<typeof downtimeRecords>
+  report: ReportData
 }) {
   const [open, setOpen] = useState(false)
+  const [exporting, setExporting] = useState<'xlsx' | 'docx' | null>(null)
+  // Библиотеки грузятся только по клику: exceljs и docx не утяжеляют старт демо.
+  const exportFile = async (kind: 'xlsx' | 'docx') => {
+    setExporting(kind)
+    try {
+      if (kind === 'xlsx') await (await import('./export/excel')).exportExcel(report)
+      else await (await import('./export/word')).exportWord(report)
+    } catch (e) {
+      console.error(e)
+      notify({ tone: 'alarm', title: 'Не удалось сформировать файл', description: String(e instanceof Error ? e.message : e) })
+    } finally {
+      setExporting(null)
+    }
+  }
   const [draft, setDraft] = useState<{ from?: Date; to?: Date }>({ from: filters.from, to: filters.to })
   const days = draft.from && draft.to ? Math.round((draft.to.getTime() - draft.from.getTime()) / 86400000) + 1 : 0
   const workdays = draft.from && draft.to ? workdaysOfMonth(2026, 9).filter((d) => d >= draft.from! && d <= draft.to!).length : 0
@@ -550,20 +566,27 @@ function FilterBar({
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" className="h-9 text-[13px]">
-                <DownloadIcon className="size-[15px]" />
-                Экспорт
+              <Button variant="secondary" className="h-9 text-[13px]" disabled={exporting !== null}>
+                {exporting ? <LoaderCircleIcon className="size-[15px] animate-spin" /> : <DownloadIcon className="size-[15px]" />}
+                {exporting ? 'Формируем…' : 'Экспорт'}
                 <ChevronDownIcon className="size-3.5 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[200px]">
+            <DropdownMenuContent align="end" className="w-[230px]">
               <DropdownMenuItem onSelect={() => setTimeout(() => printReport(filters), 50)} className="text-[13px]">
                 <FileTextIcon className="text-alarm" />
-                PDF-отчёт
+                <span className="flex-1">PDF-отчёт</span>
+                <span className="font-mono text-[11px] text-muted-foreground">.pdf</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => exportCsv(rows, downtimes)} className="text-[13px]">
+              <DropdownMenuItem onSelect={() => exportFile('xlsx')} className="text-[13px]">
                 <FileSpreadsheetIcon className="text-ok" />
-                Excel (CSV)
+                <span className="flex-1">Excel — данные</span>
+                <span className="font-mono text-[11px] text-muted-foreground">.xlsx</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => exportFile('docx')} className="text-[13px]">
+                <FileTypeIcon className="text-brand" />
+                <span className="flex-1">Word — отчёт</span>
+                <span className="font-mono text-[11px] text-muted-foreground">.docx</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -610,26 +633,6 @@ function Segmented<T extends string | number>({ value, options, onChange }: { va
       ))}
     </div>
   )
-}
-
-function exportCsv(rows: Row[], downtimes: ReturnType<typeof downtimeRecords>) {
-  const esc = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`
-  const lines = [
-    ['Дата', 'Смена', 'Участок', 'План', 'Факт', 'Время работы, ч', 'Загрузка, %', 'Брак, шт', 'Источник'].map(esc).join(';'),
-    ...rows.map((r) =>
-      [r.date, r.shift, SECTION_NAME[r.section], r.plan, r.fact, formatNumber(r.hours, 1), r.load, r.defects, r.real ? 'кейс' : r.live ? 'симуляция' : 'модель'].map(esc).join(';'),
-    ),
-    '',
-    ['Дата', 'Смена', 'Участок', 'Оборудование', 'Причина', 'Длительность, мин', 'Статус'].map(esc).join(';'),
-    ...downtimes.map((d) => [d.date, d.shift, SECTION_NAME[d.section], d.equipmentId, d.reason, d.minutes, d.status].map(esc).join(';')),
-  ]
-  // BOM — чтобы Excel открыл кириллицу правильно.
-  const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' })
-  const a = document.createElement('a')
-  a.href = URL.createObjectURL(blob)
-  a.download = 'svodka-saryarkaavtoprom.csv'
-  a.click()
-  URL.revokeObjectURL(a.href)
 }
 
 function ModelOutput({ monthOutputAll, filter }: { monthOutputAll: number; filter: ModelFilter }) {

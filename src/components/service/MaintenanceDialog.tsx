@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ru } from 'react-day-picker/locale'
-import { CalendarIcon, ClockIcon, LockIcon, SparklesIcon, WrenchIcon, XIcon } from 'lucide-react'
+import { CalendarIcon, ClipboardListIcon, ClockIcon, LockIcon, SparklesIcon, WrenchIcon, XIcon } from 'lucide-react'
 import { notify } from '@/components/notify'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -27,6 +27,8 @@ import {
 import { formatDate } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { type MaintenanceDraft, useMaintenance } from '@/store/maintenance'
+import { useSim } from '@/store/sim'
+import { useUi } from '@/store/ui'
 
 const PRIORITY_DOT: Record<MaintenancePriority, string> = {
   Низкий: 'bg-chart-plan',
@@ -73,6 +75,8 @@ function MaintenanceForm({ draft }: { draft: MaintenanceDraft }) {
       timeTo,
       crew,
       comment,
+      fromAi: !!draft.aiComment,
+      createdT: useSim.getState().t,
     })
     notify({
       tone: 'ok',
@@ -85,6 +89,12 @@ function MaintenanceForm({ draft }: { draft: MaintenanceDraft }) {
         <>
           <span className="font-mono">{ticket.equipmentId}</span> · {formatDate(ticket.date)} · {ticket.crew}
         </>
+      ),
+      actions: (
+        <Button variant="secondary" size="sm" className="h-7 text-xs" onClick={() => useUi.getState().setMaintenanceLogOpen(true)}>
+          <ClipboardListIcon className="size-3.5" />
+          Журнал заявок
+        </Button>
       ),
     })
   }

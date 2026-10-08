@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
-import { BellIcon, BoxIcon, GitBranchIcon, LayoutDashboardIcon, SettingsIcon, SparklesIcon, TriangleAlertIcon, CircleAlertIcon } from 'lucide-react'
+import { BellIcon, BoxIcon, ClipboardListIcon, GitBranchIcon, LayoutDashboardIcon, SettingsIcon, SparklesIcon, TriangleAlertIcon, CircleAlertIcon } from 'lucide-react'
 import logo from '@/assets/allur-logo.png'
+import { useJournal } from '@/components/service/useJournal'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -9,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { clockText } from '@/sim/clock'
 import { useTwin } from '@/sim/useTwin'
 import { type Screen, useSim } from '@/store/sim'
+import { isOpen } from '@/store/maintenance'
 import { useUi } from '@/store/ui'
 import { focusIncidentObject, focusObject } from './focus'
 
@@ -91,6 +93,7 @@ export function AppHeader() {
           )}
         </Button>
         <div className="mx-0.5 h-6 w-px bg-border" />
+        <MaintenanceButton />
         <NotificationsBell />
         <Button variant="ghost" size="icon" title="Настройки" onClick={() => openSettings(true)} className="size-9">
           <SettingsIcon className="size-[18px]" />
@@ -105,6 +108,20 @@ export function AppHeader() {
         </div>
       </div>
     </header>
+  )
+}
+
+/** Журнал заявок ТО: значок с числом открытых заявок. */
+function MaintenanceButton() {
+  const open = useJournal().filter(isOpen).length
+  const setOpen = useUi((s) => s.setMaintenanceLogOpen)
+  return (
+    <Button variant="ghost" size="icon" title="Журнал заявок ТО" onClick={() => setOpen(true)} className="relative size-9">
+      <ClipboardListIcon className="size-[18px]" />
+      {open > 0 && (
+        <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-brand px-1 font-mono text-[10px] text-white">{open}</span>
+      )}
+    </Button>
   )
 }
 

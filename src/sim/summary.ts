@@ -145,8 +145,12 @@ export function cumulativeOutput(rows: Row[]): { date: string; day: number; cum:
     })
 }
 
-/** Прогноз накопленного выпуска до 31.10 с коридором (±1,5 σ дневного выпуска). */
-export function forecastSeries(rows: Row[], liveRemaining: number) {
+/**
+ * Прогноз накопленного выпуска до 31.10 с коридором (±1,5 σ дневного выпуска).
+ * target — итог месяца из общей модели (plantKpi): кривая приходит ровно в него, чтобы график
+ * и число прогноза на всех экранах совпадали.
+ */
+export function forecastSeries(rows: Row[], liveRemaining: number, target?: number) {
   const actual = cumulativeOutput(rows)
   const daily = new Map<string, number>()
   for (const r of rows) if (r.section === 'assembly' && !r.live) daily.set(r.date, (daily.get(r.date) ?? 0) + r.fact)
@@ -156,12 +160,14 @@ export function forecastSeries(rows: Row[], liveRemaining: number) {
   const workdays = workdaysOfMonth(2026, 9)
   const last = actual[actual.length - 1]
   let cum = (last?.cum ?? 0) + liveRemaining
+  const future = workdays.filter((w) => w.getDate() > 15)
+  const step = target !== undefined && future.length ? (target - cum) / future.length : mean
   const out: { day: number; actual?: number; forecast?: number; band?: [number, number] }[] = actual.map((a) => ({ day: a.day, actual: a.cum }))
   if (last) out[out.length - 1].forecast = last.cum
   let k = 0
-  for (const d of workdays.filter((w) => w.getDate() > 15)) {
+  for (const d of future) {
     k++
-    cum += mean
+    cum += step
     const spread = 1.5 * sd * Math.sqrt(k)
     out.push({ day: d.getDate(), forecast: Math.round(cum), band: [Math.round(cum - spread), Math.round(cum + spread)] })
   }
