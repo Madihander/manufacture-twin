@@ -17,14 +17,15 @@ import {
   baseline,
   bottleneckText,
   DEFAULT_INPUT,
-  INCIDENT_TYPES,
-  type IncidentType,
+  incidentKinds,
   MARGIN_KZT,
   type MixMode,
+  normalizeIncident,
   type Outcome,
   outputCurve,
   runScenario,
   type ScenarioInput,
+  typicalDuration,
 } from '@/sim/scenario'
 import { useScenarios } from '@/store/scenarios'
 import { BASE_RUN, useSim } from '@/store/sim'
@@ -81,7 +82,7 @@ export function ScenariosScreen() {
 
   return (
     <div className="grid min-h-0 flex-1 grid-cols-[360px_minmax(0,1fr)_440px]">
-      <Params input={input} set={set} onRun={() => run()} running={running} savedId={savedId} onLoad={(id, inp) => { setInput(inp); setSavedId(id); run(inp) }} />
+      <Params input={input} set={set} onRun={() => run()} running={running} savedId={savedId} onLoad={(id, saved) => { const inp = normalizeIncident(saved); setInput(inp); setSavedId(id); run(inp) }} />
       <FlowPanel input={input} result={result} running={running} progress={progress} onStop={stop} />
       <Results base={base} result={running ? null : result} input={input} name={useScenarios.getState().saved.find((x) => x.id === savedId)?.name} />
     </div>
@@ -107,6 +108,8 @@ function Params({
   const save = useScenarios((s) => s.save)
   const remove = useScenarios((s) => s.remove)
   const critical = EQUIPMENT.filter((e) => e.critical)
+  const kinds = incidentKinds(input.equipmentId)
+  const kind = kinds.find((k) => k.type === input.type)
   const mixSum = input.mix.cobalt + input.mix.onix + input.mix.j7
 
   const setMix = (m: CarModelId, v: number) => {
@@ -133,7 +136,14 @@ function Params({
 
         <Group title="Инцидент">
           <Field label="Оборудование">
-            <Select value={input.equipmentId} onValueChange={(v) => set({ equipmentId: v })}>
+            <Select
+              value={input.equipmentId}
+              onValueChange={(v) => {
+                // У другого оборудования — свои типы остановок: берём первый и его типичную длительность.
+                const k = incidentKinds(v)[0]
+                set({ equipmentId: v, type: k.type, duration: typicalDuration(k) })
+              }}
+            >
               <SelectTrigger className="w-full text-[13px]">
                 <SelectValue />
               </SelectTrigger>
@@ -148,18 +158,30 @@ function Params({
             </Select>
           </Field>
           <Field label="Тип">
-            <Select value={input.type} onValueChange={(v) => set({ type: v as IncidentType })}>
+            <Select
+              value={input.type}
+              onValueChange={(v) => {
+                const k = kinds.find((x) => x.type === v)!
+                set({ type: v, duration: typicalDuration(k) })
+              }}
+            >
               <SelectTrigger className="w-full text-[13px]">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent position="popper">
-                {INCIDENT_TYPES.map((t) => (
-                  <SelectItem key={t} value={t} className="text-[13px]">
-                    {t}
+                {kinds.map((k) => (
+                  <SelectItem key={k.type} value={k.type} className="text-[13px]">
+                    {k.type}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            {kind && (
+              <span className="text-xs text-muted-foreground">
+                Обычно <span className="font-mono">{kind.min === kind.max ? kind.min : `${kind.min}–${kind.max}`} мин</span>
+                {kind.planned ? ' · плановая остановка' : kind.alarm ? ' · авария, линия встаёт' : ''}
+              </span>
+            )}
           </Field>
           <SliderField label="Длительность" value={`${input.duration} мин`} min={0} max={180} step={5} v={input.duration} onChange={(v) => set({ duration: v })} marks={['0', '180 мин']} />
           <SliderField

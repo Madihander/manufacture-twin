@@ -4,13 +4,71 @@ import { type CarModelId, EQUIPMENT_BY_ID, SECTION_BY_ID, type SectionId } from 
 import { DEFAULT_PARAMS, type RunParams, runShift, type ShiftRun } from './engine'
 import { type DowntimeEvent, SHIFT_DOWNTIMES, SHIFT_LEN, SNAPSHOT_STEP, STATIONS, TAKT } from './model'
 
-export const INCIDENT_TYPES = ['Обрыв цепи', 'Плановое ТО', 'Ошибка датчика', 'Замена фильтра'] as const
-export type IncidentType = (typeof INCIDENT_TYPES)[number]
+/** Тип остановки и типичная длительность, мин. */
+export interface IncidentKind {
+  type: string
+  min: number
+  max: number
+  planned?: boolean
+  /** Авария, а не предупреждение (линия встаёт надолго). */
+  alarm?: boolean
+}
+
+// Причины из журнала простоев (data/history.ts, длительности — оттуда же) дополнены типовыми отказами
+// этого вида оборудования; у каждого — своё плановое ТО.
+const ROBOT: IncidentKind[] = [
+  { type: 'Ошибка датчика', min: 15, max: 35 },
+  { type: 'Износ электродов', min: 10, max: 25 },
+  { type: 'Ошибка позиционирования', min: 10, max: 30 },
+  { type: 'Плановое ТО', min: 30, max: 30, planned: true },
+]
+
+/** Какие остановки бывают у критичного оборудования. */
+export const INCIDENTS_BY_EQUIPMENT: Record<string, IncidentKind[]> = {
+  'ABB-01': ROBOT,
+  'ABB-02': ROBOT,
+  'ABB-03': ROBOT,
+  'ABB-04': ROBOT,
+  'Камера-02': [
+    { type: 'Замена фильтра', min: 30, max: 45 },
+    { type: 'Засор форсунок', min: 20, max: 40 },
+    { type: 'Отказ вентиляции', min: 40, max: 90, alarm: true },
+    { type: 'Плановое ТО', min: 30, max: 45, planned: true },
+  ],
+  'ПС-01': [
+    { type: 'Отклонение температуры', min: 15, max: 30 },
+    { type: 'Отказ горелки', min: 45, max: 120, alarm: true },
+    { type: 'Плановое ТО', min: 30, max: 45, planned: true },
+  ],
+  'Конвейер-03': [
+    { type: 'Обрыв цепи', min: 40, max: 60, alarm: true },
+    { type: 'Заклинивание подвески', min: 15, max: 40 },
+    { type: 'Ошибка датчика положения', min: 10, max: 25 },
+    { type: 'Плановое ТО', min: 30, max: 30, planned: true },
+  ],
+}
+
+const FALLBACK: IncidentKind[] = [{ type: 'Остановка', min: 15, max: 60 }]
+
+export const incidentKinds = (equipmentId: string) => INCIDENTS_BY_EQUIPMENT[equipmentId] ?? FALLBACK
+
+/** Середина типичного диапазона, кратно 5 мин. */
+export const typicalDuration = (k: IncidentKind) => Math.round((k.min + k.max) / 2 / 5) * 5
+
+/** Тип остановки, подходящий оборудованию: старые сохранённые сценарии могли хранить чужой тип. */
+export function normalizeIncident(input: ScenarioInput): ScenarioInput {
+  const kinds = incidentKinds(input.equipmentId)
+  return kinds.some((k) => k.type === input.type) ? input : { ...input, type: kinds[0].type }
+}
+
+/** Самая типичная неплановая остановка оборудования — для вопросов ИИ «что если X встанет». */
+export const defaultFailure = (equipmentId: string) => incidentKinds(equipmentId).find((k) => !k.planned) ?? incidentKinds(equipmentId)[0]
 export type MixMode = 'plan' | 'cobalt' | 'custom'
 
 export interface ScenarioInput {
   equipmentId: string
-  type: IncidentType
+  /** Тип остановки из incidentKinds(equipmentId). */
+  type: string
   /** мин */
   duration: number
   /** с от начала смены */
@@ -45,6 +103,7 @@ export const MARGIN_KZT = 400_000
 
 export function buildParams(input: ScenarioInput): RunParams {
   const eq = EQUIPMENT_BY_ID[input.equipmentId]
+  const kind = incidentKinds(input.equipmentId).find((k) => k.type === input.type)
   const event: DowntimeEvent = {
     id: `scn-${input.equipmentId}`,
     equipmentId: input.equipmentId,
@@ -52,8 +111,8 @@ export function buildParams(input: ScenarioInput): RunParams {
     start: input.start,
     duration: input.duration * 60,
     reason: input.type,
-    planned: input.type === 'Плановое ТО',
-    severity: input.type === 'Обрыв цепи' ? 'alarm' : 'warn',
+    planned: !!kind?.planned,
+    severity: kind?.alarm ? 'alarm' : 'warn',
   }
   // Событие того же оборудования в то же время (±30 мин) сценарий заменяет — так задаётся «что если бы его не было»;
   // остановка в другое время добавляется к остальным событиям смены.

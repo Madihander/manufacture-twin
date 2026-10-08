@@ -3,7 +3,7 @@
 import { CAR_MODELS, EQUIPMENT, SECTIONS } from '@/data/plant'
 import { clockText } from '@/sim/clock'
 import { SHIFT_LEN, SHIFT_START_SEC } from '@/sim/model'
-import { baseline, bottleneckText, DEFAULT_INPUT, MARGIN_KZT, runScenario } from '@/sim/scenario'
+import { baseline, bottleneckText, DEFAULT_INPUT, defaultFailure, MARGIN_KZT, runScenario } from '@/sim/scenario'
 import { METRICS, metricState } from '@/sim/telemetry'
 import type { Twin } from '@/sim/useTwin'
 import { BASE_RUN, useSim } from '@/store/sim'
@@ -27,7 +27,7 @@ function whatIf(question: string) {
   const now = useSim.getState().t
   const start = Math.min(Math.max(0, now), SHIFT_LEN - 15 * 60)
   const base = baseline(BASE_RUN)
-  const scen = runScenario({ ...DEFAULT_INPUT, equipmentId: eq.id, type: 'Обрыв цепи', duration: Math.min(180, minutes), start })
+  const scen = runScenario({ ...DEFAULT_INPUT, equipmentId: eq.id, type: defaultFailure(eq.id).type, duration: Math.min(180, minutes), start })
   return {
     note: 'Расчёт симуляцией смены: остановка с текущего момента, остальные события смены — как в реальной смене',
     equipment: eq.id,
